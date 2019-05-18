@@ -1,0 +1,185 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>云驼联盟</title>
+        <link href="../../css/style.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/salereport.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            .list_content .list_content_items {
+                padding-bottom: 0vw; 
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="body_mask"></div>
+        <!--logo区-->
+        <div class="main_top">
+            <ul class="main_top_left">
+                <a class="main_top_back" href="../sale/58baobiao.html"></a>
+            </ul>
+            <ul class="main_top_title">
+                <li>订单查询</li>
+            </ul>
+        </div>
+        <div class="frame_sale_search">
+            <div class="sale_search">
+                <input id="filter_string_id" type="text" placeholder="可输入单号、客户姓名、客户手机,点击右侧进行模糊查询">
+            </div>
+            <div class="sale_search_radio">
+                <form>
+                    <label>
+                        <input value="day" type="radio" name="time-items">今日
+                    </label>
+                    <label>
+                        <input value="week" type="radio" name="time-items">本周
+                    </label>
+                    <label>
+                        <input value="mouth" type="radio" name="time-items">本月
+                    </label>
+                    <label>
+                        <input value="year" type="radio" name="time-items">今年
+                    </label>
+                </form>
+            </div>
+            <div class="sale_search_checkbox">
+                <form>
+                    <label>
+                        <input id="status_id" status="null" style="margin-right:3vw" type="checkbox" name="time-items">已配送
+                    </label>
+                </form>
+            </div>
+            <div class="sale_search_select">
+                <div style="font-size:4vw;padding: 2.5vw 3%;float:left;">销售员：</div>
+                <select id="user_id">
+                    <option value ="null">选择销售员</option>
+                </select>
+            </div>
+            <div id="log_order_id" class="list_item_frame" style="padding-top: 1vh; padding-bottom: 5vh;">
+
+            </div>
+        </div>
+        <!--底部功能-->
+        <div id="menu_buttom_id">
+
+        </div>
+        <script type="text/javascript">
+            table.htmlTabel("two");
+        </script>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var filterjson = {};
+        var staticmessage = {};
+        var delall = new Array();
+        var startPage = 0;
+        var flag = false;
+        //初始化整个页面
+        function init() {
+            staticMessage(staticmessage);
+            $.post(staticmessage.url + "bill/user", {
+                "gsid": staticmessage.gsid
+            }, function (data) {
+                console.log(data);
+                for (var x in data.users) {
+                    $("#user_id").append("<option value =\"" + data.users[x].userid + "\">" + data.users[x].name + "</option>");
+                }
+            });
+            filterjson.status = "null";
+        }
+        function filter() {
+            $.post(staticmessage.url + "salelog/findfilter",
+                    {
+                        "gsid": staticmessage.gsid,
+                        "find": JSON.stringify(filterjson),
+                        "startPage": startPage
+                    }
+            , function (data) {
+                console.log(data);
+                console.log(data.message);
+                if (data.salesorder.length > 0) {
+                    flag = true;
+                    for (var x in data.salesorder) {
+                        var itemhtml = htmladd("saleitem", data.salesorder[x].salesorderitems);
+                        data.salesorder[x].itemhtml = itemhtml;
+                    }
+                } else {
+                    flag = false;
+                }
+                var smallHtml = htmladd("salelog", data.salesorder);
+                change("log_order_id", smallHtml);
+            });
+        }
+
+        $('.nav-toggle').click(function () {
+            var a = $(".nav").css("display");
+            $(".nav").css("display") == "none" ? $(".nav").css("display", "block") : $(".nav").css("display", "none");
+            $('body').toggleClass('nav-open');
+        });
+        $("#filter_string_id").blur(function () {
+            startPage = 0;
+            $("#log_order_id").html("");
+            filterjson.filtermain = $("#filter_string_id").val();
+            filter();
+        });
+
+        $('.frame_sale_search').on('change', 'input:radio', function (event) {
+            startPage = 0;
+            $("#log_order_id").html("");
+            filterjson.timetype = $('input:radio:checked').val();
+            filter();
+        });
+        $('.frame_sale_search').on('change', '#user_id', function (event) {
+            startPage = 0;
+            $("#log_order_id").html("");
+            filterjson.user = $("#user_id").val()
+            filter();
+        });
+        $('.frame_sale_search').on('change', '#status_id', function (event) {
+            startPage = 0;
+            $("#log_order_id").html("");
+            if ($("#status_id").attr("status") == "null") {
+                $("#status_id").attr("status", "1");
+            } else {
+                $("#status_id").attr("status", "null");
+            }
+            filterjson.status = $("#status_id").attr("status")
+            filter();
+        });
+
+        $(window).scroll(function () {
+            if (flag) {
+                var scrollTop = $(this).scrollTop(); //滚动条距离顶部的高度
+                var scrollHeight = $(document).height(); //当前页面的总高度
+                var clientHeight = $(this).height(); //当前可视的页面高度
+                // console.log("top:"+scrollTop+",doc:"+scrollHeight+",client:"+clientHeight);
+                if (scrollTop + clientHeight >= scrollHeight) {   //距离顶部+当前高度 >=文档总高度 即代表滑动到底部 
+                    //滚动条到达底部
+                    //                        alert(3)
+                    startPage += 10;
+                    filter();
+                } else if (scrollTop <= 0) {
+                    //滚动条到达顶部         
+                    //滚动条距离顶部的高度小于等于0 TODO
+                }
+            }
+        });
+
+        $(function () {
+            FastClick.attach(document.body);
+            init();
+        });
+    </script>
+</html>
+

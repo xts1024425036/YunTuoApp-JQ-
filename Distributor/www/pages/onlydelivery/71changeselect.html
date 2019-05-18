@@ -1,0 +1,331 @@
+<!doctype html>
+<html>
+    <head>
+        <title>销售开单 - 云驼联盟</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <link href="../../css/newcommon.css" rel="stylesheet" type="text/css">
+        <link href="../../css/zeroModal.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/templatesale.js"></script>	
+        <script src="../../js/templateutils.js"></script>	
+        <script src="../../js/pagesale.js"></script>	
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../js/zeroModal.js"></script>
+        <script src="../../cordova.js"></script>
+        <style>
+            .btn-background {
+                bottom: 4vw;
+            }
+            .pro_list {
+                max-height: 143vw;
+            }
+            .search-bar {
+                width: 74vw;
+            }
+            .nav-bar .icon-back{
+                font-size: 6vw;
+                line-height: 12vw;
+                margin: 0 0 0 2vw;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="Status-bar"></div>
+        <div class="nav-bar">
+            <i class="top_left back iconfont icon-back"></i>
+            <div class="search-bar">
+                <i class="iconfont icon-ICON-search"></i>
+                <div class="search-input"><input id="filter_search" type="text" placeholder="请输入货号、名称搜索"></div>
+            </div>
+            <div class="sort show_cate"><i class="iconfont icon-fenlei-copy"></i></div>
+        </div>
+        <div class="select_cate">
+            <div id="shop_alltype_id" class="cate_class" style="width: 100%;">
+            </div>
+        </div>
+        <div class="content">
+            <div id="list_category_id" class="sidebar" style="width: 26vw;height: 91vh;overflow-y: scroll;padding-bottom: 8vw;background-color: #F0F0F0;">
+            </div>
+
+            <div class="pro_main">
+                <div id="select_cate_now" class="select_now_c">
+                    <div class="select_now_item"></div>
+                    <div class="select_now_item_delete"><i class="iconfont icon-round_close_light"></i></div>
+                </div>
+                <div class="clear"></div>
+                <div id="shop_list_item" class="left pro_list">
+
+                </div>
+                <div class="btn-background">
+                    <div id="add_bottom_id" class="btn">新增货品</div>
+                </div>
+            </div>
+        </div>
+        <!--点击颜色按钮后显示的颜色详情-->
+        <div class="back_page_c">
+            <div class="bottom_choose">
+                请选择货品颜色:
+                <ul class="bottom_choose_item" pid="0" id="color_choose_id">
+                    <li class="act">颜色A</li>
+                </ul>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var salepage = new Array();             //当前页面的货品
+        //common
+        var showhelp = true;                    //显示所有小类辅助
+        var staticmessage = {};         //用户gsid，groupid，distributi等
+        var allcatename;                        //所有小类名称
+        var color;                              //当前选择颜色的对象
+
+        //filter
+        var clist = new Array();                 //细类
+        var filterMain = "功能分类";               //顶部类型
+        var filterBig;                           //大类
+        var allsmall;
+        var filtersearch;
+
+        var saleSelect = {};               //购物车选择的货品
+        var saleold = {};
+        var saleall = new Array();               //购物车选择的货品
+        var searchtime;
+        //初始化整个页面
+        function init() {
+            $(".sale_class div").addClass("icon-xiadanfill").removeClass("icon-xiadan");
+            //加载资源
+            message();
+            //初始化
+            firstFilter("head");
+            //动态加载
+            addAct();
+            var searchitem = storegeeditutil("searchid");
+            if (isnotnull(searchitem)) {
+                filtersearch = searchitem;
+                storegeeditutil("searchid", null);
+                setTimeout(function () {
+                    firstFilter("search", function () {
+                        cartoon(filtersearch);
+                    });
+                }, 300);
+            }
+        }
+        //顶部，大类，选择查询
+        function firstFilter(type, callback) {
+            var firstfilter = {};
+            firstfilter.filterMain = filterMain;
+            firstfilter.filterBig = filterBig;
+            firstfilter.filterSmall = clist;
+            firstfilter.gsid = staticmessage.gsid;
+            firstfilter.filtertype = type;
+            firstfilter.filtersearch = filtersearch;
+            //main.js-初始化查询，默认按照区域-返回按区域的大类和细类
+            if (firstfilter.filterSmall.length == 0) {
+                firstfilter.filterSmall = allsmall;
+            }
+            $.ajax({
+                type: "POST",
+                crossDomain: true,
+                contentType: "application/json; charset=UTF-8",
+                url: staticmessage.url + "sale/filter",
+                data: JSON.stringify(firstfilter),
+                success: function (data) {
+                    loading_close();
+                    loading_param = "0000";
+                    console.log(data);
+                    salepage = data.sale;
+                    if ("head" == type) {
+                        //修改大类
+                        var bigHtml = salefun.htmladd("sale_big", data.big);
+                        allcatename = data.small;
+                        salefun.change("list_category_id", bigHtml);
+                        $("#list_category_id div:first").addClass("bigcur");
+                        filterBig = $("#list_category_id li:first").attr("pid");
+                        if (!isnotnull(data.big) || data.big.length == 0) {
+                            app.confirm(confirmOk, "货品为空,是否现在添加货品?", "addpro", "../purchase/15produce_add.html");
+                        }
+                    }
+                    if ("big" == type || "head" == type) {
+                        allcatename = data.small;
+                        //修改细类
+                        var smallHtml = salefun.htmladd("sale_small", data.small);
+                        salefun.change("shop_alltype_id", smallHtml);
+                        var itemsmall = new Array();
+                        for (var x in  data.small) {
+                            itemsmall.push(data.small[x].condistributorcatePK.cateid);
+                        }
+                        allsmall = itemsmall;
+                        //                        $("#shop_alltype_id ul:first").addClass('act'); 
+                        //                        clist.push($("#shop_alltype_id ul:first li").attr("pid"));
+                    }
+                    var saleHtml = "";
+                    saleHtml = salefun.htmladd("sale_list", data.sale);
+                    //刷新货品列表
+                    salefun.change("shop_list_item", saleHtml);
+                    isnotnull(callback) ? callback() : null;
+                }
+            });
+        }
+        function confirmOk(param1, param2) {
+            if (param1 == "addpro") {
+                window.location.href = param2;
+            }
+        }
+        //加载资源 
+        function message() {
+            //提取cookie
+            staticMessage(staticmessage);
+            pageutil.refushheight();
+
+            saleold = JSON.parse(storegeeditutil("changedel"));
+        }
+        //刷新购物车
+        function refushCache() {
+            salefun.cookiemain("saleall", saleall);
+            salefun.cookiemain("salecount", saleall.length);
+            refushpage();
+        }
+        //查询颜色，修改颜色，弹出窗口
+        function coloredit(pid, cateid) {
+            $.post(staticmessage.url + "sale/colors", {"pid": pid, "cateid": cateid}, function (data) {
+                console.log(data);
+                var smallHtml = salefun.htmladd("sale_color", data.colors);
+                salefun.change("color_choose_id", smallHtml);
+            });
+            $('.back_page_c').css('display', 'block');
+        }
+        //颜色选择
+        function selectcolor(colorhtml, type) {
+            var colorobj = $(colorhtml).closest(".list_item");
+            var coloritem = colorobj.find(".section_text");
+            var pid = colorobj.attr("pid");
+            var cateid = colorobj.attr("pcate");
+            if ("多种颜色" == coloritem[0].innerText) {
+                coloredit(pid, cateid);
+            } else {
+                if (coloritem.attr("default") == "多种颜色" && "select" == type) {
+                    coloredit(pid, cateid);
+                } else {
+                    console.log("只有一个默认颜色");
+                    $('.back_page_c').css('display', 'none');
+                    ensureadd(pid);
+                }
+            }
+            $(".bottom_choose_item").attr("pid", pid);
+
+        }
+        //添加货品
+        function addone(element, prodcode) {
+            selectcolor(element, "add");
+        }
+        //确认添加
+        function ensureadd(pid) {
+            salefun.listitemchange(saleSelect, salepage);
+            saleSelect.deliveryoderitemPK = saleold.deliveryoderitemPK;
+            storegeeditutil("changeselect", JSON.stringify(saleSelect));
+            window.location.href = "70changedelivery.html";
+        }
+        //查询颜色，修改颜色，弹出窗口
+        function coloredit(pid, cateid) {
+            $.post(staticmessage.url + "sale/colors", {"pid": pid, "cateid": cateid}, function (data) {
+                console.log(data);
+                var smallHtml = salefun.htmladd("sale_color", data.colors);
+                salefun.change("color_choose_id", smallHtml);
+            });
+            $('.back_page_c').css('display', 'block');
+        }
+        //动态加载添加
+        function addAct() {
+            //加入购物车
+            salefun.saleaddnow();
+            //点击购物车写入cookie
+            $('#sale_to_cart').on('click', function () {
+                window.location.href = "56onlysale_cart.html";
+            });
+            //新增货品
+            $('#add_bottom_id').click(function () {
+                transitionLocation("15produce_add.html", "../onlydelivery/71changeselect.html", "../purchase/15produce_add.html?type=change");
+            });
+            $(".back").on("click", function () {
+                window.location.href = "70changedelivery.html";
+            });
+            $(".select_cate:not(.cate_class)").on("click", function () {
+                $(".select_cate").slideUp();
+            });
+            $(".show_cate").on("click", function () {
+                $(".select_cate").slideToggle();
+                event.stopPropagation();
+            });
+            //点击删除
+            $(".select_now_item_delete").on("click", function () {
+                $(".cate_item_c[data-pid='" + $(".select_now_item").attr("data-pid") + "']").trigger("click");
+                $(".select_now_item").html("").attr("data-pid", null);
+            });
+            //输入即搜索
+            $('#filter_search').on('input', function () {
+                clearTimeout(searchtime);
+                searchtime = setTimeout(function () {
+                    filtersearch = $("#filter_search").val();
+                    if (filtersearch.length > 0) {
+                        firstFilter("search");
+                    }
+                }, 1500 * 1);
+            });
+            //选择大类
+            $('#list_category_id').on('click', '.salebig_menu', function (event) {
+                filterBig = $(this).attr("data-pid");
+                $(this).siblings("div").removeClass("bigcur").end().addClass("bigcur");
+                clist.pop();
+                firstFilter("big");
+                $(".select_now_item_delete").trigger("click");
+            });
+            //点击细类
+            $('#shop_alltype_id').on('click', '.cate_item_c', function (event) {
+                //获取发生事件的对象
+                $(this).siblings("div").removeClass("act").end().toggleClass("act");
+                clist.splice(0, clist.length);
+                var child = $(".cate_item_c.act").attr("data-pid");
+                if (isnotnull(child)) {
+                    $(".select_now_c").addClass("show_c");
+                    clist.push(child);
+                } else {
+                    $(".select_now_c").removeClass("show_c");
+                }
+                firstFilter("small");
+                $(".select_now_item").html($(this).html()).attr("data-pid", child);
+                $(".select_cate").slideUp();
+            });
+            //选择颜色
+            $('.bottom_choose_item').on('click', 'li', function (event) {
+                //获取发生事件的对象
+                var element = event.target;
+                $('.bottom_choose_item li').removeClass('act');
+                $(element).addClass("act");
+                var pid = $('.bottom_choose_item').attr("pid");
+                var code = $(this).attr("code");
+                $("[pid='" + pid + "']").find(".section_text").attr("code", code).text($(this).text());
+                $('.back_page_c').css("display", "none");
+                ensureadd(pid);
+            });
+        }
+        $(function () {
+            FastClick.attach(document.body);
+            //严格模式
+            //初始化整个页面
+            init();
+            loading_param = zeroModal.loading(2);
+            setTimeout(function () {
+                loading_close();
+            }, 6000);
+        });
+    </script>
+</html>

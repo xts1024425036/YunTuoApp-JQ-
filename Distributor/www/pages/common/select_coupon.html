@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>云驼联盟</title>
+        <link href="../../css/common.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../js/pageorder.js"></script>
+        <script src="../../js/templateother.js"></script>	
+        <script src="../../js/templateutils.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            .couponbox:before{
+                content: "去使用";
+                position: absolute;
+                width: 17vw;
+                line-height: 6vw;
+                height: 6vw;
+                background: #5478C4;
+                color: #fff;
+                border-radius: 6vw;
+                top: 2vw;
+                text-align: center;
+                float: right;
+                right: 2vw;
+            }
+            body {
+                padding: 0 0 0vw 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="top_nav">
+            <i class="top_left back iconfont icon-back"></i>
+            <!--<div class="top_left back" onclick="javascript:history.back(1);"></div>-->
+            <div class="top_menu">可使用优惠券</div>
+            <div class="top_right"></div>
+        </div>
+        <div class="innercontent" style="margin-top:14vw;">
+            <div class="submenu" id="choice">
+                <div class="field3"></div>
+                <div class="field3"></div>
+                <div class="field3"></div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div style="width:100%;background:#f3f5f7;padding-top:1%;" id="couponlist">
+
+        </div>
+
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var type;
+        var staticmessage = {};
+        var type;
+        var money;
+        var list;
+        var findtype;
+        //初始化整个页面
+        function init() {
+            staticMessage(staticmessage);
+            var typeitem = GetQueryString("type");
+            type = isnotnull(typeitem) ? typeitem : null;
+            var moneyitem = GetQueryString("money");
+            money = isnotnull(moneyitem) ? moneyitem : null;
+            var listitem = GetQueryString("list");
+            list = isnotnull(listitem) ? JSON.parse(listitem) : null;
+            findtype = "1";
+            filter();
+        }
+        function filter() {
+            var html = "";
+            $.post(staticmessage.url + "pay/payreduce",
+                    {
+                        "type": findtype,
+                        "gsid": staticmessage.gsid,
+                        "money": parseFloat(money),
+                    }
+            , function (data) {
+                console.log(data);
+                console.log(data.select);
+                var smallHtml = orderfun.htmledit("coupon", data.select);
+                temputils.htmlappend("couponlist", smallHtml);
+            });
+        }
+        //动态加载
+        act();
+        function act() {
+            //顶部
+            $('#couponlist').on('click', "div", function (event) {
+                var select = $("#couponlist .innercontent").eq($(this).index()).attr("data-pid");
+                var url = "08pay_select.html?" + "type=" + (type) + "&list=" + JSON.stringify(list) + "&select=" + select;
+                window.location.href = url;
+            });
+            $('.back').on('click', function () {
+                javascript:history.back(1);
+            });
+        }
+        $(function () {
+            FastClick.attach(document.body);
+            init();
+        });
+        function timestampToTime(timestamp) {
+            var date = new Date(timestamp);
+            var Y = date.getFullYear() + '.';
+            var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '.';
+            var D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate());
+            return Y + M + D;
+        }
+    </script>
+</html>

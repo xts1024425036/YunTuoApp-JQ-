@@ -1,0 +1,434 @@
+<!doctype html>
+<html>
+    <head>
+        <title>云驼联盟</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <link href="../../css/newcommon.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <script src="../../cordova.js"></script>
+        <script type="text/javascript" src="../../js/jquery.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <script src="../../js/deliveryutil.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <style type="text/css">
+            body{background: #ffffff;}
+            .content-banner{
+                background:#f0f0f0;
+                margin-top: 0.88rem;
+                width: 100%;	
+                position: relative;
+            }
+            .goods-info{
+                width: 100%;
+            }
+            .shadow-title{
+                width:92%;
+            }
+            .goods-info-title-text{
+                font-size: 0.32rem;
+                width: 100%;
+            }
+            .rent-btn,.day-btn{
+                width: 100%;
+                flex-wrap: wrap;
+
+            }
+            .shadow-title a{
+                height: 0.54rem;
+                border-radius: .27rem;
+                line-height: 0.54rem;
+                background: #f0f0f0;
+                font-size: 0.28rem;
+                color:#333333;
+                margin: 0.3rem 3% 0 0;
+                width: 22%;
+            }
+
+            .rent-btn a.select{
+                background: #5478C4;
+                color: #FFFFFF;
+                font-weight: bold;
+            }
+            .day-btn a.select{
+                background: #DAE6FF;
+                color: #5478C4;
+                font-weight: bold;
+            }
+
+            .replenish .left{
+                width: 30%;
+                color: #333333;
+            }
+            .replenish .right{
+                width: 67%;
+                text-align: right;
+                font-size: 0.28rem
+            }
+            .prompt{
+                width: 62%;
+                text-align: right;
+                margin-right: 4vw;
+            }
+            .replenish-2 > li{
+                padding: 0.4em 0;
+                vertical-align: text-top;
+            }
+            .replenish-2 .left-2{
+                display: inline-block;
+                width: 50%;
+            }
+            .replenish-2 .right-2{
+                width:45%;
+                text-align: right;
+            }
+            .replenish-2 .right-2 span{
+                color:#333333;
+                font-weight: bold;
+                margin-right: 0.3em;
+            }
+            .info-r{
+                margin-left: 4.5rem;
+                font-size: .24rem;
+                color:#666666;
+            }
+            .info-extra{
+                padding-bottom: 1rem;
+            }
+            .goods-info-title-text:before{
+                content: "";
+                width: 1vw;
+                height: 4vw;
+                background: #5478C4;
+                display: block;
+                float: left;
+                margin-right: 2vw;
+            }
+            .bg-shadow .title{
+                width: 28vw;
+                text-align: left;
+                float: left;
+                line-height: 6vw;
+            }
+            .bg-shadow .txtc{
+                margin-top: 4vw;
+            }
+            /*  修改日历控件类型 */
+            ::-webkit-datetime-edit { padding: 1px;}  /*控制编辑区域的*/
+            ::-webkit-datetime-edit-fields-wrapper { background-color: #fff; }    /*控制年月日这个区域的*/
+            ::-webkit-datetime-edit-text { color: #666; padding:1vw; }  /*这是控制年月日之间的斜线或短横线的*/
+            ::-webkit-inner-spin-button { visibility: hidden; }    /*这是控制上下小箭头的*/
+            /*            input[type="date"]::-webkit-calendar-picker-indicator {
+                            display: none;
+                        }*/
+            input[type='date']{
+                background-color: #fff;
+            }
+            #mouth_choose_id{
+                display: inline-block;
+            }
+            .result_class{
+                line-height: 4.1vw;
+                margin-top: 5vw;
+                float: right;
+                margin-right: 11vw;
+                color: #333333;
+                font-family: 'PingFangSC-Regular',Microsoft YaHei, "Helvetica Neue",Arial, Helvetica, sans-serif;
+                font-size: .28rem;
+                font-weight: bold;
+            }
+            #buy_start_time{
+                font-size: .28rem;
+                color: #333333;
+                font-family: 'PingFangSC-Regular',Microsoft YaHei, "Helvetica Neue",Arial, Helvetica, sans-serif;
+            }
+            .show_mouth_number{
+                left:-300vw;
+                position: fixed;
+                top: 0vw;
+                width: 100%;
+                height: 100%;
+                z-index: 101;
+                background: rgba(0, 0, 0, 0.6);
+            }
+            .show_mouth_number .shadow-title{
+                background-color: #fff;
+                width: 96vw;
+                margin: 3rem 2vw 0 2vw;
+                border-radius: 2vw;
+            }
+            .show_mouth_number a{
+                height: 0.54rem;
+                border-radius: .27rem;
+                line-height: 0.54rem;
+                background: #f0f0f0;
+                font-size: 0.28rem;
+                color: #333333;
+                margin: 4% 3% 4% 3%;
+                width: 27%;
+            }
+            .why_type_is_close{
+                display: inline-block;
+                width: 100%;
+                text-align: right;
+            }
+            .why_type_is_close{
+                display: block;
+                width: 100%;
+                text-align: right;
+                line-height: 8vw;
+            }
+            .why_type_is_close .iconfont{
+                font-size: 8.5vw;
+                margin: 1vw;
+                width: 10vw;
+                position: relative;
+                padding-top: 2vw;
+                float: right;
+                display: block;
+            }
+            .bg-shadow {
+                margin-top: 6vw;
+            }
+            body.ios .main_top {
+                padding-top: 0px;
+                margin-top: 20px;
+            }
+            #buy_all_mouth {
+                display: inline-block;
+            }
+            .footer-bar {
+                padding-left: .3rem;
+                align-items: center;
+                white-space: nowrap;
+                font-size: 0.28rem;
+                color: #333333;
+                line-height: 1rem;
+            }
+            .footer-bar span{
+                font-size: 0.36rem;
+                font-weight: bold;
+                margin: 0;
+                text-align: right;
+                color: #df2f2f;
+            }
+            .footer-bar .center{
+                width:auto;
+                margin: auto 10%;
+            }
+        </style>
+    </head>
+
+    <body>
+        <ul class="nav-bar flex main_top">
+            <li class="left txtl back">
+                <i class="iconfont icon-fanhui"></i>
+            </li>
+            <li class="flex-item txtc">平台仓租赁</li>
+            <li class="right txtr"></li>   
+        </ul>
+
+        <div class="bg-shadow">
+            <div class="goods-info">
+                <div class="shadow-title">
+                    <div class="goods-info-title-text">租期</div>
+                    <div id="mouth_choose_id" class="rent-btn flex txtc">
+                        <div class ="title">月份</div>
+                        <div id="buy_all_mouth" class="prompt" data-desc="请选择月份" style="width: 50%;">请选择月份</div>
+                        <i class="iconfont icon-right"></i>
+                    </div>
+                </div>
+            </div>
+        </div>	
+        <div class="bg-shadow">
+            <div class="goods-info">
+                <div class="shadow-title">
+                    <div class="goods-info-title-text">起租日期</div>
+                    <div id="mouth_choose_id" class="rent-btn flex txtc">
+                        <div class ="title">开始 : </div>
+                        <input id="buy_start_time" class="prompt" type="text" placeholder="请选择开始时间" style="width: 52%;">
+                        <label for="buy_start_time"><i class="iconfont icon-right"></i></label>
+                        <div class ="clear"></div>
+                        <div class ="title" style="margin-top:4vw;">结束</div>
+                        <div class="result_class"></div>
+                    </div>
+                </div>  
+            </div>
+        </div>	
+        <div class="bg-shadow" style="margin-top: 0.3rem;">
+            <div class="goods-info">
+                <div class="shadow-title">
+                    <div class="goods-info-title-text">格子库数量</div>
+                    <ul class="replenish">
+                        <li class="left">数量</li>
+                        <li class="fr flex-item right"><input id="buy_number_id" class="prompt" type="text" placeholder="请输入所需数量" style="width: 62%;">格</li>
+                    </ul>
+                    <ul class="replenish-2">
+                        <li class="left-2">面积（10平米/格）</li>
+                        <li class="fr flex-item right-2"><span id="area_now">0</span>平米</li>
+                        <div class="clear"></div>
+                        <li class="left-2">价格（25元/平米）</li>
+                        <li id="price_now_t" class="fr flex-item right-2" style="color:#df2f2f;font-weight: bold;">￥0.00</li>
+                    </ul>
+                </div>
+            </div>	
+        </div>
+        <div class="show_mouth_number">
+            <div class="rent-btn flex txtc shadow-title ">
+                <div class="red why_type_is_close"><i class="iconfont icon-round_close_light"></i></div>
+                <a href="#" data-pid="1">1个月</a>
+                <a href="#" data-pid="2" >2个月</a>
+                <a href="#" data-pid="3" >3个月</a>
+                <a href="#" data-pid="4" >4个月</a>
+                <a href="#" data-pid="5" >5个月</a>
+                <a href="#" data-pid="6" >6个月</a>
+                <a href="#" data-pid="7" >7个月</a>	
+                <a href="#" data-pid="8" >8个月</a>
+                <a href="#" data-pid="9" >9个月</a>
+                <a href="#" data-pid="10" >10个月</a>
+                <a href="#" data-pid="11" >11个月</a>
+                <a href="#" data-pid="12" >12个月</a>	
+            </div>
+        </div>
+        <div id="add_msg"></div>
+        <div class="footer-bar flex">
+            合计：<span id="mouth_now" class="footer-btr-num min-flex-item">0</span>&nbsp;个月
+            <span id="number_now" class="footer-btr-num min-flex-item">0</span>&nbsp;格
+            <span id="price_now" class="flex-item">￥0</span>
+            <div style="width:1.8rem;">
+                <div id="send_id" class="center txtr" style="font-weight: bold;">去支付</div>
+            </div>
+        </div>
+
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var staticmessage = {};
+        var power = new Array();
+        var json = {};
+        var inputhelp;
+
+        function init() {
+            staticMessage(staticmessage);
+            json = {gsid: staticmessage.gsid, groupid: staticmessage.groupid, creator: staticmessage.userid};
+        }
+        function send() {
+            if (isnotnull(json.dqtys) && isnotnull(json.qtys)) {
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: staticmessage.url + "store/sprice?type=send",
+                    contentType: "application/json",
+                    data: JSON.stringify(json),
+                    success: function (data) {
+                        if (data.status) {
+                            app.alert("库位购买成功!", "../delivery/07delivery_order_pay.html");
+                        } else {
+                            app.alert("库位购买失败");
+                        }
+                    }
+                });
+            }
+        }
+        function sumprice() {
+            if (isnotnull(json.dqtys) && isnotnull(json.qtys)) {
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: staticmessage.url + "store/sprice",
+                    contentType: "application/json",
+                    data: JSON.stringify(json),
+                    success: function (data) {
+                        console.log(data);
+                        $("#mouth_now").html(data.mouth);
+                        $("#number_now").html(data.number);
+                        $("#area_now").html(data.number * 10);
+                        $("#price_now,#price_now_t").html("￥" + data.price);
+                    }
+                });
+            }
+        }
+        function editTime() {
+            if (isnotnull(json.startdate) && isnotnull(json.dqtys)) {
+                var newdate = new Date(json.startdate);
+                newdate.setMonth(newdate.getMonth() + parseInt(json.dqtys));
+                var newdateS = timeFormat(newdate, "YYMMDD_CN");
+                $('.result_class').html(newdateS);
+            }
+        }
+        function act() {
+            $("#send_id").click(function () {
+                send();
+            });
+            $("#mouth_choose_id").on("click", ".icon-right", function () {
+                $("#buy_all_mouth").trigger("click");
+            });
+            $(".why_type_is_close").on('click', function (event) {
+                $(".show_mouth_number").animate({left: "-300vw"}, 500);
+            });
+            $("#buy_all_mouth").on("click", function () {
+                $(".show_mouth_number").animate({left: "0"}, 500);
+            });
+            $("#buy_number_id").on("change", function () {
+                clearInterval(inputhelp);
+                inputhelp = setInterval(function () {
+                    json.qtys = $("#buy_number_id").val();
+                    editTime();
+                    sumprice();
+                    clearInterval(inputhelp);
+                }, 1000);
+            });
+            $(".show_mouth_number").on("click", "a", function () {
+                json.dqtys = $(this).attr("data-pid");
+                $(this).siblings("a").removeClass("select").end().addClass("select");
+                $("#buy_all_mouth").html(json.dqtys);
+                editTime();
+                sumprice();
+                $(".show_mouth_number").animate({left: "-300vw"}, 500);
+            });
+            $(".back").click(function () {
+                window.location.href = "../menu/86boxmenu.html";
+            });
+            $('#buy_start_time').focus(function () {
+                var obj = $(this);
+                obj.prop('type', 'date');
+                setTimeout(function () {
+                    obj.trigger('click');
+                }, 10);
+            });
+            $('#buy_start_time').blur(function () {
+                var obj = $(this);
+                var dateS = "";
+                if (obj.val()) {
+                    var time = obj.val();
+                    var sysdate = deliveryutil.getDateYYYYHHMM();
+                    if (time < sysdate) {
+                        refusherror("日期选择错误");
+                        $(this).val("");
+                    } else {
+                        var startdate = new Date(time);
+                        startdate.setHours(0);
+                        startdate.setMinutes(0);
+                        startdate.setSeconds(0);
+                        json.startdate = startdate;
+                        dateS = timeFormat(time, "YYMMDD_CN");
+                        $('#buy_start_time').val(dateS);
+                    }
+                }
+                obj.prop('type', 'text');
+                $('#buy_start_time').val(dateS);
+                editTime();
+            });
+        }
+        $(function () {
+            FastClick.attach(document.body);
+            init();
+            act();
+        });
+    </script>
+</html>

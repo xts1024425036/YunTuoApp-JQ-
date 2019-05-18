@@ -1,0 +1,286 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>云驼联盟</title>
+        <link href="../../css/common.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/shopedit.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            .sex_class{
+                width: 17vw;
+                text-align: center;
+            }
+            #sex_0_id{
+                margin-left: 8vw;
+            }
+            .iconfont {
+                font-size:7vw;
+            }
+            #name_id{
+                color: #666;
+            }
+            .menuline .menutext {
+                color: #666666;
+                margin-right: 10vw;
+            }
+            .menuline span{
+                color: #666;
+            }
+            .menuline .sex_class,.menuline .post_class {
+                margin-left: 4vw;
+                position: relative;
+                float: left;
+                font-size: 0.28rem;
+                height: 7vw;
+                line-height: 2.8vw;
+                margin: 1vw 1.5vw 0.5vh 0.5vw;
+                padding: 1vh 1vw;
+                background: #FFF;
+                border: 0.2vw #006ff3 solid;
+                border-radius: 5vh;
+                width: 16vw;
+                text-align: center;
+            }
+            .menuoptionbmy{
+                background: #5478c4 !important;
+                color: #fff!important;
+            }
+            .bottom_button_class {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 13vw;
+                line-height: 14vw;
+                font-size: 5vw;
+                font-weight: bold;
+                letter-spacing: 2vw;
+                z-index: 100;
+                padding: 0;
+                box-shadow: 0 0 1vh #dedede;
+                color: #FFFFFF;
+                text-align: center;
+            }
+            .ps{
+                text-align: right;
+                margin-right: 7vw;
+            }
+            .ps:before{
+                content: "!";
+                width: 5vw;
+                height: 5vw;
+                text-align: center;
+                line-height: 5vw;
+                position: relative;
+                display: inline-block;
+                margin-right: 2vw;
+                background: #D81E06;
+                color: #fff;
+                border-radius: 3vw;
+            }
+            .sex_radio{
+                margin-right: 2vw;
+            }
+            .menuline {
+                padding: 4.5vw 0;
+            }
+            input[type='radio']{
+                width: 6vw;
+                height: 6vw;
+                vertical-align: middle;
+                line-height: 6vw;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="top_nav">
+            <i class="top_left back iconfont icon-back"></i>
+            <div class="top_menu">修改员工</div>
+            <div class="top_right delete_class"><i class="iconfont icon-delete"></i></div>
+        </div>
+        <div class="innercontent top_innercontent" id="baobiao" style="margin-top:15vw;">
+            <div class="menuline user_name_class">
+                <div class="menutext">姓名</div>
+                <!--<div class="menutext gray" id="name_show_id" ></div>-->
+                <div class="menutext gray show_name_class input_class"><input id="name_id" maxlength="10" type="text"/></div>
+                <!--<div class="menuimg menuimg_name_class"><i class="iconfont icon-edit"></i></div>-->
+                <div class="clear"></div>
+            </div>
+            <div class="menuline">
+                <div class="menutext menuline_sex">性别</div>
+                <input id="sex_1_id" class="sex_radio" type="radio" name="sex_class" value="0"><span>男</span>
+                <input id="sex_0_id" class="sex_radio" type="radio" name="sex_class" value="1"><span>女</span>
+                <!--<div class="sex_class left" id="sex_0_id" pid="0">男</div>-->
+                <!--<div class="sex_class left" id="sex_1_id" pid="1" style="margin-left: 4vw">女</div>-->
+                <div class="clear"></div>
+            </div>
+            <div class="menuline">
+                <div class="menutext">手机</div>
+                <div class="menutext gray input_class"><input id="phone_id" type="tel" maxlength="11"/></div>
+                <div class="clear"></div>
+            </div>
+            <div class="menuline menuline_post">
+                <div class="menutext">岗位</div>
+                <div class="post_class menuoptionw left" id="now_type_2_id" value="2">销售</div>
+                <div class="post_class menuoptionw left" id="now_type_3_id" value="3">库管</div>
+                <div class="post_class menuoptionw left" id="now_type_1_id" value="1">管理</div>
+                <div class="post_class menuoptionw left" id="now_type_4_id" value="4">财务</div>
+                <div class="clear"></div>
+            </div>
+            <div class="gray ps">岗位可多选，关联到权限</div>
+        </div>
+        <div id="add_msg"></div>
+        <div class="bottom_button_class">
+            <!--<div class="left half whitebutton delete_class" style="border:0vw;width: 47vw; ">删除</div>-->
+            <div class="left ensure_class" style="background: #5478c4;width: 100%;">保存修改</div>
+            <div class="clear"></div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var staticmessage = {};
+        var user = {};
+        //初始化整个页面
+        function init() {
+            staticMessage(staticmessage);
+            if (staticmessage.userid == GetQueryString("userid")) {
+                $(".delete_class").hide();
+                $("#now_type_1_id").css("pointer-events", "none");
+                $("#phone_id").attr("readonly", "readonly").css("outline", "none");
+            }
+            message();
+        }
+
+        function confirmOk(param1, param2) {
+            if ("delete" == param1) {
+                deleteuser();
+            } else if ("edit" == param1) {
+                edituser();
+            }
+        }
+        function message() {
+            var userid = GetQueryString("userid");
+            $.post(staticmessage.url + "shopedit/findone",
+                    {
+                        "gsid": staticmessage.gsid,
+                        "userid": userid,
+                    }
+            , function (data) {
+                console.log(data.shopuser);
+                user = data.shopuser;
+                $(".tab").removeClass("cur");
+                var post = data.shopuser.post.split(',');
+                for (var y in post) {
+                    $("#now_type_" + post[y] + "_id").addClass("set_post");
+                    $("#now_type_" + post[y] + "_id").toggleClass("menuoptionw");
+                    $("#now_type_" + post[y] + "_id").toggleClass("menuoptionbmy");
+                }
+//                    $("#now_type_" + data.shopuser.post[y] + "_id").addClass("set_post");
+//                    $("#now_type_" + data.shopuser.post[y] + "_id").toggleClass("menuoptionw");
+//                    $("#now_type_" + data.shopuser.post[y] + "_id").toggleClass("menuoptionbmy");
+
+                $("#name_show_id").html(data.shopuser.name);
+                $("#name_id").val(data.shopuser.name);
+                if (data.shopuser.sex) {
+                    $("#sex_0_id").trigger("click");
+                } else {
+                    $("#sex_1_id").trigger("click");
+                }
+
+                $("#phone_id").val(data.shopuser.mobile);
+                $(".rtab").html("确定修改");
+                var a = data.shopuser.power;
+                if (isnotnull(a)) {
+                    var power = a.split(',');
+                    for (var x in power) {
+                        $(".power_item[pid=" + power[x] + "]").addClass("cur");
+                    }
+                }
+                if (data.shopuser.post.indexOf("0") != -1) {
+                    $("#now_type_1_id").css("pointer-events", "none");
+                }
+            });
+        }
+        //动态加载
+        function deleteuser() {
+            $.post(staticmessage.url + "shopedit/userdelete", {
+                "gsid": staticmessage.gsid,
+                "userid": user.userid,
+            }
+            , function (data) {
+                app.alert("员工注销成功", "35employee.html");
+            });
+        }
+        //动态加载
+        function edituser() {
+            var json = {};
+            var post = new Array();
+            $(".set_post").each(function (e) {
+                post.push($(this).attr("value"));
+            });
+            json.post = post;
+            json.sex = $("input[name='sex_class']:checked").val();
+            json.type = "edit";
+            json.name = $("#name_id").val();
+            json.username = user.username;
+            json.userid = user.userid;
+            json.gsid = staticmessage.gsid;
+            json.groupid = staticmessage.groupid;
+            $.post(staticmessage.url + "shopedit/useredit", {
+                "gsid": staticmessage.gsid,
+                "json": JSON.stringify(json),
+            }
+            , function (data) {
+                if (data.status) {
+                    app.alert("员工信息已修改", "35employee.html");
+                } else {
+                    app.alert(data.message);
+                }
+            });
+        }
+        function act() {
+            //退货
+            $('.menuline_post').on('click', '.post_class', function (event) {
+                $(this).toggleClass("set_post");
+                $(this).toggleClass("menuoptionw");
+                $(this).toggleClass("menuoptionbmy");
+            });
+            $('.menuline').on('click', '.menuimg_name_class', function (event) {
+                $(".user_name_class .gray").toggleClass("show_name_class");
+            });
+            $('#name_id').on('blur', function (event) {
+                var a = $("#name_id").val();
+                $("#name_show_id").html($("#name_id").val());
+            });
+            $('.delete_class').on('click', function (event) {
+                if (user.userid == staticmessage.userid || user.power.indexOf("D02") > 0) {
+                    refushmessage("管理员账户及账户本人不可删除!");
+                    return;
+                }
+                app.confirm(confirmOk, "确定删除用户?", "delete", "0");
+            });
+            $('.ensure_class').on('click', function (event) {
+                app.confirm(confirmOk, "确定修改用户?", "edit", "0");
+            });
+            $(".back").on("click", function () {
+                window.location.href = "35employee.html";
+            })
+        }
+        $(function () {
+            FastClick.attach(document.body);
+            init();
+            act();
+        });
+    </script>
+</html>

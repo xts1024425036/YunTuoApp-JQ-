@@ -1,0 +1,155 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>云驼联盟</title>
+        <link href="../../css/style.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/pageorder.js"></script>
+        <script src="../../js/templatorder.js"></script>	
+        <script src="../../js/templateutils.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            .list_item{
+                height: 18vw;
+            }
+            .list_item_detail {
+                width: 100%;
+            }
+            .log_sort a {
+                width: 45vw;
+            }
+            .frame_log {
+                margin-top: 0vh;
+                position: absolute;
+                overflow: scroll;
+                height: 83%;
+                float: left;
+                padding: 13vw 0 8vh 0;
+                width: 100%;
+                background: #f3f3f3;
+            }
+            .show_false,.show_\{isupdate\}{display: none;}
+            .log_total ul .stauts_c{color: #0529b0;float: left;}
+            .log_total li {
+                float: right;
+            }
+            .log_total {
+                width: 100%;
+            }
+            .red_bc{
+                background: #fff6f6;
+            }
+            .show_true a{
+                border: 0.2vw #a55555 solid;
+            }
+            .log_list_title .status_R,.status_O,.status_Q,.status_F,.status_I,.status_C{
+                display: none;
+            }
+            #log_order_id.candelete_c .status_cancel_1{
+                display: block;
+            }
+            #log_order_id.notok_c.isdelete_c .show_true{
+                display: none;
+            }
+            .new_order_list .list_item {
+                height: auto;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="body_mask"></div>
+        <!--logo区-->
+        <div class="main_top">
+            <ul class="main_top_left">
+                <li><a class="main_top_back" href="../menu/86boxmenu.html"></a></li>
+            </ul>
+            <ul class="main_top_title">
+                <li>分拨仓订单</li>
+            </ul>
+            <ul class="main_top_right">
+                <!--<a class="main_top_search" href="#"></a>-->
+            </ul>
+        </div>
+        <div id="type_id" class="main_sort log_sort">
+            <a href="#" class="act"  pid="need" style="margin-left:5vw;">待支付</a>
+            <a href="#" pid="ok">已支付</a>
+        </div>    
+        <div id="log_order_id" class="frame_log log_sale notok_c new_order_list candelete_c" style="padding-top: 12vh; padding-bottom: 0vh;">
+            <!--报表-->
+            <div class="no_order_message">您还没有订单信息哦!</div>
+        </div>
+        <div id="menu_buttom_id">
+
+        </div>
+        <script type="text/javascript">
+            table.htmlTabel("two");
+        </script>
+        <script type="text/javascript">
+            "use strict";
+            var type;
+            var staticmessage = {};
+            var delall = new Array();
+            var startPage = 0;
+            var flag = false;
+
+            //初始化整个页面
+            function init() {
+                staticMessage(staticmessage);
+                type = "need";
+                filter();
+            }
+            function filter() {
+                $.post(staticmessage.url + "store/leaseorder" + setQueryString({gsid: staticmessage.gsid, type: type}), {}
+                , function (data) {
+                    console.log(data);
+                    if (0 == $("#log_order_id .log_item").length) {
+                        $("#log_order_id").html("");
+                    }
+                    var smallHtml = orderfun.htmledit("leasorder_list", data.sharelist, 'mdh');
+                    temputils.htmlappend("log_order_id", smallHtml);
+                });
+            }
+
+            //顶部
+            $('#type_id').on('click', 'a', function (event) {
+                startPage = 0;
+                $("#log_order_id").removeClass(type + "_c")
+                type = $(this).attr("pid");
+                $("#log_order_id").html("").addClass(type + "_c");
+                $(this).siblings().removeClass("act").end().addClass("act");
+                filter();
+            });
+
+            $("#log_order_id").scroll(function () {
+                var scrollTop = $(this).scrollTop(); //滚动条距离顶部的高度
+                var eleheight = $(this).height(); //滚动条距离顶部的高度
+                var scrollAll = document.getElementById("log_order_id").scrollHeight; //滚动条距离顶部的高度
+//            console.log("scrollTop>>>>>" + scrollTop);
+//            console.log("scrollAll>>>>>" + scrollAll);
+                var isok = ((scrollAll - eleheight * 2) < scrollTop);
+                if (flag && isok) {
+                    // console.log("top:"+scrollTop+",doc:"+scrollHeight+",client:"+clientHeight);
+                    //滚动条到达底部
+                    startPage += 10;
+                    flag = false;
+                    filter();
+                }
+            });
+
+            $(function () {
+                FastClick.attach(document.body);
+                init();
+            });
+        </script>
+    </body>
+</html>

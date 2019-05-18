@@ -1,0 +1,365 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>云驼联盟</title>
+        <link href="../../css/style.css" rel="stylesheet" type="text/css">
+        <link href="../../css/swiper.css" rel="stylesheet" type="text/css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../js/swiper.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../js/purchaseymain.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            .main{
+                display: block;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="body_mask"></div>
+        <!--logo区-->
+        <div class="main_top">
+            <ul class="main_top_left">
+                <a class="main_top_back" href="13purchase_order.html"></a>
+                <a class="main_top_menu" href=""></a>
+            </ul>
+            <ul class="main_top_title">
+                <li>入库选货</li>
+            </ul>
+            <ul class="main_top_right">
+                <a class="main_top_add" href="15produce_add.html?url=14purchase_order_add.html">新增货品</a>
+            </ul>
+        </div>
+        <!--货品总体分类-->
+        <div id="mainSort_id"  class="main_sort">
+            <a href="javascript:void(0);" class="act" >功能分类</a>
+            <span></span>
+            <a href="javascript:void(0);">区域分类</a>
+            <span></span>
+            <a href="javascript:void(0);">扫码</a>
+        </div>
+        <div class="frame_sale_list">
+            <!--货品大类-->
+            <ul id="list_category_id"  id="list_category_id"  class="sale_list_category">
+                <!--货品大类具体-->
+            </ul>
+            <ul class="sale_list_context">
+                <div id="shop_alltype_png_id" class="sale_list_title_state" ><img src="../../images/ico_down.png" alt=""/></div>
+                <div id="shop_alltype" class="swiper-container">
+                    <div id="shop_alltype_id" class="swiper-wrapper" style="height:auto;">
+                        <span class="swiper-slide sale_cate_class">无小类</span>
+                    </div>
+                </div>      
+                <!--货品列表-->
+                <div id="shop_list_item" class="list_item_frame">
+
+                </div>
+            </ul>
+        </div>
+        <!--底部功能-->
+        <div id="add_msg">成功加入购物车！</div>
+        <div class="frame_bottom_cart">
+            <div href="02slae_cart.html" class="bottom_button_cart">
+                <ul class="button_delivery_text button_purchase_add_text">
+                    <li>共<span id="dot">0</span>件货品</li>
+                </ul>
+            </div>
+            <a href="javascript:void(0)" id="sale_to_cart" class="bottom_button_next">选完下单</a>
+        </div>
+        <!--点击颜色按钮后显示的颜色详情-->
+        <div class="bottom_choose">
+            <ul class="bottom_choose_title">
+                <li>请选择您需要的颜色：</li>
+            </ul>
+            <ul class="bottom_choose_item" pid="0" id="color_choose_id">
+                <li class="act">颜色A</li>
+            </ul>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        //common
+        var showhelp = true;                    //显示所有小类辅助
+        var staticmessage = {};         //用户gsid，groupid，distributi等
+        var color;                              //当前选择颜色的对象
+        var priceall;
+
+        //filter
+        var clist = new Array();                 //细类
+        var filterMain;                          //顶部类型
+        var filterBig;                           //大类
+
+        var saleall = new Array();               //购物车选择的货品
+        var salepage = new Array();             //当前页面的货品
+        var allsmall;
+
+        var swiper = new Swiper('.swiper-container', {
+            spaceBetween: 10,
+            slidesPerView: 'auto',
+            freeMode: true,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true, //修改swiper的父元素时，自动初始化swiper
+        });
+
+        //初始化整个页面
+        function init() {
+            staticMessage(staticmessage);
+            //加载资源
+            message();
+            //初始化
+            firstFilter("head");
+            //动态加载
+            addAct();
+        }
+
+        //顶部，大类，选择查询
+        function firstFilter(type) {
+            var firstfilter = {};
+            firstfilter.filterMain = filterMain;
+            firstfilter.filterBig = filterBig;
+            firstfilter.filterSmall = clist;
+            firstfilter.gsid = staticmessage.gsid;
+            firstfilter.filtertype = type;
+            //main.js-初始化查询，默认按照区域-返回按区域的大类和细类
+            console.log(firstfilter);
+            //main.js-初始化查询，默认按照区域-返回按区域的大类和细类
+            if (firstfilter.filterSmall.length == 0) {
+                firstfilter.filterSmall = allsmall;
+            }
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: staticmessage.url + "sale/filter",
+                contentType: "application/json",
+                data: JSON.stringify(firstfilter),
+                success: function (data) {
+                    console.log(data);
+                    salepage = data.sale;
+                    if ("head" == type) {
+                        //修改大类
+                        var bigHtml = htmladd("大类", data.big);
+                        change("list_category_id", bigHtml);
+                        $("#list_category_id li:first").addClass("act");
+//                        filterBig = data.big[0];
+                        filterBig = $("#list_category_id li:first").attr("pid");
+                    }
+                    if ("big" == type || "head" == type) {
+                        //修改细类
+                        var smallHtml = htmladd("细类", data.small);
+                        change("shop_alltype_id", smallHtml);
+                        var itemsmall = new Array();
+                        for (var x in  data.small) {
+                            itemsmall.push(x);
+                        }
+                        allsmall = itemsmall;
+//                        $("#shop_alltype_id ul:first").addClass('act'); 
+//                        clist.push($("#shop_alltype_id ul:first li").attr("pid"));
+                    }
+                    var saleHtml = "";
+                    saleHtml = htmladd("货品类", data.sale);
+                    //刷新货品列表
+                    change("shop_list_item", saleHtml);
+                }
+            });
+        }
+
+        //加载资源 
+        function message() {
+            //提取cookie
+
+            filterMain = "功能分类";
+            var a = storegeeditutil("pursaleall");
+            if (typeof (a) != "undefined" && a != null && a.length > 0 && a != "undefined") {
+                saleall = JSON.parse(a);
+            }
+            $("#dot").html(listnumber(saleall));
+            var b = storegeeditutil("purpriceall");
+            (!isNaN(b) && typeof (b) != "undefined") ? priceall = parseInt(b) : priceall = parseInt(0);
+        }
+        //查询颜色，修改颜色，弹出窗口
+        function coloredit(pid) {
+            $.post(staticmessage.url + "sale/colors", pid, function (data) {
+                console.log(data);
+                var smallHtml = htmladd("颜色", data.colors);
+                change("color_choose_id", smallHtml);
+            });
+            $('.bottom_choose').css('display', 'block');
+        }
+        //颜色选择
+        function selectcolor(colorhtml, type) {
+            var coloritem = $(colorhtml).closest(".list_item").find(".section_text");
+            var pid = $(colorhtml).closest(".list_item").attr("pid");
+            if ("多种颜色" == coloritem[0].innerText) {
+                coloredit(pid);
+            } else {
+                if (coloritem.attr("default") == "多种颜色" && "select" == type) {
+                    coloredit(pid);
+                } else {
+                    console.log("只有一个默认颜色");
+                    $('.bottom_choose').css('display', 'none');
+                }
+            }
+            $(".bottom_choose_item").attr("pid", pid);
+
+        }
+        function confirmOk(param1, param2) {
+            addinstorage();
+            if ("head" == param1) {
+                filterhead(param2);
+            } else if ("big" == param1) {
+                filterbig(param2);
+            }
+        }
+        function filterhead(param2) {
+            var element = param2;
+            var filteritem = element.innerHTML;
+            if (filteritem != "扫码") {
+                filterMain = filteritem;
+            } else {
+                console.log("扫码");
+                return;
+            }
+            $('#mainSort_id a').removeClass("act");
+            $(element).addClass("act");
+            clist.pop();
+            filterBig = undefined;
+            firstFilter("head");
+        }
+        function filterbig(param2) {
+            var element = param2;
+            filterBig = $(element).attr("pid");
+            $('#list_category_id li').removeClass("act");
+            $(element).addClass("act");
+            clist.pop();
+            firstFilter("big");
+        }
+        //添加货品
+        function addone(element, prodcode) {
+            selectcolor(element, "add");
+        }
+        function needMessage() {
+            var isneed = false;
+            $(".item_detail_number .main").each(function () {
+                if ($(this).html() != 0) {
+                    isneed = true;
+                    return;
+                }
+            });
+            return isneed;
+        }
+        //写入购物车
+        function addinstorage() {
+            $("#add_msg").show().animate({width: '250px'}, 400).fadeOut(1000);
+            setTimeout(function () {
+                $("#add_msg").css("width", "0px");
+            }, 1050)
+            var price = listitem(saleall, salepage);
+            window.priceall += price;
+            cookiemain(priceall, saleall);
+        }
+        //删除货品 
+        function deleteone(prodcode) {}
+//        //辅助 ： 编辑css
+        //动态加载添加
+        function addAct() {
+            //加入购物车
+            salecontroller();
+            //点击展开
+            $('#shop_alltype_png_id').on('click', 'img', function () {
+                if (showhelp) {
+                    $("#shop_alltype_id").addClass("sale_slide_block");
+                    var o = document.getElementById("shop_alltype_id");
+                    var h = o.offsetHeight; //高度
+                    $('#shop_alltype').animate({height: '150vw'});
+                    showhelp = false;
+                } else {
+                    $("#shop_alltype_id").removeClass("sale_slide_block");
+                    $('#shop_alltype').animate({height: '12vw'});
+                    showhelp = true;
+                }
+            });
+            //点击展开
+            $('#shop_alltype').on('click', function (e) {
+                var a = $(e.target).attr("class");
+                if (!showhelp && a.search("sale_cate_class") < 0) {
+                    $("#shop_alltype_id").removeClass("sale_slide_block");
+                    $('#shop_alltype').animate({height: '12vw'});
+                    showhelp = true;
+                }
+            });
+            //点击顶部
+            $('#mainSort_id').on('mousedown', 'a', function (event) {
+                var element = event.target;
+                if (needMessage()) {
+                    app.confirm(confirmOk, "是否添加已选货品?", "head", element);
+                } else {
+                    filterhead(element);
+                }
+            });
+            //点击购物车写入cookie
+            $('#sale_to_cart').on('mousedown', function () {
+                addinstorage();
+                window.location.href = "13purchase_order.html";
+            });
+            //选择大类
+            $('#list_category_id').on('mousedown', 'li', function (event) {
+                var element = event.target;
+                if (needMessage()) {
+                    app.confirm(confirmOk, "是否添加已选货品?", "big", element);
+                } else {
+                    filterbig(element);
+                }
+            });
+            //点击细类
+            $('#shop_alltype_id').on('mousedown', '.sale_cate_class', function (event) {
+                //获取发生事件的对象
+                var child = $(this).attr("pid");
+                var heip = true;
+                for (var i = 0; i < clist.length; i++) {
+                    if (child == clist[i]) {
+                        $(this).removeClass("act");
+                        clist.splice(i, 1);
+                        heip = false;
+                    }
+                }
+                if (heip) {
+                    $(this).addClass("act");
+                    clist.push(child);
+                }
+                firstFilter("small");
+            });
+
+            //选择颜色
+            $('.bottom_choose_item').on('mousedown', 'li', function (event) {
+                //获取发生事件的对象
+                var element = event.target;
+                $('.bottom_choose_item li').removeClass('act');
+                $(element).addClass("act");
+                var pid = $('.bottom_choose_item').attr("pid");
+                var code = $(this).attr("code");
+                $("[pid='" + pid + "']").find(".section_text").text($(element).text());
+                $("[pid='" + pid + "']").find(".section_text").attr("code", code);
+                $('.bottom_choose').css("display", "none");
+            });
+
+        }
+
+        $(function () {
+            FastClick.attach(document.body);
+            $(document).ready(function () {
+                //严格模式
+                //初始化整个页面
+                init();
+            });
+        });
+    </script>
+
+</html>

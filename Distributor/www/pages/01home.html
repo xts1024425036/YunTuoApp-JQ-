@@ -1,0 +1,254 @@
+<!doctype html>
+<html>
+    <head>
+        <title>主页</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <link href="../css/newcommon.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../css/jquery.hiSlider.min.css">
+        <link rel="stylesheet" href="../css/iconfont.css">
+        <script type="text/javascript" src="../js/jquery.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <script type="text/javascript" src="../js/jquery.hiSlider.min.js"></script>
+        <script src="../js/fastclick.js"></script>
+        <script src="../js/common.js"></script>
+        <script src="../cordova.js"></script>
+        <link href="../css/iosOnly.css" rel="stylesheet" type="text/css">	
+        <style type="text/css">
+            body{background: #FFFFFF;}
+            .head-bg{
+                width: 100%;
+                background: #ffffff;
+                background-size:100% 100%;
+            }
+            .head-bg-content .txtc li{
+                width:.16rem;
+                height:.16rem;
+                background:#D6D6D6;
+                border-radius:50%;
+                margin: .1rem;
+                display: inline-block;
+                margin-top: 2.6rem;
+            }
+            .head-bg-content .txtc .current{
+                width:.2rem;
+                height:.2rem;
+                background: #fff;
+            }
+            .main{
+                margin-top: -0.3rem;
+            }
+            .head-photo{padding: 0 0.3rem;position: relative}
+            .head-photo img{
+                border: .03rem solid #ffffff;
+                border-radius: 50%;
+                width:1rem;
+                height: 1rem;
+            }
+            .head-title{
+                font-size: .24rem;
+                font-weight: bold;
+                color:#333333;
+                margin: 0.1rem;
+                position: absolute;
+                top: 1.8em;
+            }
+            .notification{
+                -webkit-align-items: center;
+                align-items: center;
+                color: #333;
+                font-size: 0.32rem;
+                padding: 0.6em 1.2em 0.6em 0;
+                width: 100%;
+            }
+            .notification span{
+                font-size: 0.26rem;
+                color:#333333;
+
+            }
+            .dot{
+                width:.1rem;
+                height:.1rem;
+                background:#333;
+                border-radius:50%;
+                margin-right: 0.3rem;
+            }
+            .notification .txtr{
+                color:#999999;
+
+            }
+            .list-item{
+                box-shadow:0 .02rem .38rem 0 #DDE8FB;
+            }
+
+            .icon-cangku{
+                font-size: 0.36rem;
+                color:#5478C4;
+                width:1.8em;
+            }	
+            .vocation_c{
+                position: fixed;
+                background: rgba(0, 0, 0, 0.6);
+                height: 100vh;
+                width: 100vw;
+                z-index: 101;
+                top: 0;
+            }
+            .vocation_c img{
+                width: 92vw;
+                margin-left: 4vw;
+                margin-top: 10vh;
+                border-radius: 2vw;
+            }
+            .info-main .cell-list .inspection_s{
+                display: none;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="head-bg">
+            <div class="head-bg-content">
+                <ul class="hiSlider hiSlider1" style="height:30%;">
+                    <li data-title="云驼联盟" class="hiSlider-item"><img data-pid="pic_own_004" class="slide_class" src="../images/pic_own_004.jpg"></li>
+                    <li data-title="仓储服务" class="hiSlider-item"><img data-pid="pic_own_002" class="slide_class"  src="../images/pic_own_002.jpg"></li>
+                    <li data-title="配送服务" class="hiSlider-item"><img data-pid="pic_own_003" class="slide_class"  src="../images/pic_own_003.jpg"></li>
+                </ul>
+            </div>
+        </div>
+        <div class="main home">
+            <div class="shop_title head-photo">
+                <span class="head-title" id="shop_name_id"></span>
+            </div>
+            <div class="list-item" style="box-shadow:0 .06rem .3rem 0 #D8F0FE">
+                <div class="main-massage flex">
+                    <div class="massage-left">
+                        <img src="../images//home_message.png">
+                    </div>
+                    <div class="massage-right flex-item">
+                        <div class="notification flex">
+                            <span class="dot"></span>
+                            <span class="flex-item">家具送装，找云驼，靠谱！</span>
+                            <span class="txtr">最新</span>
+                        </div>
+                        <div class="notification flex">
+                            <span class="dot"></span>
+                            <span class="flex-item">配送　 安装　 仓储　 维修</span>
+                            <span class="txtr">最新</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="list-item h_s" style="padding:0 0.3rem;overflow: hidden;">
+                <div class="info-main">
+                    <div class="cell-list">
+                        <a class="cell" data-uid="onlydelivery/55onlysale.html" data-sid="">
+                            <i class="left iconfont icon-huoche " ></i><span>我要送装</span><i class="iconfont icon-jinru"></i>
+                        </a>
+                        <a class="cell" data-uid="menu/86boxmenu.html"  data-sid="">
+                            <i class="iconfont icon-cangku "></i><span>仓储服务</span><i class="iconfont icon-jinru"></i>
+                        </a>
+                        <a class="cell" data-uid="menu/97service.html"  data-sid="">
+                            <i class="left iconfont icon-dingdan "></i><span>订单管理</span><i class="iconfont icon-jinru"></i>
+                        </a>
+                        <a class="inspection_s cell" data-uid="storehouse/99inspection_list.html"  data-sid="">
+                            <i class="left iconfont icon-dazongjianhuo "></i><span>拣货订单</span><i class="iconfont icon-jinru"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div style="height: 50px;">
+            </div>
+            <div id="add_msg"></div>
+            <!--活动海报-->
+            <!--        <div class="vocation_c">
+                        <img src="../images/vocation.jpg">
+                    </div>-->
+            <!--底部功能-->
+            <div id="menu_buttom_id">
+
+            </div>
+            <script type="text/javascript">
+                table.htmlTabel("one");
+            </script>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var staticmessage = {};
+        $(function () {
+            FastClick.attach(document.body);
+            staticMessage(staticmessage);
+            pageutil.refushheightnew();
+            var shopimg = url + "file/getimg?gid=2&name=" + storegeeditutil("gsid") + ".png" + "&groupid=" + storegeeditutil("groupid");
+            $("#shop_name_id").before("<img src=\"" + shopimg + "\"/>");
+            $(".slide_class").each(function () {
+//                $(this).attr("src", urlpic + "&name=" + $(this).attr("pid"));
+            })
+            $(".cell").on("click", function () {
+                var pid = $(this).attr("data-pid");
+                console.log("pid" + pid);
+                var uid = $(this).attr("data-uid");
+                console.log("uid" + uid);
+                console.log("window.location.href=" + uid);
+                window.location.href = uid;
+            });
+            $(".vocation_c").click(function () {
+                $(".vocation_c").animate({left: '-300vw'}, 400);
+            });
+            $('.hiSlider1').hiSlider({
+                isFlexible: true,
+                isSupportTouch: true,
+                intervalTime: 8000,
+                titleAttr: function (curIdx) {
+                    return $('img', this).attr('alt');
+                }
+            });
+            $.post(staticmessage.url + "home/findmessage", {
+                "userid": storegeeditutil("userid"),
+                "gsid": storegeeditutil("gsid")
+            }, function (data) {
+                console.log(data);
+                $("#shop_name_id").html(data.shop.shopname);
+                storegeeditutil("prostyle", data.prostyle);
+                storegeeditutil("power", data.power);
+                storegeeditutil("post", data.post);
+                storegeeditutil("name", data.name);
+                storegeeditutil("shopname", data.shop.shopname);
+                storegeeditutil("shoplevel", data.shop.orderpower);
+                storegeeditutil("needstorage", data.shop.needstorage);
+                storegeeditutil('appisupdate', 'false');
+                if (data.post.indexOf("3") != -1) {
+                    $(".inspection_s").removeClass("inspection_s");
+                }
+                if (isnotnull(data['57warhouse'])) {
+                    storegeeditutil("57warhouse", JSON.stringify(data['57warhouse']));
+                }
+            });
+            findshopaddress();
+        });
+
+        function findshopaddress() {
+            $.post(staticmessage.url + "shopedit/findshop",
+                    {
+                        "shopid": staticmessage.gsid
+                    }
+            , function (data) {
+                console.log(data);
+                if ((data.warehouse.warehouseadress == "未设置" || !isnotnull(data.warehouse.warehouseadress))
+                        && (data.warehouse[0].adresslatitude == 0 || data.warehouse[0].adresslongitude == 0)) {
+                    app.alert("请完善店铺信息", "shop/51shopedit.html");
+                }
+            });
+        }
+
+        document.addEventListener("deviceready", function () {
+            if (typeof (chcp) !== "undefined") {
+                checkUpdate();
+            }
+        }, false);
+    </script>
+</html>

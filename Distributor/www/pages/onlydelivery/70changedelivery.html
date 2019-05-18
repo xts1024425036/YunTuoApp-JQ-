@@ -1,0 +1,512 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>送装下单 - 云驼联盟</title>
+        <link href="../../css/common.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <link href="../../css/zeroModal.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="../../js/jquery.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../js/map.rest.js"></script>
+        <script src="../../js/zeroModal.js"></script>
+        <script src="../../js/changedelivery.js"></script>
+        <script src="../../js/mathedit.js"></script>
+        <script src="../../js/deliveryutil.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            #city_id{
+                line-height: 100%;
+            }
+            .close_select,.close_why{
+                right: 0vw;
+                width: 10vw;
+                height: 12vw;
+                line-height: 12vw;
+                position: absolute;
+            }
+            .iconfont {
+                font-size: 5vw;
+            }
+            #why_this_money_pages{
+                background-color: #fff;
+                width: 96%;
+                margin-left: 2vw;
+                display: none;
+                overflow-y: scroll;
+                height: 84%;
+                top: 11vw;
+            }
+            #why_this_money_pages p{
+                margin: 4vw;
+            }
+            .bottom_cart {
+                position: fixed;
+            }
+            body {
+                padding: 0 0 0vw 0;
+            }
+            .select{
+                border: 0px solid #aaa9a9;
+                height: 6vw;
+                line-height: 6vw;
+                background-size: 6vw;
+                margin: 2vw 0;
+                font-size:4vw;
+                width: 72vw;
+                appearance:none;
+                -moz-appearance:none;
+                -webkit-appearance:none;
+            }
+            .blueblock{
+                width:3vw;
+                height:3vw;
+                margin:2vw 0vw 2vw 0;
+                background:#345ab7;
+            }
+            .form_select:focus { 
+                outline: none !important;
+                border: 0px solid #ccc;
+            }
+            .content{
+                width: 100%;
+                position: absolute;
+                height: 90%;
+                overflow-y: scroll;
+            }
+            #upstairs_id{display: none;}
+            .address_sp{
+                line-height: 11.2vw;
+                vertical-align: top;
+                font-size: 3.5vw;
+                margin: 2vw 1vw 0 2vw;
+            }
+            #map_input_before_id .map_input{
+                text-indent: 2vw;
+                width:65vw;
+            }
+            #input_label{
+                width: 52vw;
+                display: block;
+                float: right;
+                padding:0;
+                border:none;  
+            }
+            .content .show_address{
+                background: #F0F0F0;
+                width: 101vw;
+                position: relative;
+                left: -4vw;
+                text-indent: 6vw;
+                background: #F0F0F0;
+            }
+            .icon-location{
+                font-size: 5vw;
+                float: left;
+                z-index: 99;
+                color: #000000;
+                position: relative;
+            }
+            .newbottom  .send_not_ok{
+                pointer-events: none;
+                background-color: #CCC;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="top_nav">
+            <i class="top_left back iconfont icon-back"></i>
+            <!-- <i class="top_left back iconfont icon-back"></i>-->
+            <div class="top_menu">送装单更新</div>
+            <div class="top_right"></div>
+        </div>
+        <div  id="backend" class="content" style="margin-top:14vw;line-height:10vw;">
+            <div class="innercontent">
+                <div class="blue show_address"><textarea id="customeradress_id" class="input_id need no_out_border"  autoHeight="true"  rows="1" pid="customeradress"  readonly="true" style="width:84vw;background: #F0F0F0;"></textarea></div>
+                <div>楼栋门牌：<span class="gray"> <input type="text" id="addressdetailed_id" pid="addressdetailed" class="input_id need no_out_border" style="width: 71vw;" readonly="true"></span></div>
+                <div>客户姓名：<span class="gray"><input id="customer_id" pid="customer" class="input_id need no_out_border"  type="text" style="width: 71vw;" readonly="true"></span></div>
+                <div>客户电话：<span class="gray"><input id="cusphone_id" pid="cusphone" class="input_id need no_out_border"  type="text" style="width: 71vw;" readonly="true"></span></div>
+                <div class="clear"></div>
+                <div class="left">预送日期：<span class="gray"><input type="date" id="devdate_id" pid="devdate" class="input_id need no_out_border" placeholder="请选择送货时间" style="width:44vw;height: 7vw;margin-left: 1vw;" readonly="true"></span></div>
+                <div class="clear"></div>
+                <div class="left">订单备注：</div>
+                <input type="text" id="remarks_id" pid="remarks" class="input_id no_out_border" placeholder="请填写备注" style="width:69vw;height: 7vw;margin-left: 1vw;"/>
+                <div class="clear"></div>
+            </div>
+            <div style="width:100%;height:2vw;margin-top:2vw;background:#f3f5f7;"></div>
+            <div class="innercontent" style="padding-bottom: 24vw;">
+                <div class="left"  style="font-size: 4.3vw;font-weight: bold;color: #333333">订单详情</div>
+                <div class="clear"></div>
+                <div id="address_model_1" class="address_model">
+                    <div class="left address_title" data-pid="57warhouse"> 
+                        <span class="address_sp">提货地址：</span>
+                        <span class="gray address_text"><textarea id="warhouse_select_id" class="need no_out_border address_change"  autoHeight="true" placeholder="请选择提货地址" readonly="readonly" rows="1" style="width: 62vw;"></textarea></span>
+                    </div>
+                    <table table cellpadding="0" cellspacing="0" width="100%" class="static2" style="margin-bottom:3%;" id="order_list_id"> 
+
+                    </table>
+                </div>
+                <div id="address_model_2" class="address_model" style="display: none;">
+                    <div class="left address_title" data-pid="57warhouseother"> 
+                        <span class="address_sp">带货地址：</span>
+                        <span class="gray address_text"><textarea id="warhouse_selectother_id" class="no_out_border address_change"  autoHeight="true" placeholder="请选择提货地址" readonly="readonly" rows="1" style="width: 62vw;"></textarea></span>
+                    </div>
+                    <table table cellpadding="0" cellspacing="0" width="100%" class="static2" style="margin-bottom:3%;" id="order_listother_id"> 
+
+                    </table>
+                </div>
+                <div class="clear"></div>
+                <div style="margin-top:1%;line-height:12vw;font-size:4.5vw;">
+                    <div class="left">
+                        <span class="red left" id="mmoney_old_id">¥ 0</span>
+                    </div>
+                    <div class="right">
+                        <span class="red left" id="mmoney_all_id">¥ 0</span>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="right">
+                        <span class="red left" id="mmoney_need_id">¥ 0</span>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+        <div id="add_msg"></div>
+        <div id="why_this_money_pages" style="border:1px solid #aaa9a9;border-radius:10px;margin-top:2vw;box-shadow:0 0 1vh #dedede; position: fixed;">
+
+        </div>
+        <!--底部功能-->
+        <div id="fixed_position_id_1" class="bottom_cart newbottom">
+            <div class="money_all">
+                <div class="left" > 合计 : <span id="all_number_id" ></span> 件</div>
+                <div class="reduce">
+                    <!--<span class="red" id="mmoney_need_id"> ￥ 0</span>-->
+                    <!--<span class="red" id="reduce_all_id"></span>-->
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="bottom_button send_not_ok" id="send_id">正在计算..</div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var staticmessage = {};
+        var warhousearray;
+
+        var warhouseselect = {};
+        var address = {};
+        var warehouseother = {};
+        var otherDistance = 0;
+        var havaotheraddress = false;
+
+        //记录所有费用
+        var devallfee = {"upfee": 0, "insurancefee": 0, "urgentfee": 0, "devfee": 0, "sortfee": 0, "insfee": 0, "needurgentfee": 0};
+        var sysdate = deliveryutil.getDateYYYYHHMM();
+
+        var deliveryoder = {};
+        var changeselect;
+        var searchtime;
+
+        var delproitem = new Array();
+        var delproother = new Array();
+
+        //地址是否为仓库
+        var storageis = false;
+        //直接查询配送费
+        var selectmap = true;
+
+
+        function init() {
+            message();
+            //刷新数据
+//            htmlhelp();
+//            refush();
+        }
+        function message() {
+            staticMessage(staticmessage);
+            deliveryoder = JSON.parse(storegeeditutil("changedel"));
+            $("#warhouse_select_id").val(deliveryoder.warehouseadress);
+            var change = storegeeditutil("changeselect");
+            if (isnotnull(change) && "" != change) {
+                changeselect = JSON.parse(change);
+                for (var y in changeselect) {
+                    if (y == "defaultcolor" || y == "sn" || y == "unprice"
+                            || y == "defaultcolor" || y == "number" || y == "isactive") {
+                        delete changeselect[y];
+                    }
+                }
+            } else {
+                changeselect = null;
+            }
+            setTimeout(function () {
+                beforemessae();
+            }, 1000);
+        }
+        function beforemessae() {
+            warhouseselect.warehouselatitude = deliveryoder.warehouselatitude;
+            warhouseselect.warehouselongitude = deliveryoder.warehouselongitude;
+            if ("2" == deliveryoder.warehousenumber) {
+                warehouseother.warehouselatitude = deliveryoder.otherwarehouselatitude;
+                warehouseother.warehouselongitude = deliveryoder.otherwarehouselongitude;
+                deliveryutil.findtransother(warhouseselect, warehouseother, addAllDistance);
+                havaotheraddress = true;
+            }
+        }
+        //通过type判断是读取还是记忆
+        function memoryutil(type) {
+            var remember = {};
+            if ("set" == type) {
+
+            } else if ("get" == type) {
+                for (var x in deliveryoder) {
+                    $("#" + x + "_id").val(deliveryoder[x]);
+                }
+//                $("#devdate_id").val(timeFormat(deliveryoder.devdate, "YYMMDD"));
+                if ("2" == deliveryoder.warehousenumber) {
+                    $("#warhouse_selectother_id").val(deliveryoder.otherwarehouseadress);
+                    $("#address_model_2").show();
+                    for (var x in deliveryoder.deliveryoderitems) {
+                        var item = deliveryoder.deliveryoderitems[x];
+                        if ("1" == item.warehousetype) {
+                            delproitem.push(item);
+                        } else {
+                            delproother.push(item);
+                        }
+                    }
+                    var itemhtml = htmladd("onlyorder", delproitem);
+                    changeAll("order_list_id", itemhtml);
+                    var itemhtml2 = htmladd("onlyorder", delproother);
+                    changeAll("order_listother_id", itemhtml2);
+                } else {
+                    var itemhtml = htmladd("onlyorder", deliveryoder.deliveryoderitems);
+                    changeAll("order_list_id", itemhtml);
+                }
+
+
+//                $("#input_label").html(deliveryoder.customeradress);
+                console.log(timeFormat(deliveryoder.devdate, "YYMMDD_CN"));
+                $("#devdate_id").val(timeFormat(deliveryoder.devdate, "YYMMDD"));
+                $("#all_number_id").html(deliveryoder.prodqtys);
+                setTimeout(function () {
+                    needfoundfee();
+                }, 1000);
+            }
+        }
+        //编辑所有费用
+        function editfee() {
+            //判断是否加急
+            //楼层
+            devallfee.upfee = deliveryoder.upstairsfee;
+            devallfee.insurancefee = deliveryoder.insurance;
+            var allmoney = sumallfee();
+            console.log("deliveryoder.isurgent:" + deliveryoder.isurgent);
+            if (deliveryoder.isurgent) {
+                devallfee.urgentfee = floatObj.multiply(allmoney, parseFloat(0.5))
+            }
+            $("#mmoney_all_id").html("新费用：￥" + floatObj.add(allmoney, devallfee.urgentfee));
+            $("#mmoney_old_id").html("原费用：￥" + deliveryoder.fiprice);
+            var need_money = floatObj.subtract(floatObj.add(allmoney, devallfee.urgentfee), deliveryoder.fiprice);
+            if (need_money >= 0) {
+                $("#mmoney_need_id").html("待补差价：￥" + need_money);
+            } else if (-need_money > 0.2) {
+                $("#mmoney_need_id").html("待退款：￥" + (-need_money));
+            }
+        }
+        //计算总价(不算加急的配送价)
+        function sumallfee() {
+            var sum1 = floatObj.add(devallfee.insurancefee, devallfee.sortfee);
+            var item2 = floatObj.add(devallfee.devfee, devallfee.insfee);
+            return floatObj.add(sum1, item2);
+        }
+        //>>>最终添加:发送代码end-3
+        function sendmain() {
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: staticmessage.url + "onlydelivery/changeorder?creator=" + staticmessage.userid,
+                contentType: "application/json",
+                data: JSON.stringify(deliveryoder),
+                success: function (data) {
+                    loading_close();
+                    if (data.status || 5 != data.result) {
+                        cookiemain(undefined, undefined);
+                        var number = storegeeditutil("procount", data.returnid.length);
+                        storegeeditutil("procount", number--);
+                        app.alert("订单修改成功" + data.message);
+                        loading_close();
+                        window.location.href = "../delivery/07delivery_order_pay.html";
+                    } else {
+                        loading_close();
+                        $("#send_id").attr("disabled", "false");
+                        app.alert(data.message);
+                    }
+                    console.log(data);
+                }
+            });
+        }
+        //>>>最终添加:提交表单end-2
+        function send() {
+            var selectmy = $("#warhouse_select_id").val();
+            var a = validate();
+            var customerphone = $("#cusphone_id").val();
+            var res = /^0\d{3,4}-?\d{7,8}$/;
+            if (customerphone.length != 11 && !res.test(customerphone)) {
+                app.alert("联系电话格式不对，请核对");
+                $("#cusphone_id").focus();
+                return;
+            }
+            if (a != "true") {
+                alert(a);
+                return;
+            } else if ("null" == selectmy || "0" == selectmy) {
+                alert("请选择取货仓库");
+                return;
+            }
+//            var devdatestamp = $("#devdate_id").val();
+//            var val = Date.parse(devdatestamp);
+//            var editDate = new Date(val);
+//            if (parseInt(month) - 1 > editDate.getMonth() && editDate.getDate() - day < 0) {
+//                app.alert("时间设置错误,请检查");
+//                return;
+//            }
+            for (var i = 0, length = $(".input_id").length; i < length; i++) {
+                console.log($(".input_id").eq(i).val());
+                var a = $(".input_id").eq(i).attr("pid");
+                var val = $(".input_id").eq(i).val();
+                console.log(a + "___" + val);
+                deliveryoder[a] = val;
+            }
+            //获得省市区
+            my_map.pointToAddress(new BMap.Point(deliveryoder.adresslongitude, deliveryoder.adresslatitude), function (rs) {
+                console.log(rs);
+                var item = rs.addressComponents;
+                deliveryoder.district = item.district;
+            });
+            deliveryoder.upstairsSelect = 0;
+            loading_param = zeroModal.loading(2);
+            $("#send_id").attr("disabled", "true").css("pointer-events", "none").css("background", "#666");
+            setTimeout(function () {
+                sendmain();
+            }, 1000);
+            setTimeout(function () {
+                loading_close();
+            }, 9000);
+        }
+        function addAllDistance(distanceitem) {
+            otherDistance = distanceitem;
+        }
+        //查询总价格
+        function needfoundfee() {
+            address.adresslatitude = deliveryoder.adresslatitude;
+            address.adresslongitude = deliveryoder.adresslongitude;
+            address.city = deliveryoder.city;
+            address.provinces = deliveryoder.provinces;
+            if (isnotnull(warhouseselect) && isnotnull(address)
+                    && Object.keys(warhouseselect).length > 0 && Object.keys(address).length > 0) {
+                setTimeout(function () {
+                    if (havaotheraddress && deliveryoder.warehouseid != deliveryoder.otherwarehouseid && 0 == otherDistance) {
+                        needfoundfee();
+                    } else {
+                        deliveryutil.findtrans(address, warhouseselect, findtransfee);
+                    }
+                }, 1000);
+            }
+        }
+        function findtransfee(distanceitem) {
+            deliveryoder.distance = (isNaN(distanceitem) || 0 == distanceitem ? 1 : distanceitem) + otherDistance;
+            $.post(staticmessage.url + "onlydelivery/distanceone",
+                    {
+                        "delorder": JSON.stringify(deliveryoder)
+                    }
+            , function (data) {
+                console.log(data);
+                devallfee.devfee = data.transfee;
+                devallfee.sortfee = data.sortfee;
+                devallfee.insfee = data.installfee;
+                editfee();
+                $("#send_id").removeClass("send_not_ok").html("更新订单");
+            });
+        }
+        function act() {
+            salecontroller();
+            //动态激活
+            $(window).on("resize", function () {
+                var docheight = window.innerHeight;
+                var bottomx = document.getElementById('fixed_position_id_1');
+                if (isnotnull(bottomx) && selectmap) {
+                    if (docheight < windheight) {
+                        bottomx.style.position = 'static';
+                        bottomx.style.display = 'none';
+                    } else {
+                        bottomx.style.position = 'fixed';
+                        bottomx.style.display = 'block';
+                    }
+                }
+            });
+            $('.back').on('click', function () {
+                window.location.href = "../sale/75editorderlist.html";
+            });
+            //楼层
+            $("#upstairs_id").on('change', function (event) {
+                editfee();
+            });
+            //>>>最终添加:监听事件 end-1
+            $('#send_id').on('click', function (event) {
+                $(this).attr("disabled", "true");
+                send();
+            });
+            $(document).on('click', ".close_select", function (event) {
+                $("#address_select_id").hide();
+            });
+            $("#why_this_money").on('click', function (event) {
+                $("#why_this_money_pages").show();
+            });
+            $(".close_why").on('click', function (event) {
+                $("#why_this_money_pages").hide();
+            });
+            $("#devdate_id").on("change", function () {
+                var devdatestamp = $("#devdate_id").val();
+                if (devdatestamp >= sysdate) {
+                    if (devdatestamp == sysdate) {
+//                        $("#isurgent_id").prop("checked", "checked");
+                        if ($("#isurgent_id").attr("tid") == "false") {
+//                            app.alert("24小时内送达需选择加急,已为您自动勾选");
+//                            $("#isurgent_id").trigger("click");
+                        }
+
+                    } else {
+
+                    }
+                } else {
+                    $("#devdate_id").val("");
+                    app.alert("日期错误,请重新选择");
+                }
+            });
+        }
+        $(function () {
+            FastClick.attach(document.body);
+
+            //初始化整个页面
+            init();
+            //动态加载
+            act();
+            //加载
+            setTimeout(function () {
+                memoryutil("get");
+            }, 500 * 1)
+            //            pushHistory();
+        });
+    </script>
+</html>
+<script type="text/javascript">
+    addLoadEvent(function () {
+        my_map.init("map_container");
+    });
+</script>

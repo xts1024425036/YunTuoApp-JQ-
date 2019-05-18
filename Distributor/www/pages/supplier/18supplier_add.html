@@ -1,0 +1,321 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>供应商</title>
+        <link href="../../css/style.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../js/map.rest.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/inventory.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            .form_item_text {
+                width: 94%;
+            }
+            .form_item li{margin-left: 4vw;}
+            .form_item_twice.notitle.data_title_class li{
+                margin-left: 4vw;
+            }
+            .frame_sale_order {
+                margin-top: 15vw;
+            }
+            .form_item_twice.notitle.data_time_class {
+                width: 82%;
+            }
+            #map_input_id{height: 7vw;border:0.3vw;}
+            #closehere{line-height: 7vw;}
+            .item_address_c{width: 100%;color:#cccccc;}
+            #closehere {font-size: 3.5vw}
+            .select_item{font-size: 3.5vw;}
+            .form_item .form_item_title{
+                width: 20%;
+            }
+            .frame_sale_order .form_item {
+                padding: 0.2vw;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="main_top">
+            <ul class="main_top_left">
+                <a class="main_top_back" href="17supplier.html"></a>
+                <!--                <script type="text/javascript">
+                                    page3();
+                                </script>
+                -->
+            </ul>
+            <ul class="main_top_title">
+                <li>供应商</li>
+            </ul>
+        </div>
+
+        <div class="frame_sale_order">
+            <!--输入客户信息-->
+            <div class="form_item">
+                <div class="form_item_title">供应商</div>
+                <div class="form_item_input">
+                    <input id="supname_id" pid="supname" type="text" class="input_id need no_out_border" maxlength="18" placeholder="请填写供应商">
+                    <div class="form_item_input_right"><i class="iconfont icon-right"></i></div>
+                </div>
+            </div>
+            <div class="clear"></div>
+            <div class="form_item">
+                <div class="form_item_title">联系人</div>
+                <div class="form_item_input">
+                    <input id="linkman_id"  pid="linkman" class="input_id need no_out_border" type="text" maxlength="10" placeholder="请填写联系人名称">
+                    <div class="form_item_input_right"><i class="iconfont icon-right"></i></div>
+                </div>
+            </div>
+            <div class="clear"></div>
+            <div class="form_item">
+                <div class="form_item_title">电 话</div>
+                <div class="form_item_input">
+                    <input id="mobile_id" pid="mobile" class="input_id need no_out_border" type="tel" maxlength="11" placeholder="请填写联系人电话">
+                    <div class="form_item_input_right"><i class="iconfont icon-right"></i></div>
+                </div>
+            </div>
+            <div class="clear"></div>
+            <div class="form_item">
+                <div class="form_item_title">地 址</div>
+                <div class="form_item_input">
+                    <input id="address_id" class="input_id need no_out_border" pid="address" type="text" placeholder="请填写供应商地址" readonly="true" >
+                    <div class="form_item_input_right" id="_get_location"><i class="iconfont icon-dizhi1"></i></div>
+                </div>
+            </div>
+            <div class="clear"></div>
+            <div class="form_item">
+                <div class="form_item_title">楼栋门牌</div>
+                <div class="form_item_input">
+                    <input id="addressdetailed_id" class="input_id need no_out_border" maxlength="25" pid="addressdetailed" type="text" placeholder="请填写供应商详细地址">
+                    <div class="form_item_input_right"><i class="iconfont icon-right"></i></div>
+                </div>
+            </div>
+            <div class="clear"></div>
+            <div class="form_item">
+                <div class="form_item_title">备注</div>
+                <div class="form_item_input">
+                    <input id="remarks_id" class="input_id no_out_border" pid="remarks" type="text" maxlength="25" placeholder="请填写备注">
+                    <div class="form_item_input_right"><i class="iconfont icon-right"></i></div>
+                </div>
+            </div>
+        </div>
+        <div id="add_msg"></div>
+        <div id="popup">
+            <div style="margin-bottom:2vw;">
+                <div class="select2_map select_from_c">
+                    <input id="privince_id"  type="text" class="no_out_border " placeholder="省份" value="湖北省">
+                    <div style="float:left;margin:2vw 2vw;width:1px;height:4vw;background:#DEDEDE;">&nbsp;</div>
+                    <input id="city_id"  type="text" class="no_out_border " placeholder="城市" value="武汉市" style="width: 15vw;">
+                </div>
+                <div style="float:left;margin:2vw 2vw;width:1px;height:4vw;background:#DEDEDE;">&nbsp;</div>
+                <div id="closehere"  class="right gray" style="color:#535050">取消</div>
+                <div class="input gray" style="width:44vw;padding:0;border:none;"><input id="map_input_id"  type="text" class="no_out_border " placeholder="请输入小区名搜索"></div>
+                <div class="clear"></div>
+            </div>
+            <div id="address_select_id" class="popupcontainer address_select_item">
+
+            </div>
+        </div>
+        <!--底部功能-->
+        <div class="frame_bottom_cart">
+            <a href="javascript:void(0);" id="send_id" class="bottom_button_max">保存</a>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var staticmessage = {};         //用户gsid，groupid，distributid
+        var supplierpage = {};
+        var type = "add";
+        var searchtime;
+        var address = {};
+        $(function () {
+            FastClick.attach(document.body);
+            function init() {
+                staticMessage(staticmessage);
+                //加载资源
+                message();
+            }
+            //生成建筑物列表
+            function changeMapSelect(result) {
+                $("#address_select_id").html("");
+                console.log(result);
+                address.provinces = result.province;
+                address.city = result.city;
+                var s = [];
+                for (var i = 0; i < result.getCurrentNumPois(); i++) {
+                    s.push(result.getPoi(i));
+                }
+                var itemhtml = htmladd("mapselect", s);
+                changeAll("address_select_id", itemhtml);
+            }
+            function act() {
+//                $('.nav-toggle').click(function () {
+//                    var a = $(".nav").css("display");
+//                    $(".nav").css("display") == "none" ? $(".nav").css("display", "block") : $(".nav").css("display", "none");
+//                    $('body').toggleClass('nav-open');
+//                });
+                $("#sale_delete_id").on("click", function () {
+                });
+                //打开地图
+                $('#address_id').click(function () {
+                    $('#_get_location').trigger("click");
+                });
+                //打开地图
+                $('#_get_location').click(function () {
+                    document.getElementById('popup').style.display = "block";
+                    $("#backend,.bottom_cart").css("position", "fixed");
+                    document.getElementById('closehere').style.display = "block";
+                    $("#map_input_id").focus();
+                    $("#fixed_position_id").css("display", "none");
+                });
+                $('#closehere').click(function () {
+                    document.getElementById('popup').style.display = "none";
+                    $(".bottom_cart").css("position", "fixed");
+                    $("#backend").css("position", "static");
+                    document.getElementById('closehere').style.display = "none";
+                    $("#fixed_position_id").css("display", "block");
+                });
+
+                //弹出地图选择框
+                $('#map_input_id').on('input', function () {
+                    $(".address_select_item").css("display", "block");
+                    if (!isnotnull($("#city_id").val()) || !isnotnull($("#privince_id").val())) {
+                        refushmessage("请填写省份和城市");
+                        return;
+                    }
+                    clearTimeout(searchtime);
+                    searchtime = setTimeout(function () {
+                        var city = $("#city_id").val();
+                        if (city == "" || !isnotnull(city)) {
+                            refushmessage("城市为空,请在地址旁选择城市");
+                            return;
+                        }
+                        if ($("#map_input_id").val().length >= 2) {
+                            my_map.searchOther(city, $("#map_input_id").val(), changeMapSelect);
+                        }
+                    }, 1000 * 1);
+
+                });
+                $(".form_item_input_right").on("click", function () {
+                    $(this).siblings("input").focus();
+                });
+                $("#send_id").on("click", function () {
+                    var customerphone = $("#mobile_id").val();
+                    var res = /^0\d{3,4}-?\d{7,8}$/;
+                    if (customerphone.length != 11 && !res.test(customerphone)) {
+                        app.alert("联系电话格式不对，请核对");
+                        $("#mobile_id").focus();
+                        return;
+                    }
+                    var a = validate();
+                    if (a == "true") {
+                        send();
+                    } else {
+                        alert(a);
+                    }
+                });
+                //baidu map
+                $("#address_select_id").on("click", ".select_item", function (e) {
+                    var point = {};
+                    point.lat = $(this).attr("lat");
+                    point.lng = $(this).attr("lng");
+                    address.address = $(this).attr("pad");
+                    address.city = address.city = $("#city_id").val();
+                    address.adresslongitude = point.lng;
+                    address.adresslatitude = point.lat;
+                    $("#address_id").val($(this).attr("pad"));
+                    $("#input_label").html($("#map_input_id").val());
+                    $('#closehere').trigger("click");
+                });
+
+            }
+            //加载信息
+            function message() {
+                //提取cookie
+
+                var supid = GetQueryString("supplier");
+                if (supid != "" && typeof (supid) != "undefined" && supid != "undefined" && supid != null) {
+                    serviceMessage(supid);
+                    type = "edit";
+                }
+            }
+            //服务端请求信息
+            function serviceMessage(supid) {
+                $.post(staticmessage.url + "consupplier/findone", {
+                    "supid": supid
+                }
+                , function (data) {
+                    console.log(data);
+                    for (var x in data.consupplier) {
+                        supplierpage = data.consupplier;
+                        console.log("keyname:" + x + "\tvale:" + data.consupplier[x]);
+                        var id = x + "_id";
+                        if ($('#' + id).length) {
+                            console.log("keyhave++++" + x + "\tvale:" + data.consupplier[x]);
+                            $('#' + id).val(data.consupplier[x]);
+                        }
+                    }
+                    address.adresslongitude = data.consupplier.adresslongitude;
+                    address.adresslatitude = data.consupplier.adresslatitude;
+
+                });
+            }
+            function send() {
+                var consupplier = {};
+                for (var i = 0, length = $(".input_id").length; i < length; i++) {
+                    console.log($(".input_id").eq(i).val());
+                    var a = $(".input_id").eq(i).attr("pid");
+                    var val = $(".input_id").eq(i).val();
+                    console.log(a + "-----" + val);
+                    consupplier[a] = val;
+                }
+                consupplier.groupid = staticmessage.groupid;
+                if (type == "edit") {
+                    var array = ["adresslongitude", "adresslatitude", "supid"];
+                    copyob(supplierpage, consupplier, array);
+                }
+                consupplier.adresslongitude = address.adresslongitude;
+                consupplier.adresslatitude = address.adresslatitude;
+                console.log(consupplier);
+                $("#send_id").attr("disabled", "true").css("pointer-events", "none");
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: staticmessage.url + "consupplier/addone" + "/" + type,
+                    contentType: "application/json",
+                    data: JSON.stringify(consupplier),
+                    success: function (data) {
+                        console.log(data);
+                        if (isnotnull(data.status) && data.status && type == "add") {
+                            app.alert("添加成功", "17supplier.html");
+                        } else if (isnotnull(data.status) && data.status && type == "edit") {
+                            app.alert("修改成功", "17supplier.html");
+                        } else {
+                            app.alert(data.message);
+                            $("#send_id").attr("disabled", "false").css("pointer-events", "auto");
+                        }
+                    }
+                });
+            }
+
+            //初始化整个页面
+            init();
+            //动态加载
+            act();
+        });
+    </script>
+</html>
+<script type="text/javascript">
+    addLoadEvent(function () {
+        my_map.init("map_container");
+    });
+</script>

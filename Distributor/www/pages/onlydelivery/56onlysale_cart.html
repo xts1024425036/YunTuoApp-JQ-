@@ -1,0 +1,814 @@
+<!doctype html>
+<html>
+    <head>
+        <title>购物车 - 云驼联盟</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <link href="../../css/newcommon.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../js/salemain.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            .sale_cart_input{
+                border-width: 0px;
+                color: #ff3333;
+                width: 18vw;
+                font-weight: 600;
+                font-size: 4vw;
+            }
+            body {
+                padding: 0 0 0vw 0;
+            }
+            html{
+                font-size: 50px;
+            }
+            .right {float: right;width: 41vw;}
+            .right_1 img{width: 6vw;}
+            .right_1 div{width: 24px;font-size: .24rem;}
+            .right_1{
+                float: right;
+                width: 30%;
+                height: auto;
+                line-height: 21px;
+                margin-top: .24rem;
+                text-align: right;
+            }
+            .right_1 > * {
+                text-align: center;
+            }
+            .left_cart_class {
+                width: 68%;
+                display: inline-block;
+                font-size: 0.24rem;
+                line-height: 5vw;
+                color: #666;
+            }
+
+            #sale_cart_id{
+                position: absolute;
+                overflow-y: scroll;
+                height: 28rem;
+            }
+            .cart_top_class{
+                height: 13%;
+                position: fixed;
+                bottom: 0vw;
+                width: 100%;
+                background: #FFF;
+                z-index: 150;
+                height: 87%;
+                overflow-y: scroll;
+                border-bottom: solid #ccc 1px;
+            }
+            .cart_top_class .select_type{
+                display: inline-block;
+                width: 30%;
+                text-align: center;
+                height: 6vw;
+                font-size: 4.5vw;
+                line-height: 6vw;
+                margin-top: 2vw;
+            } 
+            .bottom_cart .cart .count {
+                line-height: 8vw;
+                height: 8vw;
+                width: 8vw;
+                font-size: 6vw;
+                top: 4vw;
+                left: 0;
+            }
+            .bottom_cart .cart {
+                width: 29vw;
+            }
+            .pop_remind{
+                margin-left: 8vw;
+                margin-top: 2vw;
+                color: #730505;
+            }
+            .typeshowone{
+                width: 89%;
+            }
+            .list_item_detail .seng_all_c{
+                width: 35vw;
+                text-align: right;
+                color: #3952b1;
+                display: inline-block;
+                right: 15px;
+                position: absolute;
+                font-size: .24rem;
+            }
+            .seng_all_c .iconfont{
+                float: right;
+                font-size: inherit;
+                color: #3952b1;
+                margin-left: 1vw;
+            }
+            .type_why{
+                margin: 2vw;
+                left:0vw;
+                position: absolute;
+            }
+            .type_why .iconfont{
+                font-size: 7vw;
+                margin: 0.5vw;
+
+                left: 1vw;
+            }
+            #why_type_is{
+                background-color: #fff;
+                width: 96%;
+                margin-left: 2vw;
+                display: none;
+                overflow-y: scroll;
+                height: 62%;
+                z-index: 999;
+                top: 12vw;
+            }
+            .why_type_is_close{
+                margin: 2vw;
+                right: 0vw;
+                position: absolute;
+            }
+            #why_type_is .icon-round_close_light{
+                color: #ff3333;
+                font-size: 7vw;
+            }
+            .bottom_cart {
+                bottom: 1rem;
+                position: fixed;
+                height: 20vw;
+                width: 100%;
+                line-height: 8vw;
+                border-top: none;
+                background: #fff;
+            }
+            .section_text {
+                left: 13vw;
+            }
+            .bottom_cart .message{
+                background: #ffdfdf;
+                text-align: center;
+                color: #3e0e0e;
+                font-size: 0.24rem;
+            }
+            .bottom_cart .bottom_button {
+                background: #5478c4;
+                color: #fdfeff;
+                width: 28%;
+                right: 1vw;
+                position: absolute;
+                font-size: 4.2vw;
+                text-align: center;
+                height: 8.3vw;
+                line-height: 8.5vw;
+                margin-top: 2.5vw;
+                text-indent: 1vw;
+                border-radius: 5vw;
+                font-weight: 500;
+                margin-right: 2vw;
+                letter-spacing: 4px;
+                font-family: PingFang-SC-Medium;
+            }
+            .bottom_button_left{
+                display: block;
+                float: left;
+                font-size: 0.28rem;
+                line-height: 13vw;
+                margin-left: 6vw;
+            }
+            #count_id{
+                color: #ff3333;
+                font-size: 5vw;
+            }
+            #sale_cart_id.no_sale_incart:before{
+                content: "";
+                background: url(../../images/no_one.png) no-repeat;
+                position: absolute;
+                top: 20vw;
+                background-size: 41vw;
+                right: 14vw;
+                width: 50vw;
+                height: 52vw;
+            }
+            .no_sale_incart:after{
+                content: "购物车空啦,快去添加货品吧";
+                position: absolute;
+                top: 65vw;
+                right: 1vw;
+                width: 73vw;
+                font-size: 4vw;
+                height: 35vw;
+            }
+            .bottom_nav .item {
+                color: #999999;
+            }
+            .list_item_detail{
+                width: 100%;
+                padding: 0.1rem 15px;
+                position: relative;
+            }
+            .list_item_detail .left{
+                font-weight: bold;
+            }
+            .list_item_detail .left span,.list_item_detail .left > div{
+                font-weight: normal;
+            }
+            .list_item_detail .left span{
+                width: 17%;
+                font-size: 0.24rem;
+                color: #333333;
+            }
+            .content {
+                width: 94%;
+                border-radius:0.16rem;
+                margin-left: 3vw;
+                margin-top: 3vw;
+                letter-spacing: 0.02rem;
+            }
+            .refushcontent{
+                height: 11rem;
+                overflow-y: scroll;
+            }
+            .detail_cart{
+                background: #F0F0F0;
+                color: #999999;
+                display: inline-block;
+                width: 24px;
+                height: 24px;
+                border: 1px solid rgba(240,240,240,1);
+
+            }
+            .detail_number_delete {
+                border-radius: 4px 0 0 4px;
+            }
+            .detail_number_add {
+                border-radius: 0 4px 4px 0;
+            }
+            .detail_number {
+                display: inline-block;
+            }
+            .close_select, .close_why span {
+                font-size: 0.38rem;
+            }
+            .select_popup_c {
+                left: -300vw;
+                position: fixed;
+                display: block;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.6);
+                z-index: 100;
+            }
+            .add_pro_bt_first {
+                width: 36vw;
+                top: 75%;
+                position: relative;
+                margin-left: 32vw;
+                padding: 1vw 4vw;
+                background: #5478c4;
+                color: #fdfeff;
+                font-size: 4.2vw;
+                height: 8.3vw;
+                line-height: 7vw;
+                margin-top: 2.5vw;
+                text-indent: 1vw;
+                z-index: 99;
+                border-radius: 5vw;
+                font-weight: 500;
+                letter-spacing: 4px;
+                font-family: PingFang-SC-Medium;
+            }
+
+            body{background: #fff;}
+            a{color: inherit;}
+            .body-bg{
+                background: #000;
+
+                height: 100%;
+                width: 100%;
+
+            }
+
+            .supernatant{
+                position: absolute;
+                bottom: 1rem;
+                width: 100%;
+                background: #f0f0f0;
+                opacity: 1;
+            }
+            .supernatant .title{
+                font-size: .36rem;
+                color:#333;
+                font-weight: 500;
+                line-height: 3em;
+                letter-spacing: .2em;
+            }
+            .supernatant-select{
+                margin: .1rem 0;
+                width: 100%;
+                padding: 0 .3rem;
+
+            }
+            .menu{
+                width: 48%;
+                background: #fff;
+                margin-bottom: .3rem;
+                line-height: 2em;
+                padding: .5em 0;
+                position: relative;
+            }
+            .supernatant-select .menu:nth-child(odd){
+                margin-right: 4%;
+            }
+            .menu-top{
+                font-size: .28rem;
+                color: #333;
+                font-weight: bold;
+                letter-spacing: .2em;
+            }
+            .explain{
+                font-size: .24rem;
+                color: #666;
+                white-space: nowrap;
+            }
+            .ok{
+                position: absolute;
+                right: 0.4em;
+                top: -.6em;
+                display:none;
+            }
+            .icon-wancheng{
+                font-size: .5rem;
+                color: #5478C4;
+            }
+
+            .supernatant-select .select div{
+                color:#5478C4;
+            }
+
+            .supernatant-select .select .ok{
+                display: block;
+            }
+            .remark_class_{
+                display: none;
+            }
+
+
+            /*自定义confirm*/
+            .my-confirm{
+                position: fixed;
+                top:0;
+                left: 0;
+                width:100%;
+                height:100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 200;
+                align-items: center;
+                display: none;
+            }
+            .my-confirm.on{
+                display: -webkit-flex;
+                display: flex;
+            }
+            .my-confirm .cfm-body{
+                width:72%;
+                background: #fff;
+                margin: auto auto 38vw auto;
+                border-radius: .16rem;
+                text-align: center;
+                padding: 0 .32rem;
+            }
+            .my-confirm .cfm-body .title{
+                font-size: .32rem;
+                padding: .48rem 0;
+                letter-spacing: .3em;
+                font-weight: bold;
+            }
+            .my-confirm .cfm-body .title i{
+                color: #EE1F1F;
+                margin-right: .3em;
+                font-size: inherit;
+                font-weight: normal;
+            }
+            .my-confirm .cfm-body .desc{
+                text-align: left;
+                line-height: .36rem;
+                font-size: .24rem;
+                color: #333;
+            }
+            .my-confirm .cfm-body .btns{
+                padding: .48rem 0;
+                display: -webkit-flex;
+                display: flex;
+            }
+            .my-confirm .cfm-body .btns>div{
+                font-size: .28rem;
+                display: inline-block;
+                border: 1px solid #5478C4;
+                color: #5478C4;
+                line-height: .72rem;
+                border-radius: .36rem;
+                flex:1;
+                letter-spacing: .3em;
+                text-indent: .3em;
+            }
+            .my-confirm .cfm-body .btns>div.b-ok{
+                color: #fff;
+                background: #5478C4;
+                margin-left: 1em;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="top_nav">
+            <div class="top_menu">购物车</div>
+            <div id="delete_all" class="top_right">清空</div>
+        </div>
+        <div class="refushcontent">
+            <div id="sale_cart_id" class="bottom_cart_list sale_cart_main" style="width:100%;height: 87%;background:#f3f5f7;margin-top:12vw;padding-bottom: 22vw;" >
+            </div>
+        </div>
+        <div class="select_popup_c select_body" data-pid="" style="top: 0px;">
+            <div class="close"></div>
+            <div class="supernatant txtc select_cate_c">
+                <div class="title">请选择类型</div>
+                <div id="services_type_id" class="supernatant-select flex wrap">
+                    <div class="menu select" data-pid="0A" data-tid="level_C" data-mid="去结算前请仔细逐个检查送装类型">
+                        <div class="menu-top">送装</div>
+                        <div class="explain">含配送、拆包、安装</div>
+                        <div class="ok"><i class="iconfont icon-wancheng"></i></div>
+                    </div>
+                    <div class="menu" data-pid="1"  data-tid="level_B" data-mid="含打包服务，商家需提供打包材料">
+                        <div class="menu-top">下样+送装</div>
+                        <div class="explain">商家提供打包材料</div>
+                        <div class="ok"><i class="iconfont icon-wancheng"></i></div>
+                    </div>
+                    <div class="menu" data-pid="0B" data-tid="level_B" data-mid="包括送货、上样安装服务">
+                        <div class="menu-top">送货+上样</div>
+                        <div class="explain">从仓库提货到门店上样</div>
+                        <div class="ok"><i class="iconfont icon-wancheng"></i></div>
+                    </div>
+                    <div class="menu"  data-pid="4" data-tid="level_C" data-mid="含打包服务，商家需提供打包材料;不包括安装、理货服务">
+                        <div class="menu-top">下样+返仓</div>
+                        <div class="explain">商家提供打包材料</div>
+                        <div class="ok"><i class="iconfont icon-wancheng"></i></div>
+                    </div>
+                    <div class="menu" data-pid="2" data-tid="level_B" data-mid="不包括拆包、打包、安装等服务">
+                        <div class="menu-top">只送货</div>
+                        <div class="explain">不含拆包、打包、安装</div>
+                        <div class="ok"><i class="iconfont icon-wancheng"></i></div>
+                    </div>
+                    <div class="menu"  data-pid="3A" data-tid="level_B" data-mid="不包括送货、打包等服务">
+                        <div class="menu-top" >只安装</div>
+                        <div class="explain">不含送货、打包</div>
+                        <div class="ok"><i class="iconfont icon-wancheng"></i></div>
+                    </div>
+                    <div class="menu"  data-pid="3B" data-tid="level_B"  data-mid="不包括送货、打包等服务">
+                        <div class="menu-top">只上样</div>
+                        <div class="explain">不送货，只安装</div>
+                        <div class="ok"><i class="iconfont icon-wancheng"></i></div>
+                    </div>
+                    <div class="menu"  data-pid="3C" data-tid="level_B"  data-mid="含打包服务，商家需提供打包材料，不提供送货等其他服务">
+                        <div class="menu-top">只下样</div>
+                        <div class="explain">商家提供打包材料</div>
+                        <div class="ok"><i class="iconfont icon-wancheng"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="why_type_is" style="border:1px solid #aaa9a9;border-radius:10px;margin-top:2vw;box-shadow:0 0 1vh #dedede; position: fixed;">
+            <div class="red why_type_is_close"><i class="iconfont icon-round_close_light"></i></div>
+            <p style="margin-top: 10vw;font-size: 6vw;text-align: center;">订单类型特别提醒</p>
+            <p style="margin-top: 2vw;">1、只安装/只上样/只下样仅提供安装服务 </p>
+            <p>2、只送货提供标准送货服务。 </p>
+        </div>
+        <div id="add_msg"></div>
+        <div id="fixed_position_id" class="bottom_cart frame_bottom_cart">
+            <div id="select_message" class="message">去结算前请仔细逐个检查送装类型</div>
+            <div class="bottom_button_left">合计 : <span id="count_id"></span>  件货品</div>
+            <div class="bottom_button" id="next_id">去结算</div>
+            <div class="clear"></div>
+        </div>
+        <div id="menu_buttom_id"></div>
+        <div id="my-confirm" class="my-confirm">
+            <div class="cfm-body">
+                <p class="title"><i class="iconfont icon-tixing"></i><span>确认</span></p>
+                <div class="desc">
+                </div>
+                <div class="btns">
+                    <div class="b-cancel">取消</div>
+                    <div class="b-ok">确定</div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            table.htmlTabel("two");
+        </script>
+        <script type="text/javascript">
+            "use strict";
+            //点击货品小类显示所有货品
+            var staticmessage = {};         //用户gsid，groupid，distributi等
+            var saleall = new Array();
+            var oktype = true;
+            var delitemtypes = {};
+            var needremember = false;
+            var islevel = "level_" + storegeeditutil("shoplevel");
+            var typedesc = {'0A': "送装", '0B': "送货+上样", '1': "下样+送装", '2': "只送货", '3A': "只安装", '3B': "只上样,不送货", '3C': "只下样", '4': "下样+返仓"};
+            //初始化整个页面
+            function init() {
+                //加载资源
+                message();
+                $(".cart_count_class div").addClass("icon-gouwufill").removeClass("icon-gouwu");
+                pageutil.refushheightcontent();
+                refush();
+                //动态加载
+                addAct();
+            }
+            //加载信息
+            function message() {
+                //提取cookie
+                staticMessage(staticmessage);
+                $(".cart_class div").addClass("icon-gouwufill").removeClass("icon-gouwu");
+                var salecache = storegeeditutil("saleall");
+                console.log("cache=" + salecache);
+                if (isnotnull(salecache) && salecache.length > 10) {
+                    saleall = JSON.parse(salecache);
+                    htmlhelp();
+                } else {
+                    $("#sale_cart_id").addClass("no_sale_incart");
+                    $("#sale_cart_id").append("<div class='add_pro_bt_first add_pro_bt_a'>+添加货品</div>");
+                }
+            }
+            //生成页面
+            function htmlhelp() {
+                //刷新货品列表
+                htmlhelpmain("cart_del", saleall);
+                delitemtypes = isnotnull(storegeeditutil("deldelitemtypes")) ? JSON.parse(storegeeditutil("deldelitemtypes")) : new Object();
+                for (var x in delitemtypes) {
+                    $(".list_item[pcode='" + x + "']").find(".send_type_c").attr("data-pid", delitemtypes[x]).html(typedesc[delitemtypes[x]]);
+                }
+            }
+            //修改后刷新数量
+            function refush() {
+                cookiemain(saleall);
+                storegeeditutil("salecount", saleall.length);
+                refushpage();
+                refushdetail(saleall);
+            }
+            //点击跳转设置类型
+            function editDelType() {
+                oktype = true;
+                var tid = "0";
+                var havec = false;
+                var havem = 0;
+                var number = 0;
+                delitemtypes = {};
+                $(".send_type_c").each(function () {
+                    tid = $(this).attr("data-pid").substr(0, 1);
+                    var code = $(this).closest(".list_item").attr("pcode");
+                    delitemtypes[code] = $(this).attr("data-pid");
+                    var x = listone(code, saleall);
+                    if ("1" == tid || "2" == tid) {
+                        if (x != 999 && "1" == tid) {
+                            havec = true;
+                            number++;
+                            saleall[x].isdismantling = true;
+                            saleall[x].isnoinstall = false;
+                        } else if (x != 999 && "2" == tid) {
+                            havem++;
+                            saleall[x].isnoinstall = true;
+                            saleall[x].isdismantling = false;
+                        }
+                    } else if ("3" == tid || "4" == tid) {
+                        saleall[x].isnoinstall = false;
+                        saleall[x].isdismantling = false;
+                        $(".send_type_c").each(function () {
+                            var typeok = $(this).attr("data-pid").substr(0, 1) == tid;
+                            if (!typeok) {
+                                oktype = false;
+                                return;
+                            }
+                        });
+                    } else {
+                        saleall[x].isnoinstall = false;
+                        saleall[x].isdismantling = false;
+                    }
+                });
+                if ("4" == tid || number == saleall.length) {
+                    storegeeditutil("shopstorage", true);
+                } else {
+                    storegeeditutil("shopstorage", false);
+                }
+                if (havec) {
+                    tid = "1";
+                } else if (havem > 0 && havem == saleall.length) {
+                    tid = "2";
+                } else if (havem > 0 && havem != saleall.length) {
+                    tid = "0";
+                }
+                storegeeditutil("deldelitemtypes", JSON.stringify(delitemtypes));
+                storegeeditutil("deltype", tid);
+                //刷新缓存
+            }
+            //选择框回调函数
+            function confirmOk(param1, param2) {
+
+            }
+            //删除货品
+            function deleteall(prodcode) {
+                var x = listone(prodcode, saleall);
+                saleall.splice(x, 1);
+                refush();
+            }
+            //添加货品
+            function addone(element, prodcode) {
+                $(".list_item").find("input").blur();
+                var x = listone(prodcode, saleall);
+                if (x != 999) {
+                    (saleall[x].number)++;
+                }
+                refush();
+            }
+            //减少货品 
+            function deleteone(prodcode) {
+                $(".list_item").find("input").blur();
+                var x = listone(prodcode, saleall);
+                if (x != 999) {
+                    if ((saleall[x].number) == 1) {
+                        $(".list_item[pcode='" + saleall[x].prodcodes + "']").remove();
+                        saleall.splice(x, 1);
+                    } else {
+                        (saleall[x].number)--;
+                    }
+                }
+                refush();
+            }
+            function remindtoArray() {
+                delitemtypes = {};
+                $(".list_item").each(function () {
+                    delitemtypes[$(this).attr("pcode")] = $(this).find(".send_type_c").attr("data-pid");
+                });
+                storegeeditutil("deldelitemtypes", JSON.stringify(delitemtypes));
+            }
+            function remindmessage(type, selectitem) {
+                var select = $(selectitem);
+                var tid = select.attr("data-pid");
+                select.siblings(".menu").removeClass("select").end().toggleClass("select");
+                if ("get" == type) {
+                    if (!needremember) {
+                        remindtoArray();
+                    }
+                    $(".send_type_c").attr("data-pid", tid).html(typedesc[tid]);
+                    needremember = true;
+                } else if ("set" == type) {
+                    if (needremember) {
+                        for (var x in delitemtypes) {
+                            $(".list_item[pcode='" + x + "']").find(".send_type_c").attr("data-pid", delitemtypes[x]).html(typedesc[delitemtypes[x]]);
+                        }
+                        needremember = false;
+                    }
+                    var toid = select.closest(".select_popup_c").attr("data-pid");
+                    $(".list_item[pcode='" + toid + "']").find(".send_type_c").html(select.find(".menu-top").html()).attr("data-pid", tid);
+                }
+                $(".close").trigger("click");
+            }
+
+            //自定义confirm显示方法
+            function showCusConfirm(title, desc, okFunc, cancelFunc) {
+                $("#my-confirm").addClass("on");
+                $("#my-confirm").find(".title span").text(title);
+                $("#my-confirm").find(".desc").html(desc);
+                $("#my-confirm").on("click", ".b-ok", function () {
+                    hideCusConfirm();
+                    if (typeof okFunc === "function") {
+                        okFunc();
+                    }
+                });
+                $("#my-confirm").on("click", ".b-cancel", function () {
+                    hideCusConfirm();
+                    if (typeof cancelFunc === "function") {
+                        cancelFunc();
+                    }
+                });
+            }
+            function hideCusConfirm() {
+                $("#my-confirm").removeClass("on");
+                $("#my-confirm").find(".b-ok").unbind("click");
+                $("#my-confirm").find(".b-cancel").unbind("click");
+            }
+            function selectlogic(param1) {
+                if ("level_B" == islevel) {
+                    if (islevel == $(param1).attr("data-tid")) {
+                        app.alert("当前类型权限不足,请通知客服开通!");
+                        return;
+                    }
+                } else if ("level_A" == islevel) {
+                    app.alert("当前类型权限不足,请通知客服开通!");
+                    return;
+                }
+                var _dataPid = $(param1).attr("data-pid");
+                if (_dataPid.indexOf("3") >= 0 || _dataPid == "4") {
+                    showCusConfirm($(param1).find(".menu-top").text(),
+                            "特殊类型会导致所有货品类型跟随变动,确定选择此特殊类型 ( " + $(param1).find(".menu-top").html() + " ) ?",
+                            function () {
+                                remindmessage("get", param1);
+                            });
+                } else if (_dataPid == "2") {
+                    showCusConfirm($(param1).find(".menu-top").text(),
+                            "1、【只送货】只是将货品送到顾客家中放下就结束了，不包含拆包、安装、摆位等其他服务。<br/>2、【只送货】只适用于物流仓库到商家仓库之间，或者商家的两个仓库之间的配送。",
+                            function () {
+                                remindmessage("set", param1);
+                            });
+                } else {
+                    remindmessage("set", param1);
+                }
+            }
+            //动态加载添加
+            function addAct() {
+                //购物辅助
+                salecontroller(saleall);
+                $('#sale_to_cart').on('click', function () {
+                    cookiemain(saleall);
+                });
+                $("#service_select:not(.cate_class)").on("click", function () {
+                    $(".select_cate").slideUp();
+                });
+                $("#sale_cart_id").on("click", ".add_pro_bt_first", function () {
+                    window.location.href = "../onlydelivery/55onlysale.html";
+                });
+                $('.select_popup_c').on('click', ".menu", function () {
+                    selectlogic(this);
+                    var message = $(this).attr("data-mid");
+                    if (isnotnull(message)) {
+                        $("#select_message").html(message);
+                    }
+                });
+                $('#delete_all').on('click', function () {
+                    app.confirm(function () {
+                        cookiemain("");
+                        storegeeditutil("salecount", 0);
+                        location.reload();
+                    }, "确定清空购物车?");
+
+                });
+                $(".close").on("click", function () {
+                    $(".select_popup_c").animate({left: "-300vw"}, 500);
+                });
+                $("#sale_cart_id").on("click", ".seng_all_c", function () {
+                    var select = $(this).closest(".list_item");
+                    var popup = $(".select_popup_c");
+                    popup.attr("data-pid", select.attr("pcode")).animate({left: "0"}, 500);
+                });
+                $(".type_why").on('click', function (event) {
+                    $("#why_type_is").show();
+                });
+                $(".why_type_is_close").on('click', function (event) {
+                    $("#why_type_is").hide();
+                });
+                $('.frame_bottom_cart').on('click', '#next_id', function (event) {
+                    if ("level_A" == islevel) {
+                        app.alert("当前类型权限不足,请通知客服开通!");
+                        return;
+                    }
+                    if (typeof (saleall) != "undefined" && saleall.length > 0) {
+                        editDelType();
+                        refush();
+                        if (oktype) {
+                            window.location.href = "57onlydelivery_order.html";
+                        } else {
+                            app.alert("只安装/下样单不可勾选其他服务类型!")
+                        }
+                    } else {
+                        console.log("购物车为空");
+                    }
+                });
+                //动态激活
+                $(window).on("resize", function () {
+                    var docheight = window.innerHeight;
+                    var bottomx = document.getElementById('fixed_position_id');
+                    if (isnotnull(bottomx)) {
+                        if (docheight < windheight) {
+                            bottomx.style.position = 'static';
+                            bottomx.style.display = 'none';
+                        } else {
+                            bottomx.style.position = 'fixed';
+                            bottomx.style.display = 'block';
+                        }
+                    }
+                });
+            }
+            $(function () {
+                FastClick.attach(document.body);
+                //初始化整个页面
+                init();
+            });
+        </script>
+    </body>
+</html>

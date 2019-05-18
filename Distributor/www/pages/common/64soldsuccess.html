@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>支付成功</title>
+        <link href="../../css/common.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script src="../../cordova.js"></script>
+        <script type="text/javascript" src="../../js/jquery.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../js/deliverymain.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            .toptext{
+                font-size:5vw;
+                font-weight: 600;
+                line-height: 8vw;
+                margin-left: 100px;
+            }
+            .topcontent{
+                padding:0;
+            }
+            .graybutton{
+                margin-top: 5vw;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="top_nav">
+            <i class="top_left back iconfont icon-back"></i>
+            <div class="top_menu">送装单支付成功</div>
+            <div class="top_right"></div>
+        </div>
+        <div class="topcontent" style="background:#FFFFFF;">
+            <img src="../../images/59.png">
+        </div>
+        <div>
+            <div class="toptext">支付方式：<span class="red" id="paytype_id">微信支付</span></div>
+            <div class="toptext">支付金额：<span class="red" id="paymoney_id">¥&nbsp;360.00</span></div>
+        </div>
+        <div class="innercontent top_innercontent">
+            <div class="graybutton" id="returnDelivery">查看送装单</div><div class="graybutton" id="returnHome">返回首页</div>
+            <div class="redcoupon" style="display: none" id="reduce_return_id">
+                <div class="con">恭喜获得优惠券</div>
+                <div class="amount" id="pay_reduce">¥&nbsp;0.00</div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var staticmessage = {};
+        var payid = "";
+        function init() {
+            message();
+            htmlhelp();
+        }
+        function message() {
+            staticMessage(staticmessage);
+            payid = GetQueryString("payid");
+            $.post(staticmessage.url + "pay/findorder",
+                    {
+                        "payorder": payid,
+                    }
+            , function (data) {
+                $("#paytype_id").html(data.paytype);
+                $("#paymoney_id").html("¥&nbsp;" + data.paymoney);
+                if (isnotnull(data.reduceid)) {
+                    $(".redcoupon").show();
+                    $("#pay_reduce").html("¥&nbsp;" + data.reduce);
+                }
+                console.log(data);
+            });
+        }
+        function htmlhelp() {
+        }
+        function act() {
+            $(".back").on("click", function () {
+                window.location.href = "../delivery/07delivery_order_pay.html";
+            })
+            $("#reduce_return_id").on("click", function () {
+                window.location.href = "../shop/39coupon.html";
+            })
+            $("#returnDelivery").on("click", function () {
+                window.location.href = "../sale/32sale_log_daily.html";
+            })
+            $("#returnHome").on("click", function () {
+                window.location.href = "../01home.html";
+            })
+        }
+
+        //支付
+        function send() {
+        }
+        $(function () {
+            FastClick.attach(document.body);
+            $(document).ready(function () {
+                //初始化整个页面
+                init();
+                //动态加载
+                act();
+            });
+        });
+        if (window.history && window.history.pushState) {
+
+            $(window).on('popstate', function () {
+                var hashLocation = location.hash;
+                var hashSplit = hashLocation.split("#!/");
+                var hashName = hashSplit[1];
+
+                if (hashName !== '') {
+                    var hash = window.location.hash;
+                    if (hash === '') {
+                        window.location.href = "../delivery/07delivery_order_pay.html";
+                    }
+                }
+            });
+            window.history.pushState('forward', null, '');
+        }
+    </script>
+</html>

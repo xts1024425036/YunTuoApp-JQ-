@@ -1,0 +1,323 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>云驼联盟</title>
+        <link href="../../css/newcommon.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../js/pageorder.js"></script>
+        <script src="../../js/templatorder.js"></script>	
+        <script src="../../js/templateutils.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">	
+        <style type="text/css">
+            .nav-bar{
+                border-bottom: none;
+                box-shadow:none;
+                position: fixed;
+                z-index: 999;
+                top: 0;
+            }
+            .order-status{
+                background:linear-gradient(110deg,#6234E8,#34C4E8);
+                margin-top: 44px;
+                width: 100%;
+                height: 1.4rem;
+                color: #FFFFFF;
+            }
+            .ios .order-status{
+                margin-top: 64px;
+                margin-top: calc(44px + constant(safe-area-inset-top));
+                margin-top: calc(44px + env(safe-area-inset-top));
+            }
+            .type {
+                margin: 0;
+            }
+            .order-status-headphoto{
+                padding:0 0 0 0.9rem;
+                line-height: 1.4rem;
+                position: relative;
+            }
+            .order-status-headphoto .order-text{
+                font-size: 0.32rem;
+                margin-left: 0.3rem;
+                font-weight: bold;
+            }
+            .icon-dingdanzhuangtai-daijiedan{
+                font-size: .44rem;
+            }
+            .order-status-headphoto img{
+                position: absolute;
+                bottom: 0;right: 0.4rem;
+            }
+            .progress{
+                width: 100%;
+                height: 1.2rem;
+                background: #ffffff;
+                padding:0 0.3rem;
+
+            }
+            .cell-list .cell{padding: 1.2em 0;font-size: 0.24rem;
+                             color:#999;}
+            .cell .icon-bg{
+                width:.6rem;
+                height:.6rem;
+                background:#FFE3D9;
+                border-radius:50%;
+                text-align: center;
+                line-height: .6rem;
+                margin-right: .3rem;
+            }
+            .cell .flex-item{
+                font-size: 0.28rem;
+                color:#333333;
+            }
+            .cell .icon-jinru{margin-left:.2rem;}
+            .icon-huoche{
+                font-size: .38rem;
+                color: #EF511A;
+            }
+            .date{
+                font-size: .24rem;color:#666666;
+
+            }
+            .info{margin-top: 1.4rem;}
+            .item-info{
+                line-height: 1.3em;padding: 0.1rem 0 0 0;margin-bottom: 0;
+            }
+            .main{
+                width: 100%;
+                margin-top: 0.2rem;
+            }
+            .main-list{
+                background: #ffffff;
+                padding: 0.3rem 0;
+            }
+            .bg-shadow{
+                margin: auto;
+            }
+
+            .list-all{
+                padding: 0.3rem;
+            }
+            .list-text{
+                line-height: 1.8em;
+                font-size: 0.24rem;
+                color:#666666;
+
+            }
+
+            .list-text .name{
+                font-size: 0.28rem;
+                color:#333333;
+                font-weight: 500;
+            }
+            .list-text .color{
+                font-size: 0.24rem;
+                color:#333333;
+                margin-left: 0.6rem;
+            }
+            .list-text .fr{
+                font-size: 0.28rem;
+                color:#999999;
+            }
+            .list-text .separate{
+                margin: 0.2rem 0;
+            }
+            .main-list .add{
+                height: 0.9rem;
+                line-height: 0.9rem;
+                margin: 0;
+                display: block;
+            }
+            .all-number{
+                margin: 0.1rem 0.3rem;
+                font-size: 0.28rem;
+                color: #333333;
+            }
+            .all-number span{
+                font-size: 0.36rem;
+                font-weight: bold;
+            }
+            .info .item-info .two{
+                display: none;
+            }
+        </style>
+    </head>
+
+    <body>
+        <ul class="nav-bar flex">
+            <li class="left txtl back">
+                <i class="iconfont icon-fanhui"></i>
+            </li>
+            <li class="flex-item txtc">订单详情</li>
+            <li class="right txtr"></li>   
+        </ul>
+        <div class="order-status">
+            <div class="order-status-headphoto flex">
+                <i class="iconfont icon-dingdanzhuangtai-daijiedan"></i>
+                <span class="order-text flex-item statustype"></span>
+                <span><img src="../../images/camel.png"></span>
+            </div>
+            <div class="progress">
+                <div class="cell-list">
+                    <a id="href_track" class="cell flex">
+                        <div class="icon-bg"><i class="iconfont icon-huoche"></i></div>
+                        <span class="flex-item">送装跟踪日志</span>
+                        <i class="iconfont icon-jinru"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="info">
+            <ul class="item-info">
+                <li class="left">客户地址:</li>
+                <li class="flex-item right" id="customeradress_id">
+                </li>
+
+                <li class="left">客户姓名:</li>
+                <li class="flex-item right" id="customer_id">
+                </li>
+
+                <li class="left">客户电话:</li>
+                <li class="flex-item right" id="cusphone_id"></li>
+
+                <li class="left">预送日期:</li>
+                <li class="flex-item right" id="devdate_id"></li>
+
+                <li class="left show_dev">实送日期:</li>
+                <li class="flex-item right show_dev" id="devdateactual_id"></li>
+
+                <li class="left">提货地址:</li>
+                <li class="flex-item right" id="warehouseadress_id" ></li>
+
+                <li class="left two">带货地址:</li>
+                <li class="flex-item right two" id="otherwarehouseadress_id" ></li>     
+            </ul>
+        </div>	
+
+        <div class="main">
+            <div class="main-list">
+                <div class="bg-shadow">
+                    <div class="list-all">
+                        <ul class="list-text" id="order_list_id">
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="add txtr">
+                    <div class="all-number txtc" style="display:inline-block;">总数：
+                        <span id="del_number" style="color:#5478C4">3</span>&nbsp;件
+                    </div>
+                    <div class="all-number txtr" style="display:inline-block;">总送装费：
+                        <span id="del_price" style="color:#DF2F2F">￥312</span>
+                    </div>
+                </div>
+            </div>	
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var type;
+        var staticmessage = {};         //用户gsid，groupid，distributi等
+        var deliveryoderid;
+        var prolist;
+        var canpro;
+        var status;
+        var deliveryoder;
+        $(function () {
+            FastClick.attach(document.body);
+            function init() {
+                staticMessage(staticmessage);
+                deliveryoderid = GetQueryString("deliveryoderid");
+                canpro = GetQueryString("isafremark");
+                status = GetQueryStringByEncode("status");
+                $(".statustype").html(status);
+                filter();
+            }
+            function filter() {
+                $.post(staticmessage.url + "onlydelivery/findorder",
+                        {
+                            "orderid": deliveryoderid
+                        }
+                , function (data) {
+                    console.log(data);
+                    deliveryoder = data.del;
+                    for (var x in deliveryoder) {
+                        if ("number" == typeof (deliveryoder[x]) && deliveryoder[x] > 1000000000) {
+                            deliveryoder[x] = timeFormat(deliveryoder[x]);
+                        }
+                        $("#" + x + "_id").html(deliveryoder[x]);
+                    }
+                    $("#all_address_id").val(deliveryoder.customeradress + deliveryoder.addressdetailed);
+                    $("#del_number").html(deliveryoder.prodqtys)
+                    $("#del_price").html(deliveryoder.fiprice)
+                    for (var x in deliveryoder.deliveryoderitems) {
+                        deliveryoder.deliveryoderitems[x].number = deliveryoder.deliveryoderitems[x].prodqtys;
+                    }
+                    var itemhtml = orderfun.htmledit("orderdetails", deliveryoder.deliveryoderitems);
+                    temputils.htmlappend("order_list_id", itemhtml);
+                    if (deliveryoder.warehousenumber == "2") {
+                        $(".two").show();
+                    }
+                    if (deliveryoder.status != "A") {
+                        $(".show_dev").hide();
+                    }
+                    $('textarea[autoHeight]').autoHeight();
+                });
+            }
+            function send() {
+                $.post(staticmessage.url + "delivery/deleteone",
+                        {
+                            "orderid": deliveryoderid,
+                            "type": "after",
+                            "userid": staticmessage.userid
+                        }
+                , function (data) {
+                    console.log(data);
+                    app.alert("订单" + deliveryoderid + "删除成功", "../sale/75editorderlist.html");
+                });
+            }
+            function act() {
+                //>>>最终添加:监听事件 end-1
+                $('#send_id').on('click', function (event) {
+                    $("#send_id").attr("disabled", "true").css("pointer-events", "none").css("background", "#666");
+                    send();
+                });
+                $("#href_track").click(function () {
+                    var url = "../delivery/25delivery_track.html?deliveryoderid=" + deliveryoderid + "&isafremark=false&status=" + status;
+                    var oldurl = storegeeditutil("oldurl");
+                    var backurl;
+                    if (isnotnull(oldurl)) {
+                        backurl = "../delivery/85deliverydetails.html?deliveryoderid=" + deliveryoderid + "&isafremark=" + canpro + "&status=" + status + "&laurl=" + oldurl.split(",")[1];
+                    } else {
+                        backurl = "../delivery/85deliverydetails.html?deliveryoderid=" + deliveryoderid + "&isafremark=" + canpro + "&status=" + status;
+                    }
+
+                    transitionLocation("25delivery_track", backurl, url);
+                });
+                $('.back').on('click', function (event) {
+                    var laurl = GetQueryString("laurl");
+                    if (isnotnull(laurl)) {
+                        locationold("old", laurl);
+                    } else {
+                        locationold("old", "../sale/32sale_log_daily.html");
+                    }
+
+                });
+            }
+
+            //初始化整个页面
+            init();
+            //动态加载
+            act();
+        });
+    </script>
+</html>

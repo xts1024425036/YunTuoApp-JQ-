@@ -1,0 +1,312 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>售后评价 - 云驼联盟</title>
+        <link rel="stylesheet" type="text/css" href="../../css/iconfont.css">
+        <link rel="stylesheet" type="text/css" href="../../css/newcommon.css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/pageorder.js"></script>
+        <script src="../../js/templatorder.js"></script>	
+        <script src="../../js/templateutils.js"></script>   
+        <style type="text/css">
+            .item-info{
+                line-height: 1.3em;padding: 0.1rem 0;
+            }
+            .main{
+                width: 100%;
+                margin-top: 1.6rem;
+            }
+            .main-list{
+                background: transparent;
+
+            }
+            .new .list-item{
+                margin:.2rem 0;
+                width: 100%;
+                border-radius: 0;
+                padding: 0 .3rem .3rem .3rem;
+            }
+            .head-photo{
+                display: -webkit-flex;
+                display: flex;
+                -webkit-align-items: center;
+                align-items: center;
+                color: #333;
+                font-size: 0.28rem;
+                padding: 1.5em 0 1em 0;
+            }
+            .head-title{
+                margin-left: .2rem;
+            }
+            .head-photo .txtr{
+                width: 1.8rem;
+                height: 0.64rem;
+                border:1px solid #5478C4;
+                color: #5478c4;
+                border-radius:0.32rem;text-align: center;
+                line-height: 0.64rem;
+                display: inline-block;
+            }
+            .main-info li{
+                font-size: .24rem;
+                color: #999;
+                padding-bottom: .5em;
+                line-height: 1.5em;
+            }
+            .main-info>li>span{
+                margin-left: .3rem;
+            }
+            .main-list .add{
+                margin: .3em 0 0 0;
+
+            }
+            .all-number{
+                margin: 0 0.6rem 0 0;
+                font-size: 0.28rem;
+                color: #333333;
+            }
+            .all-number span{
+                font-size: 0.36rem;
+                font-weight: bold;
+            }
+            .star-list{
+                margin-top: .3rem;
+            }
+            .icon-xingxing{
+                font-size: .44rem;
+                color: #DDDDDD;
+                margin-right: .3rem;
+            }
+            .on .icon-xingxing{
+                color:#DF2F2F;
+            }
+            .star span{
+                font-size: .28rem;
+                color: #333333;
+            }
+            .write{
+                font-size: .28rem;
+                color: #5478C4;
+                line-height: .5rem;
+            }
+            .icon-bottom{
+                font-size:.26rem;
+                margin-left: .1rem;
+            }
+            .nav-bar {
+                border-bottom: 1px solid #f0f0f0;
+                box-shadow: 0 0.01rem 0.01rem #dedede;
+                position: fixed;
+                top: 0;
+            }
+            .list-item textarea{
+                width: 96%;
+                height: 2rem;
+                margin: 3vw;
+                font-size:0.28rem;
+                font-family:PingFang-SC-Regular;
+                color:rgba(187,187,187,1);
+            }
+            .area-pop{
+                display: none;
+                background:rgba(255,255,255,1);
+                box-shadow:0px 0px 16px 0px rgba(35,24,21,0.1);
+                border-radius:16px;
+                margin-top: 2vw;
+            }
+            .list-item .star-list .open .iconfont{
+                transform: rotate(-180deg);
+            }
+            .head-photo img{
+                width: 12vw;
+            }
+            .title_customer{
+                margin-left: 4vw;
+            }
+            .star-ok .iconfont{
+                font-size: .24rem;
+                margin-right: .1rem;
+            }
+            #log_order_id{
+                overflow-y: scroll;
+                height: 90vh;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <ul class="nav-bar flex">
+            <li class="left txtl">
+                <i class="iconfont back icon-fanhui"></i>
+            </li>
+            <li class="flex-item txtc">我的评价</li>
+            <li class="right txtr"></li>   
+        </ul>
+
+        <div class="filter-bar flex txtc" id="type_id">
+            <a href="#" class="flex-item select" pid="isok">未评价</a>
+            <a href="#" class="flex-item" pid="notok">已评价</a>
+        </div>
+        <div id="add_msg"></div>
+        <div class="main new">
+            <div class="main-list" id="log_order_id">
+
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var type;
+        var staticmessage = {};
+        var delall = new Array();
+        var startPage = 0;
+        var flag = false;
+
+        //初始化整个页面
+        function init() {
+            staticMessage(staticmessage);
+            type = "isok";
+            filter();
+        }
+        function filter() {
+            var sctype = "desc";
+            if ("notok" == type) {
+                findokeva()
+            } else {
+                findcaneva(sctype);
+            }
+
+        }
+        function findcaneva(sctype) {
+            $.post(staticmessage.url + "salelog/findOKStore",
+                    {
+                        "type": type,
+                        "gsid": staticmessage.gsid,
+                        "startPage": startPage,
+                        "sctype": sctype,
+                        "showtype": "all"
+                    }
+            , function (data) {
+                console.log(data);
+                console.log(data.message);
+                delall = data.deliveryoder;
+                console.log(delall);
+                if (data.deliveryoder.length > 0) {
+                    for (var x in data.deliveryoder) {
+                        data.deliveryoder[x].star = "3";
+                    }
+                    flag = true;
+                } else {
+                    flag = false;
+                }
+                var list = new Array();
+                for (var x in  data.deliveryoder) {
+                    if (false == data.deliveryoder[x].isevaluate) {
+                        list.push(data.deliveryoder[x]);
+                    }
+                }
+                var smallHtml = orderfun.htmledit("evoluate", list, "md");
+                temputils.htmlappend("log_order_id", smallHtml);
+            });
+        }
+        function findokeva() {
+            $.post(staticmessage.url + "delivery/getevomsg" + setQueryString({"gsid": staticmessage.gsid}), {}
+            , function (data) {
+                console.log(data);
+                var smallHtml = orderfun.htmledit("evook", data.list, "md");
+                temputils.htmlappend("log_order_id", smallHtml);
+            });
+        }
+        function send(orderid, star, msg) {
+            $.post(staticmessage.url + "delivery/setstar" + setQueryString({"orderid": orderid, "star": star, "msg": msg}), {}
+            , function (data) {
+                console.log(data);
+                if (data.status) {
+                    refushmessage("评价完成");
+                    $(".list-item[data-oid=" + data.orderid + "]").animate({height: "0px"}, "300", function () {
+                        this.remove()
+                        refushmessage("订单" + data.orderid + "评价成功");
+                    });
+                }
+            });
+        }
+        function act() {
+            $("#log_order_id").on("click", ".del_message", function () {
+                var did = $(this).parent(".log_item").attr("pid");
+                var status = $(this).parent(".log_item").attr("data-sid");
+                var queryparam = setQueryString({deliveryoderid: did, isafremark: false, status: status})
+                var url = "../delivery/85deliverydetails.html" + queryparam;
+                transitionLocation("85deliverydetails", "../sale/32sale_log_daily.html", url);
+            });
+            $(".back").click(function () {
+                window.location.href = "../menu/61send.html";
+            });
+            //顶部
+            $('#type_id').on('click', 'a', function (event) {
+                startPage = 0;
+                $("#log_order_id").html("");
+                var element = event.target;
+                var a = $(element).attr("pid");
+                type = a;
+                console.log(type);
+                $(element).siblings().removeClass("select");
+                $(element).addClass("select");
+                filter();
+            });
+            $('#log_order_id').on('click', '.open-evo', function (event) {
+                var obj = $(this).parents(".list-item");
+                var orderid = obj.attr("data-oid");
+                var evostar = obj.find(".star .on").length;
+                var evomsg = obj.find(".area-pop .area-c").val();
+                console.log("ordierid:" + orderid + "--evostar:" + evostar + "--evomsg:" + evomsg);
+                send(orderid, evostar, evomsg);
+            });
+
+            $('#log_order_id').on('click', '.star_not .flex-item', function (event) {
+                $(this).siblings(".flex-item").removeClass("on");
+                $(this).prevAll(".flex-item").addClass("on").end().addClass("on");
+                var message = $(this).attr("data-pid");
+                $(this).siblings(".evo_message").html(message);
+            });
+
+            $('#log_order_id').on('click', '.write', function (event) {
+                if ("open" == $(this).attr("data-tid")) {
+                    $(this).removeClass("open");
+                    $(this).attr("data-tid", "close");
+                    $(this).parent().siblings(".area-pop").slideUp("300");
+                } else {
+                    $(this).addClass("open");
+                    $(this).attr("data-tid", "open");
+                    $(this).parent().siblings(".area-pop").slideDown("300");
+                }
+            });
+            $("#log_order_id").scroll(function () {
+                var scrollTop = $(this).scrollTop(); //滚动条距离顶部的高度
+                var eleheight = $(this).height(); //滚动条距离顶部的高度
+                var scrollAll = document.getElementById("log_order_id").scrollHeight; //滚动条距离顶部的高度
+                var isok = ((scrollAll - eleheight * 2) < scrollTop);
+                if (flag && isok) {
+                    //滚动条到达底部
+                    startPage += 10;
+                    flag = false;
+                    filter();
+                }
+            });
+        }
+
+        $(function () {
+            FastClick.attach(document.body);
+            init();
+            act();
+        });
+    </script>
+</html>

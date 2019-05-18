@@ -1,0 +1,610 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>云驼联盟</title>
+        <link href="../../css/style.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <link href="../../css/zeroModal.css" rel="stylesheet" type="text/css">
+        <!--<link href="../../css/swiper.css" rel="stylesheet" type="text/css">-->
+        <script type="text/javascript" src="../../js/jquery.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <!--<script src="../../js/swiper.js"></script>-->
+        <script src="../../js/zeroModal.js"></script>
+        <script src="../../js/upload.js"></script>
+        <script src="../../js/conutils.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            html{
+                font-size: 50px;
+            }
+            .frame_storehouse_order {
+                margin-top: 10vw;
+                margin-bottom: 4vw;
+            }
+            .form_item_twice.notitle {
+                margin-top: 0vw;
+            }
+            .form_item_text {
+                border: 0vw solid #dfe1e2;
+            }
+            .map_style_class{
+                height: 100vh;
+                margin: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.7);
+                border: none;
+            }
+            .choose_color_ctn{
+                position: relative;
+                width: 100%;
+                height:100%;
+            }
+            .frame_choose_color{
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                text-align: center;
+            }
+            .frame_choose_color,.choose_color_title,.present_color{
+                float: none;
+            }
+            .present_color{
+                margin:0;
+                width: 100%;
+                padding: 0 0 2em 0;
+                text-align: left;
+                border-radius: 0;
+            }
+            .present_color div{
+                margin: 7.5px;
+                width: calc(33% - 17px);
+                line-height: 2.5em;
+                border-radius: 1.25em;
+                border: none;
+                font-size: .28rem;
+                color:#333;
+                background: #f0f0f0;
+            }
+            .map_bottom_class{
+                position: static;
+            }
+            .frame_choose_color .present_color .color_cur{
+                background: #5478c4;
+                border: none;
+                color:#fff;
+            }
+            .sale_order_form{
+                min-height: 0;
+                position: relative;
+            }
+            .form_item_twice.notitle.data_title_class .form_item_title{
+                line-height: 1;
+                font-size: .32rem;
+                color:#666;
+            }
+            .frame_storehouse_order .form_item_text input{
+                font-size: .28rem;
+                color:#333;
+            }
+            .form_item_twice.notitle.data_time_class{width: 84%;}
+            ul.form_item_twice.notitle.data_title_class,ul.form_item_twice.notitle.data_time_class{
+                display: inline-block;
+                padding: .5em 0;
+            }
+            .form_item_twice.notitle.data_time_class li{
+                margin: 0;
+            }
+            .form_item_twice_left,.form_item_twice_right,.form_item_title,.form_item_text,.frame_storehouse_order .form_item_text input{
+                float: none;
+            }
+            .choose_color_title{
+                font-size: .36rem;
+                font-weight: bold;
+                color: #333;
+                padding: 1em 0 .5em 0;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="map_style_class">
+            <div class="choose_color_ctn">
+                <div class="frame_choose_color">
+                    <div class="choose_color_title">颜色库</div>
+                    <div class="present_color select_s">
+                        <div class="red" pcolor="白色">白色</div>
+                        <div class="blue" pcolor="米白">米白</div>
+                        <div class="green" pcolor="烟灰色">烟灰色</div>
+                        <div class="green" pcolor="拉菲红">拉菲红</div>
+                        <div class="green" pcolor="红色">红色</div>
+                        <div class="green" pcolor="棕色">棕色</div>
+                        <div class="green" pcolor="蓝色">蓝色</div>
+                        <div class="green" pcolor="黄色">黄色</div>
+                        <div class="green" pcolor="拼色">拼色</div>
+                    </div>
+                    <div class="present_color select_o">
+                        <div class="red" pcolor="原木色">原木色</div>
+                        <div class="blue" pcolor="红木色">红木色</div>
+                        <div class="green" pcolor="黑胡桃色">黑胡桃色</div>
+                        <div class="green" pcolor="白色">白色</div>
+                        <div class="green" pcolor="月光白">月光白</div>
+                        <div class="green" pcolor="米白">米白</div>
+                        <div class="green" pcolor="拉菲红">拉菲红</div>
+                        <div class="green" pcolor="粉红">粉红</div>
+                        <div class="green" pcolor="蓝色">蓝色</div>
+                        <div class="green" pcolor="拼色">拼色</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="select_popup_c">
+            <div class="red close_why"><i class="iconfont icon-round_close_light"></i></div>
+            <div class="popup_in_c">
+                <div class="title item_show" style="margin-top:4vw;border-top: none"   data-pid="bigtype_id" >
+                    <span>品 类</span>
+                    <i class="iconfont icon-unfold"></i>
+                    <span id="bigtype_id_select" class="select_show"></span>
+                </div>
+                <div id="out_bigtype_id" class="pro_show_all select_cate_c" style="height: 0vw;">
+                    <div id="bigtype_id" class="submenu swiper-wrapper select_cateitem_c" style="width: 98%;">
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div class="title item_show" data-pid="bigstyle_id">
+                    <span>类 别</span>
+                    <i class="iconfont icon-unfold"></i>
+                    <span id="bigstyle_id_select" class="select_show"></span>
+
+                </div>
+                <div id="out_bigstyle_id" class="select_cate_c pro_show_all" style="margin-top: 1vw;height: 0vw;">
+                    <div id="bigstyle_id" class="submenu swiper-wrapper select_cateitem_c" style="width: 98%;">
+                    </div>
+                </div>
+
+                <div class="clear"></div>
+                <div class="title item_show" data-pid="stype_id">
+                    <span>分 类</span>
+                    <i class="iconfont icon-unfold"></i>
+                    <span id="stype_id_select" class="select_show"></span>
+                </div>
+                <div id="out_stype_id" class="pro_show_all select_cate_c" style="height: 0vw;">
+                    <div id="stype_id" class="submenu swiper-wrapper select_cateitem_c" style="width: 98%;">
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div class="title" id="s_show">
+                    <span class="title_with">类 型</span>
+                    <div class="select_cate_c pro_show_all"   style="height: 8vw;width: 73%;margin-left: 6vw;">
+                        <div  id="big_ins_type_id" class="submenu swiper-wrapper select_cateitem_c" style="width: 100%;">
+                            <div class="swiper-slide cate_cur" data-pid="0">拆装</div> 
+                            <div class="swiper-slide" data-pid="1">整装</div> 
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div class="title">名 称 <span id="big_item_type_id_select"></span></div>
+                <div id="out_big_item_type_id" class="pro_show_all select_cate_c"  style="margin-top: 1vw;height:9rem;">
+                    <div  id="big_item_type_id" class="submenu swiper-wrapper select_cateitem_c" style="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="body_mask"></div>
+        <!--<div class="body_to_top"></div>-->
+        <!--logo区--> 
+        <div class="main_top">
+            <ul class="main_top_left">
+                <a class="main_top_back"></a>
+            </ul>
+            <ul class="main_top_title">
+                <li id="page_title_id">新增货品</li>
+            </ul>
+            <ul class="main_top_right">
+            </ul>
+        </div>
+
+        <div class="frame_storehouse_order">
+            <!--输入客户信息-->
+            <div class="sale_order_form ">
+                <ul class="form_item_twice form_item_twice_left notitle data_title_class"  >
+                    <li class="form_item_title" >类 别</li>
+                </ul>
+                <ul  class="form_item_twice form_item_twice_right notitle data_time_class color_select_class"  >
+                    <li class="form_item_text">
+                        <input class="need " id="prodbigcate_id" pid="prodbigcate" type="text" placeholder="点击选择类别" readonly="readonly">
+                        <i class="iconfont icon-right"></i>
+                    </li>
+                </ul>
+                <div class="clear have_bottom_border"></div>
+                <ul class="form_item_twice form_item_twice_left notitle data_title_class"  >
+                    <li class="form_item_title" >名 称</li>
+                </ul>
+                <ul  class="form_item_twice form_item_twice_right notitle data_time_class color_select_class"  >
+                    <li class="form_item_text">
+                        <input class="need " id="prodcate_id" pid="prodcate" type="text" placeholder="点击设置名称" readonly="readonly">
+                        <i class="iconfont icon-right"></i>
+                    </li>
+                </ul>
+                <div class="clear have_bottom_border"></div>
+                <ul class="form_item_twice form_item_twice_left notitle data_title_class">
+                    <li class="form_item_title" >颜 色</li>
+                </ul>
+                <ul  class="form_item_twice form_item_twice_right notitle data_time_class">
+                    <li class="form_item_text color_select_class">
+                        <input id="prodcolor_id" class="input_id need" pid="prodcolor" type="text" placeholder="请输入颜色或右侧箭头选择">
+                        <i id="color_select_id" class="iconfont icon-right"></i>
+                    </li>
+                </ul>
+                <div class="clear have_bottom_border"></div>
+                <ul class="form_item_twice form_item_twice_left notitle data_title_class">
+                    <li class="form_item_title" >货 号</li>
+                </ul>
+                <ul  class="form_item_twice form_item_twice_right notitle data_time_class">
+                    <li class="form_item_text" >
+                        <input id="prodid_id" class="input_id need" maxlength="15" type="text" pid="prodid" placeholder="请填写货号">
+                    </li>
+                </ul>
+                <div class="clear have_bottom_border"></div>
+                <ul class="form_item_twice form_item_twice_left notitle data_title_class">
+                    <li class="form_item_title" >规 格</li>
+                </ul>
+                <ul  class="form_item_twice form_item_twice_right notitle data_time_class">
+                    <li class="form_item_text">
+                        <input class="input_id need" id="prodname_id" pid="prodname" type="text"  placeholder="请填写货品规格">
+                    </li>
+                </ul>
+                <div class="clear have_bottom_border"></div>
+                <ul class="form_item_twice form_item_twice_left notitle data_title_class">
+                    <li class="form_item_title">包 数</li>
+                </ul>
+                <ul class="form_item_twice form_item_twice_right notitle data_time_class">
+                    <li class="form_item_text">
+                        <input  id="prodqtys_id" pid="prodqtys" class="input_id need needNumber" type="number" placeholder="请输入货品部件包数" oninput="if(value.length>2)value=value.slice(0,2)">
+                    </li>
+                </ul> 
+                <div class="clear have_bottom_border"></div>
+                <ul class="form_item_twice form_item_twice_left notitle data_title_class">
+                    <li class="form_item_title">备 注</li>
+                </ul>
+                <ul class="form_item_twice form_item_twice_right notitle data_time_class">
+                    <li class="form_item_text">
+                        <input id="remarks_id" class="input_id" pid="remarks" type="text" placeholder="请填写备注">
+                    </li>
+                </ul>
+                <input style="display: none;" id="prodcodes_id" class="input_id need" pid="prodcodes" type="hidden" readonly="readonly" placeholder="条码"  >
+            </div>
+            <!--测试-->
+            <div id="add_msg"></div>
+            <!--底部功能-->
+            <div id="fixed_position_id" class="frame_bottom_cart groom_pic">
+                <ul class="form_item">
+                    <li class="form_item_title">推荐您上传货品图片</li>
+                    <li id="pic_list_id" class="form_item_pic">
+                        <div class="pic_item_add" pid="0" isok="0"><i class="iconfont icon-zhaopian"></i></div>
+                        <div class="pic_item_add" pid="1" isok="0"><i class="iconfont icon-zhaopian"></i></div>
+                        <div class="pic_item_add" pid="2" isok="0"><i class="iconfont icon-zhaopian"></i></div>
+                    </li>
+                </ul>
+                <a href="javascript:void(0)" id="send_id" class="bottom_button_max">确认保存</a>
+            </div>
+        </div>
+    </body>
+
+    <script type="text/javascript">
+        "use strict";
+        var staticmessage = {};
+        var picList = new Array();
+        var conproduct = {};
+        var returnlist = {1: "0000", 2: "0000", 3: "0000"};
+        var status;
+        var bigArray;
+        var salearray;
+        function init() {
+            message();
+        }
+        function message() {
+            staticMessage(staticmessage);
+            var typepage = GetQueryString("type");
+            if ("add" == typepage) {
+                $("#page_title_id").html("添加新品");
+            }
+//            canaddpro();
+            conutils.findbigCate("type");
+            conutils.findcateact();
+            var saleall = storegeeditutil("saleall");
+            salearray = isnotnull(saleall) ? JSON.parse(saleall) : new Array();
+            var itemjson = storegeeditutil("itemorder");
+            if (typeof (itemjson) != "undefined" && itemjson != "" && itemjson != "undefined") {
+                var itemorder = JSON.parse(itemjson);
+                for (var x in itemorder) {
+                    $("#" + x).val(itemorder[x]);
+                }
+            }
+            var color = storegeeditutil("color");
+            if (typeof (color) != "undefined" && color != "" && color != "undefined") {
+                $("#prodcolor_id").val(color);
+            }
+        }
+        //编辑图片
+        function htmledit(result, pid) {
+            var imglist = result.images;
+            for (var x in imglist) {
+                //替换原有的
+                //如果是第一张,直接加到pid对应的位置
+                if (x == 0) {
+                    picList.splice(pid, 0, imglist[x].path);
+                    var mainimg = $("#pic_list_id div[pid='" + pid + "']");
+                    $(mainimg).removeClass("pic_item_add").attr("isok", "1").html("<img src=\"" + imglist[x].path + "\">");
+                    //修改完图片直接上传
+                    uploadpic(conproduct.prodcodes, parseInt(pid));
+                } else {
+                    //如果不是第一张,顺着排
+                    var itemhtml = $("#pic_list_id").find(".pic_item_add");
+                    var mun = 0;
+                    for (var y in itemhtml) {
+                        var imgnum = $(itemhtml).find("img").length;
+                        if (imgnum == 0 && mun < itemhtml.length) {
+                            picList.splice(parseInt($(itemhtml[mun]).attr("pid")), 0, imglist[x].path);
+                            $(itemhtml[y]).removeClass("pic_item_add").attr("isok", "1").html("<img src=\"" + imglist[x].path + "\">");
+                            uploadpic(conproduct.prodcodes, parseInt($(itemhtml[mun]).attr("pid")));
+                            break;
+                        }
+                        mun++;
+                    }
+                    //顺着上传
+
+                }
+            }
+            //            alert(JSON.stringify(result));
+            console.log(result);
+        }
+        function confirmOk(param1, param2) {
+            if (param1 == "ensure") {
+                edit();
+            } else if (param1 == "addsup") {
+                window.location.href = "../supplier/18supplier_add.html";
+            } else if (param1 == "delete") {
+                deletePic(param2);
+            }
+        }
+        function canaddpro() {
+            $.post(staticmessage.url + "signup/canaddpro", {"gsid": staticmessage.gsid}
+            , function (data) {
+                if (!data.status) {
+                    var message = "新注册客户最多添加10种货品，如果有疑问，请联系客服，电话： 4008-135-000";
+                    setTimeout(function () {
+                        app.alert(message, "../menu/61send.html");
+                    }, 1500);
+                }
+            });
+        }
+        function uploadpic(prodcodes, num) {
+            if (picList.length > 0) {
+                uploadFile(picList[num], prodcodes, "1", parseInt(num) + 1, "distributor", "create", "", "", staticmessage.groupid);
+            }
+        }
+        function uploadhelp(responseitem, type) {
+            console.log(responseitem);
+            var response = JSON.parse(responseitem);
+            if (typeof (response) != "undefined" && response != "" && response.status) {
+                returnlist[response.number] = response.realUrl;
+            }
+            console.log("图片上传中,已上传第" + response.number-- + "张")
+            $(".form_item_pic div[pid=" + response.number + "]").attr("isok", "2");
+        }
+        function beforeSend() {
+            loading_param = zeroModal.loading(2);
+            $("#send_id").attr("disabled", "true").css("pointer-events", "none").css("background", "#666");
+            var time = 0;
+            var picisok = setInterval(function () {
+                time++;
+                var nownumber = $("#pic_list_id div[isok='1']").length;
+                if (time < 4) {
+                    if (nownumber = "0" || nownumber == 0) {
+                        send();
+                        clearInterval(picisok);
+                    } else {
+                        app.alert("图片上传中,请稍候....");
+                    }
+                } else {
+                    send();
+                    clearInterval(picisok);
+                }
+
+            }, 7200);
+        }
+        function send() {
+            var param = "gsid=" + staticmessage.gsid + "&groupid=" + staticmessage.groupid;
+            console.log("5555555uploadhelp");
+            //            $("#send_id").attr("disabled", "true").css("pointer-events", "none");
+            var path = new Array();
+            for (var key of Object.keys(returnlist)) {
+                path.push(returnlist[key]);
+            }
+            conproduct.prodimgpath = path.join(",");
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: staticmessage.url + "purchase/addconproduct?" + param,
+                contentType: "application/json",
+                data: JSON.stringify(conproduct),
+                success: function (data) {
+                    loading_close();
+                    console.log(data);
+                    if (data.status) {
+                        storegeeditutil("conproduct", undefined)
+                        storegeeditutil("itemorder", undefined);
+                        var type = GetQueryString("type");
+                        var message = "货品添加成功;";
+                        if ("add" == type) {
+                            editsale(data);
+                            storegeeditutil("searchid", data.returnid.prodid);
+                            locationold("old", "", "");
+                            //                            message = "货品添加成功,已加入购物车";
+                        } else if ("change" == type) {
+                            storegeeditutil("searchid", data.returnid.prodid);
+                            locationold("old", "", "");
+                            changesale(data);
+                            //                            message = "货品添加成功,请在选购页面选择货品";
+                        } else {
+                            app.alert(message, "../purchase/15produce_add.html?type=new");
+                        }
+                    } else {
+                        app.alert(data.message);
+                    }
+                }
+            });
+        }
+        //编辑购物车
+        function editsale(data) {
+            salearray.push(conutils.createpro(data));
+            storegeeditutil("saleall", JSON.stringify(salearray));
+            storegeeditutil("salecount", salearray.length);
+        }
+        //编辑购物车
+        function changesale(data) {
+            storegeeditutil("changeselect", JSON.stringify(conutils.createpro(data)));
+        }
+        //提交表单
+        function edit() {
+            //            var conproductitems = new Array();
+            //            var idarray = [];
+            for (var i = 0, length = $(".input_id").length; i < length; i++) {
+                console.log($(".input_id").eq(i).val());
+                var a = $(".input_id").eq(i).attr("pid");
+                var val = $(".input_id").eq(i).val();
+                console.log(a + "___" + val);
+                conproduct[a] = val;
+            }
+            //            conproduct.salesoderid = itemsale.sorderid
+            conproduct.distributid = staticmessage.distributid;
+            conproduct.gsid = staticmessage.gsid;
+            conproduct.groupid = staticmessage.groupid;
+            conproduct.prodlength = parseFloat(10.00);
+            conproduct.prodweigh = parseFloat(10.00);
+            conproduct.prodhigh = parseFloat(10.00);
+            conproduct.iscustomized = true;
+            conproduct.isactive = 1;
+            console.log(conproduct);
+            var a = validate(conproduct);
+            if (!isnotnull(picList) || picList.length == 0) {
+                send();
+            } else {
+                beforeSend();
+            }
+        }
+        function uploadact() {
+            //添加图片
+            $("#pic_list_id").on("click", ".pic_item_add", function () {
+                if (isnotnull($("#prodid_id").val())) {
+                    var pid = $(this).attr("pid");
+                    var num = 3 - picList.length;
+                    cameraTakePicture(num, pid);
+                } else {
+                    app.alert("请注意货号为空,请填写");
+                }
+            });
+        }
+        function deletePic(param2) {
+            var b = $(param2).closest("div")[0];
+            picList.splice($(param2).attr("pid"), 1);
+            $(param2).parent().attr("isok", "0");
+            $(param2).remove();
+            $(b).append("+").addClass("pic_item_add");
+        }
+        function act() {
+            $("#send_id").on("click", function () {
+                var a = validate();
+                if ("true" != a) {
+                    refushmessage(a);
+                    return;
+                }
+                var b = validateNumber();
+                if ("true" != b) {
+                    refushmessage(b);
+                    return;
+                }
+                if (picList.length == 0) {
+                    edit();
+                    //                    app.confirm(confirmOk, "未选择图片上传,是否仍然提交?", "ensure", "0");
+                } else {
+                    edit();
+                }
+            });
+            $('.main_top_back').on('click', function () {
+                locationold("old", "");
+            });
+            $("#prodid_id").on("keyup", function () {
+                $("#prodcodes_id").val($(this).val());
+            });
+            $(".present_color").on("click", "div", function () {
+                $(".present_color div").removeClass("color_cur");
+                $(this).addClass("color_cur");
+                $("#prodcolor_id").val($(".color_cur").attr("pcolor"));
+                $(".map_style_class").css("left", "-120vw");
+                event.preventDefault();
+                return false;
+            });
+            $(".map_style_class").on("click", function () {
+                $(".map_style_class").css("left", "-120vw");
+            });
+            //图片上传:查找名称是否存在相同货品
+            $('#prodid_id').blur(function () {
+                var prodid_obj = $("#prodid_id");
+                var item = prodid_obj.val().toUpperCase();
+                prodid_obj.val(item);
+                if (!isnotnull(item)) {
+                    refushmessage("请填写货号");
+                    return false;
+                }
+//                if (!includeChineses(item)) {
+//                    app.alert("货号不能包含汉字");
+//                    prodid_obj.val("").focus();
+//                    return false;
+//                }
+                $.post(staticmessage.url + "purchase/findnum", {"prodid": prodid_obj.val(), "gsid": staticmessage.gsid}
+                , function (data) {
+                    $("#prodcodes_id").val(data.prodcode);
+                    conproduct.prodcodes = $("#prodcodes_id").val();
+                    conproduct.pnumber = data.connum;
+                    if (!data.status) {
+                        conproduct.isdefault = 0;
+                    } else {
+                        conproduct.isdefault = 1;
+                    }
+                });
+            });
+            //删除照片
+            $("#pic_list_id").on("click", "img", function (event) {
+                app.confirm(confirmOk, "确定重新选择图片?", "delete", this);
+            });
+            $("#color_select_id").on("click", function () {
+                var select = $("#prodbigcate_id").val();
+                $(".map_style_class").css("left", "0vw");
+                if (select.indexOf("软体") != -1 || select.indexOf("沙发") != -1) {
+                    $(".select_o").hide();
+                    $(".select_s").show();
+                } else {
+                    $(".select_s").hide();
+                    $(".select_o").show();
+                }
+            });
+        }
+        $(function () {
+            FastClick.attach(document.body);
+            //初始化整个页面
+            init();
+            //动态加载
+            act();
+            uploadact();
+        });
+    </script>
+</html>

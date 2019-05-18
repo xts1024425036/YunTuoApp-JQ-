@@ -1,0 +1,483 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>云驼联盟</title>
+        <link href="../../css/style.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <link href="../../css/zeroModal.css" rel="stylesheet" type="text/css">
+        <script src="../../cordova.js"></script>
+        <script type="text/javascript" src="../../js/jquery.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../js/deliverymain.js"></script>
+        <script src="../../js/zeroModal.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            body {height: 80%;}
+            .total_way_contant{margin-left: 3vw}
+            .text_pay_class{    width: 45%;display: inline-block;margin-left: 1vh;position: absolute;line-height: 6vw;}
+            .pay_font_title{ font-size: 4vw;color: #333;}
+            .pay_item{color:#999;margin-bottom: 0.1vh;line-height: 100%!important}
+            #delete_id{display: inline-block;width: 50%;font-size: 6vw;text-align: center;font-weight: bold;color:#ce3434b3}
+            #delete_symbol{display: inline-block;width: 20%;  font-size: 2.5vh;font-weight: bold;margin-top: 1vh}
+            .delete_class{width: 57%;border-bottom: 0.3vh solid #e3e3e3;margin-left: 26%}
+            #result_id{display: inline-block;width: 50%;font-size: 6vw;text-align: center;font-weight: bold;}
+            #result_symbol{display: inline-block;width: 27%;  font-size:6vw;font-weight: bold;margin-top: 1vh}
+            .result_class{width: 65%;margin-left:18%}
+            .select_item_class{background: #006ff3;color:#fff;display: inline-block;width: 22%;text-align: center;}
+            .select_main_class{display: inline-block;width: 40%;text-align: center;}
+            .select_class {display: inline-block;width:80%;margin-left: 10%;border: 1px solid #01A4F1;color:#01A4F1;;text-align: left;margin-top: 4vh;line-height: 6vh;border-radius: 1vh 0vh 0vh 1vh}
+            .select_bottom_class{float: right;background: #006ff3;color:#fff;display: inline-block;width: 22%;text-align: center;}
+            .detail_pay_item{padding: 4vw 2%; width: 96%; border-bottom: 0.1vh solid #e3e3e3;font-size: 6vw;color: #5f5b5b;}
+            .more_title{margin-left: 4vw;float: right;}
+            .more_title img{width: 3vw}
+            #paymoney_id,#reduce_money{color: #5f5b5b;}
+            #all
+            .detail_pay_bottom{ border-bottom: 0.1vh solid #fff;}
+            .frame_bottom_delivery .bottom_button_next {
+                width: 92vw;
+                margin-left: 3.6vw;
+            }
+            .frame_bottom_delivery .bottom_button_cart {width: 57vw;}
+            .iconfont {
+                font-size: 5vw;
+                vertical-align: middle;
+                color:#808396;
+            }
+            #add_msg {
+                bottom: 19vw;
+                height: 10vw;
+                line-height: 10vw;
+                font-size: 5vw;
+            }
+            .model_top{
+                margin-top: 17vw;
+            }
+            .model_show{
+                width: 87vw;
+                margin-left: 5vw;
+                border: 3px solid #fff;
+                border-radius: 7px;
+                box-shadow: blue;
+                box-shadow: 0px 1px 7px 1px rgba(35,24,21,0.2);
+            }
+            input{
+                display: none;
+            }
+            .select_radio:checked+label,.select_checkbox:checked+label{
+                border:none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="body_mask"></div>
+        <!--logo区-->
+        <div class="main_top">
+            <ul class="main_top_left back">
+                <a class="main_top_back"></a>
+            </ul>
+            <ul class="main_top_title">
+                <li>订单支付</li>
+            </ul>
+            <ul class="main_top_right">
+                <!--<a class="main_top_history" href="#">历史订单</a>-->
+            </ul>
+        </div>
+        <div class="model_top model_title">支付金额</div>
+        <div class="model_show payorder_detail">
+            <div id="" class="detail_pay_item">
+                <span class="left_title">总计</span>
+                ￥<span id="paymoney_id" class="all_price_id">6666</span>
+            </div>
+            <div id="" class="detail_pay_item" class="reduce_price_id">
+                <span class="left_title">优惠券</span>
+                ￥<span id="reduce_money">66</span>
+                <div id="more_reduce_select" class="more_title">
+                    <i class="iconfont icon-right"></i>
+                    <span></span>
+                </div>
+            </div>
+            <div id="" class="detail_pay_item detail_pay_bottom no_border">
+                <span class="left_title border_have">实付</span>
+                <span class="red">￥</span>
+                <span id="all_pay_id" class="red">6660</span>
+            </div>
+        </div>
+        <div class="model_title">请选择支付方式</div>
+        <!--支付界面-->
+        <div class="payment_total_way model_show">
+            <ul class="total_way_contant">
+                <li> <img src="../../images/ye.jpg" height="50"/>
+                    <div class="text_pay_class">
+                        <span class="pay_font_title ">使用余额合并支付</span><br>
+                        <span  class="pay_item account_class" ></span>
+                    </div>
+                    <input id="pat_y_id" class="select_checkbox" type="checkbox" name="needcash" value="Y"/>
+                    <label for="pat_y_id"></label>
+                </li>
+            </ul>
+            <ul class="total_way_contant radio_type">
+                <li> <img src="../../images/zfbpay.png" height="50"/>
+                    <div class="text_pay_class">
+                        <span class="pay_font_title">支付宝</span><br>
+                        <span  class="pay_item"></span>
+                    </div>
+                    <input id="pat_z_id" class="select_radio" type="radio"  checked="checked" name="type" value="Z" />
+                    <label for="pat_z_id" ></label>
+                </li>
+            </ul>
+            <ul class="total_way_contant radio_type">
+                <li> <img src="../../images/weixpay.png" height="45"/>
+                    <div class="text_pay_class">
+                        <span class="pay_font_title">微信</span><br>
+                        <span  class="pay_item"></span>
+                    </div>
+                    <input id="pat_w_id" class="select_radio"  type="radio" name="type" value="W" />
+                    <label for="pat_w_id" ></label>
+                </li>
+            </ul>
+        </div>
+        <!--底部功能-->
+         <div id="add_msg"></div>
+        <div class="frame_bottom_cart frame_bottom_delivery">
+            <!--            <div href="02slae_cart.html" class="bottom_button_cart">
+                            <ul class="button_delivery_text">
+                                <li>共<span id="number_id">2</span>单</li>
+                                <li>合计:￥<span id="all_pay_id_bottom">0</span></li>
+                            </ul>
+                        </div>-->
+            <a href="javascript:void(0);" id="send_id" class="bottom_button_next" style=" border-radius: 8px;">去支付</a>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var type;
+        var list;
+        var reduce;
+        var pay;
+        var staticmessage = {};
+        var picisok = {};
+        var three_pay = 0;
+        var dataService = {};
+        var spell;
+        function init() {
+            message();
+            htmlhelp();
+            MyPush.register(build_duri(storegeeditutil("gsid"), "S"));
+        }
+        function message() {
+            staticMessage(staticmessage);
+            var typeitem = GetQueryString("type");
+            type = isnotnull(typeitem) ? typeitem : null;
+            var listitem = GetQueryString("list");
+            list = isnotnull(listitem) ? JSON.parse(listitem) : null;
+            var reduceitem = GetQueryString("select");
+            spell = GetQueryString("spell");
+            //            reduce = isnotnull(reduceitem) ? JSON.parse(reduceitem) : null;
+            $.post(staticmessage.url + "pay/paymoney",
+                    {
+                        "type": type,
+                        "gsid": staticmessage.gsid,
+                        "list": JSON.stringify(list),
+                        "reduce": reduceitem,
+                        "spell": spell
+                    }
+            , function (data) {
+                var reduceitem = isnotnull(data.reduce.reducetrue) ? data.reduce.reducetrue : 0.00;
+                dataService = data;
+                pay = data.pay;
+                $("#paymoney_id").html(data.pay.toFixed(2));
+                $("#delete_id").html(reduceitem);
+                var result = parseFloat(data.pay) - parseFloat(reduceitem);
+//                $("#result_id").html(data.pay);
+                $("#reduce_money").html(reduceitem);
+                $("#all_pay_id").html(result.toFixed(2));
+                $("#all_pay_id_bottom").html(result.toFixed(2));
+                var length = isnotnull(list) ? list.length : 0;
+                $("#number_id").html(length);
+                reduce = data.reduce.reduceid;
+                if (!isnotnull(data.account.totamount) || pay > data.account.totamount) {
+                    var havemoney = isnotnull(data.account.totamount) ? data.account.totamount : 0;
+                    $(".account_class").html("余:￥" + havemoney);
+                    $(".account_class").css("color", "#EE2C2C");
+//                    $("#pat_y_id").css("display", "none").removeAttr("checked");
+                } else {
+                    $(".account_class").html("余额剩余:￥" + data.account.totamount);
+                }
+                three_pay = (parseFloat(result) - parseFloat(data.account.totamount)).toFixed(2);
+                console.log(data);
+            });
+        }
+        function htmlhelp() {
+        }
+        function act() {
+            $("#send_id").on("click", function () {
+//                if ("15800000066" == storegeeditutil("username")) {
+                send();
+//                } else {
+//                    app.alert("暂时无法支付");
+//                }
+            });
+            $(".total_way_contant.radio_type").on("click", function () {
+                $("input[type='radio']").removeAttr("checked");
+                var paytype = $(this).find("input");
+                paytype.prop("checked", "checked");
+                console.log();
+            });
+            $("#pat_y_id").on("click", function () {
+                if ($('#pat_y_id').is(':checked') && parseFloat($("#reduce_money").html()) > (parseFloat($("#paymoney_id").html()) * 0.1).toFixed(2)) {
+                    $("#pat_y_id").css("display", "none").removeAttr("checked");
+                    app.alert("此优惠券不能和余额不能同时使用");
+                    return;
+                }
+                if ($('#pat_y_id').is(':checked') && three_pay > 0) {
+                    $(".account_class").html("余:￥" + dataService.account.totamount + "(待补" + three_pay + "元)");
+                } else {
+                    $(".account_class").html("余:￥" + dataService.account.totamount);
+                }
+            });
+            $("#more_reduce_select").on("click", function () {
+                var url = "type=" + (type) + "&list=" + JSON.stringify(list) + "&money=" + pay;
+                window.location.href = "select_coupon.html?" + url;
+                //                            app.alert("请重新选择优惠方式方式");
+            });
+        }
+        //支付
+        function send() {
+            var paytype = $('input:radio:checked').val();
+            if (!isnotnull(paytype)) {
+                app.alert("请选择支付方式");
+                return;
+            }
+            $("#send_id").attr("disabled", "true").css("pointer-events", "none").css("background", "#666");
+            loading_param = zeroModal.loading(2);
+            var needcash = false;
+            if ($('#pat_y_id').is(':checked')) {
+                needcash = true;
+            }
+            $.post(staticmessage.url + "pay/payone",
+                    {
+                        "type": type,
+                        "gsid": staticmessage.gsid,
+                        "paytype": paytype,
+                        "needcash": needcash,
+                        "list": JSON.stringify(list),
+                        "reduce": reduce,
+                        "spell": spell
+                    }
+            , function (data) {
+                console.log(data);
+                if (data.paid) {
+                    loading_close();
+                    app.alert("存在已支付完成的订单,请重新交易", "../delivery/07delivery_order_pay.html")
+                } else {
+                    if (data.status) {
+                        //                    app.confirm(confirmOk,"支付成功支付方式" + data.paytype);
+                        if (data.paytype == "W") {
+                            WXAppPay(data.payPayorder, data.payprice);
+//                        WXAppPay(data.payPayorder, 0.01);
+                        } else if (data.paytype == "Z") {
+                            AliAppPay(data.payPayorder, data.payprice);
+//                        AliAppPay(data.payPayorder, 0.02);
+                        } else if (data.paytype == "Y") {
+                            try {
+                                MyPush.send("PDEL0000", "支付下单");
+                            } catch (e) {
+                                console.log("MyPush.send(PDEL0000支付下单) 发送失败");
+                            }
+                            app.alert("订单支付成功", "64soldsuccess.html?payid=" + data.payPayorder);
+                        }
+                    } else {
+                        loading_close();
+                        app.alert("支付失败");
+                    }
+                }
+            });
+        }
+        function cycle(payid, orderid) {
+            var time = 0;
+            var payidsend = payid;
+            var orderidsend = orderid;
+            picisok = setInterval(function (payid, orderid) {
+                time++;
+                if (time < 14) {
+                    sendActual(payidsend, orderidsend, time);
+                } else {
+                    clearInterval(picisok);
+                    loading_close();
+                }
+            }, 20000);
+        }
+        function deleteorder(payid) {
+            $.post(staticmessage.url + "pay/deleteone",
+                    {
+                        "payid": payid,
+                    }
+            , function (data) {
+
+            });
+        }
+        //支付完成查询
+        function sendActual(payid, orderid, num) {
+            $.post(staticmessage.url + "pay/paytrue",
+                    {
+                        "payid": payid,
+                        "payorder": orderid,
+                        "number": num,
+                        "orderlist": JSON.stringify(list),
+                        "spell": spell
+                    }
+            , function (data) {
+                if (data.status) {
+                    console.log("订单支付成功!")
+                    clearInterval(picisok);
+                    try {
+                        MyPush.send("PDEL", "0000");
+                    } catch (e) {
+                        console.log("MyPush.send(PDEL0000支付下单) 发送失败")
+                    }
+                    if ("Z" == data.type) {
+                        app.alert("支付宝支付成功", "64soldsuccess.html?payid=" + orderid);
+                    } else if ("W" == data.type) {
+                        app.alert("微信支付成功", "64soldsuccess.html?payid=" + orderid);
+                    } else {
+                        app.alert("订单支付成功", "64soldsuccess.html?payid=" + orderid);
+                    }
+                } else if (data.result == "5") {
+                    console.log("付款后出现审查问题,进入退款逻辑,仅退支付金额");
+                    returnmoney(orderid, payid);
+                } else {
+                    if (num < 13) {
+                        refushmessage("查询超时,支付未完成");
+                        console.log("查询超时,支付未完成,如未支付,请尽快支付,若已支付请检查订单状态");
+                    } else {
+                        app.alert("查询超时,自动查询失败,请检查订单状态", "../delivery/07delivery_order_pay.html");
+                        console.log("查询超时,自动查询失败,请检查订单状态");
+                    }
+                }
+            });
+        }
+        function returnmoney(orderid, payid) {
+            $.post(staticmessage.url + "pay/returnone",
+                    {
+                        "orderid": orderid,
+                        "payid": payid
+                    }
+            , function (_data) {
+                console.log(_data)
+                if (_data.status || _data.result != "5") {
+                    app.alert("您的支付单存在问题,支付失败. 您的实际支付金额" + _data.money + "已退款至余额,请注意查收", "../delivery/07delivery_order_pay.html");
+                }
+            });
+        }
+        function savepayid(paytype, _orderid, data) {
+            var payid = ("W" == paytype) ? data.wxorderid : data.outTradeNo;
+            $.post(staticmessage.url + "pay/savepid",
+                    {
+                        "payorder": _orderid,
+                        "payid": payid,
+                        "orderlist": JSON.stringify(list),
+                        "spell": spell
+                    }
+            , function (_data) {
+                console.log(_data)
+                if (_data.status || _data.result != "5") {
+                    if ("W" == paytype) {
+                        //跳转到微信客户端进行支付,在支付前进行循环
+                        cycle(data.wxorderid, _orderid);
+                        if ("undefined" != typeof (Wechat)) {
+                            Wechat.sendPaymentRequest(data.appPay, function (message) {
+//                                app.alert(message);
+                                sendActual(data.wxorderid, _orderid, 1);
+                            }, function (reason) {
+                                loading_close();
+                                clearInterval(picisok);
+                                app.alert("跳转支付失败: " + reason);
+                            });
+                            zeroModal.close(loading_param);
+                        } else {
+                            loading_close();
+                            refusherror("调用微信支付失败");
+                        }
+                    } else if ("Y" == paytype) {
+                        //跳转到支付宝客户端进行支付,在支付前进行循环
+                        cycle(data.outTradeNo, _orderid);
+                        cordova.plugins.alipay.payment(data.orderStr, function success(e) {
+                            console.log(e);
+                            sendActual(data.outTradeNo, _orderid, 1);
+                        }, function error(e) {
+                            loading_close();
+                            clearInterval(picisok);
+                            app.alert("跳转支付失败: " + e.memo);
+                        });
+                    }
+                } else {
+                    loading_close();
+                    clearInterval(picisok);
+                    refusherror("保存支付单号失败,请退出重试!");
+                }
+
+            });
+
+
+        }
+        function WXAppPay(_orderid, _totalfee) {
+            //totalfee单位为分
+            var totalfee = _totalfee * 100;
+            var reqBody = {accountno: _orderid, gsid: "99990000001", totalFee: totalfee, wxbody: ""};
+            $.post("https://tp.ymdatas.com/wxsvr/api/pay/app", JSON.stringify(reqBody), function (data) {
+                console.log("preOrder success");
+                console.log(data);
+                if (data.rst === 1) {
+                    console.log("wxorderid: " + data.wxorderid);//支付订单生成成功会返回wxorderid, 此订单id可以用来查询订单的状态
+                    //进行订单编号持久化
+                    savepayid("W", _orderid, data);
+                } else {
+                    app.alert("生成支付订单失败: " + data.msg);
+                }
+            }, "json").error(function (xhr, status, info) {
+                loading_close();
+                refusherror("调用微信支付失败");
+            });
+        }
+
+        function AliAppPay(_orderid, _totalfee) {
+            //totalAmount单位为元
+            var reqBody = {accountno: _orderid, gsid: "99990000001", totalAmount: _totalfee, subject: "支付宝付款"};
+            $.post("https://tp.ymdatas.com/alipaysvr/api/pay/app", JSON.stringify(reqBody), function (data) {
+                console.log(data);
+                if (data.success) {
+                    console.log("aliOrderId: " + data.outTradeNo);//支付订单生成成功会返回wxorderid, 此订单id可以用来查询订单的状态
+                    savepayid("Y", _orderid, data);
+                } else {
+                    app.alert("生成支付订单失败: " + data.msg);
+                }
+            }, "json").error(function (xhr, status, info) {
+                loading_close();
+                refusherror("调用支付宝失败");
+            });
+
+
+        }
+
+        $(".back").on("click", function () {
+            locationold("old", "");
+        });
+
+        $(function () {
+            FastClick.attach(document.body);
+            $(document).ready(function () {
+                //初始化整个页面
+                init();
+                //动态加载
+                act();
+            });
+        });
+    </script>
+</html>

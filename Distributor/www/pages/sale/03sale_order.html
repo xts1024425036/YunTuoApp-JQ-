@@ -1,0 +1,393 @@
+<!doctype html>
+<html>
+    <head>
+        <title>销售开单 - 云驼联盟</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <link href="../../css/style.css" rel="stylesheet" type="text/css">
+        <link href="../../css/zeroModal.css" rel="stylesheet" type="text/css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../js/map.rest.js"></script>
+        <script src="../../js/zeroModal.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/salemain.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <div class="map_style_class">
+            <div class="map_out_id"><input id="map_input_id"  type="text" placeholder="请输入地址查询"> <div class="map_ensure_class" href="javascript:void(0);">查询</div></div>
+            <ul class="map_select_class" id="map_select_id">
+
+            </ul> 
+            <div class="map_bottom_class">
+                <a class="confirm_class" href="javascript:void(0);">确认</a>
+                <a class="cancel_class" href="javascript:void(0);">取消</a>
+                <!--<div class="clear"></div>-->
+            </div>   
+            <div class="map_main_class" style="display:none">
+                <div id="map_container" class="" style="height: 90%;">
+                </div> 
+            </div>
+        </div>
+        <div class="body_mask"></div>
+        <div id="back-to-top" class="body_to_top" ></div>
+        <!--logo区-->
+        <div class="main_top">
+            <ul class="main_top_left">
+                <a class="main_top_back" href="02sale_cart.html"></a>
+            </ul>
+            <ul class="main_top_title">
+                <li>销售开单</li>
+            </ul>
+            <ul class="main_top_right">
+                <!--<a class="main_top_search" href="#"></a>-->
+            </ul>
+        </div>
+
+        <div class="frame_sale_order">
+            <!--输入客户信息-->
+            <div class="sale_order_form">
+                <ul class="form_item_twice form_item_twice_left">
+                    <li class="form_item_text"><input id="customer_id" pid="customer" class="input_id need" type="text" placeholder="请填写客户的姓名"></li>
+                </ul>
+                <ul class="form_item_twice form_item_twice_right">
+                    <li class="form_item_text"><input id="customerphone_id" pid="customerphone" class="input_id need" type="text" placeholder="请填写客户的电话"></li>
+                </ul>
+                <ul class="form_item notitle">
+                    <!--<li class="form_item_title">地址</li>-->
+                    <li class="form_item_text">
+                        <input id="adress_id" pid="adress"  class="input_id need" type="text" placeholder="请填写城区/街道/小区">
+                        <input id="provinces_id" pid="provinces"  class="input_id" type="hidden" >
+                        <input id="city_id" pid="city" class="input_id" type="hidden" >
+                        <input id="district_id" pid="district" class="input_id"type="hidden" >
+                        <div class="form_item_dot baidu_map_class"><img  src="../../images/ico_ads.png" alt="" /></div>
+                    </li>
+                </ul>
+                <ul class="form_item notitle">
+                    <!--<li class="form_item_title">详细地址</li>-->
+                    <li class="form_item_text"><textarea id="addressdetailed_id" pid="addressdetailed" class="input_id need" placeholder="请填写送货的栋、单元等门牌信息"></textarea></li>
+                </ul>
+                <ul class="form_item notitle">
+                    <li class="form_item_text"><textarea id="remarks_id" pid="remarks" class="input_id hight_textarea"  placeholder="请填写客户送装特殊要求"></textarea></li>
+                </ul>
+                <ul class="form_item_twice form_item_twice_left notitle data_title_class">
+                    <li class="form_item_title">送货日期</li>
+                    <li class="form_item_title" style=" margin-bottom: 0vw;">安装日期</li>
+                </ul>
+                <ul class="form_item_twice form_item_twice_right notitle data_time_class">
+                    <li class="form_item_text">
+                        <div class="form_item_dot"><img src="../../images/ico_date.png" alt=""/></div>
+                        <div class="form_item_letter"><input type="date" id="devdate_id" pid="devdate" class="input_id need" placeholder="请输入送货时间"/></div>
+                    </li>
+                    <li class="form_item_text" style=" margin-bottom: 0vw;">
+                        <div class="form_item_dot"><img src="../../images/ico_date.png" alt=""/></div>
+                        <div class="form_item_letter"><input type="date" id="insdate_id" pid="insdate" class="input_id need" placeholder="请输入安装时间"/></div>
+                    </li>
+                </ul>
+                <div class="clear"></div>
+                <ul class="form_item_twice form_item_twice_left notitle data_title_class ">
+                    <li class="form_item_title">销售人员</li>
+                </ul>
+                <ul class="form_item_twice form_item_twice_right notitle data_time_class">
+                    <li class="form_item_text select_storage_class">
+                        <select id="seller_id" class="form_select input_id"  pid="seller">
+                            <option value ="null" selected>销售人员</option>
+                        </select>
+                        <div class="form_item_dot" ><img  src="../../images/ico_preson.png" alt=""/></div>
+                    </li>
+                </ul>
+            </div>
+            <!--输入订单货品列表-->
+            <div class="sale_order_list">
+                <div id="sale_cart_id" class="sale_order_list_title">货品清单</div>
+
+            </div>
+            <!--结算汇总-->
+            <div class="sale_order_total">
+                <ul class="sale_total_detail">
+                    <li id="sale_all_id">货品总数：0件</li>
+                    <li id="sale_all_price">应收款：0.00</li>
+                    <li id="sale_relief_id">优惠：￥0.00</li>
+                </ul>
+                <div id="sale_total_money_id" class="sale_total_money">实收款：￥0.00</div>
+            </div>
+
+            <input id="qtys_id" pid="qtys" value="0" class="input_id" type="hidden">
+            <input id="price_id" pid="price"  value="0" class="input_id" type="hidden">
+            <input id="favorableprice_id" pid="favorableprice"  value="0" class="input_id" type="hidden">
+            <input id="fiprice_id" pid="fiprice"  value="0" class="input_id" type="hidden">
+            <input id="gsid_id" pid="gsid" class="input_id" type="hidden">
+            <input id="groupid_id" pid="groupid" class="input_id" type="hidden">
+            <input id="distributid_id" pid="distributid" class="input_id" type="hidden">
+        </div>
+
+        <!--底部功能-->
+        <div class="frame_bottom_cart">
+            <a href="javascirpt:void(0);" id="send_id" class="bottom_button_max">完成订单</a>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        //初始化整个页面
+        var staticmessage = {};         //用户gsid，groupid，distributi等
+        var saleall = new Array();
+        var priceall = 0;           //总价
+        var username;
+        var relief;                //账单优惠
+        var address = {};
+        var newPoint = {};
+        var newMarker = {};
+        var addressitem = {};
+        //初始化整个页面
+        function init() {
+            //动态加载
+            addAct();
+            //加载资源
+            message();
+            //生成文本
+            htmlhelpmain("订单清单", saleall);
+            $.post(staticmessage.url + "bill/relief", {
+                "priceall": priceall,
+                "gsid": staticmessage.gsid
+            }, function (data) {
+                console.log(data);
+                relief = data.relief;
+                refush();
+            });
+            $.post(staticmessage.url + "bill/user", {
+                "gsid": staticmessage.gsid
+            }, function (data) {
+                console.log(data);
+                for (var x in data.users) {
+                    $("#seller_id").append("<option value =\"" + data.users[x].userid + "\">" + data.users[x].name + "</option>");
+                }
+            });
+        }
+        //生成价格
+        function refush() {
+            if (typeof (saleall) != "undefined" && saleall.length > 0) {
+                var a = listnumber(saleall);
+                $("#sale_all_id").html("货品总数：" + a + "件");
+                $("#qtys_id").val(a);
+            } else {
+                $("#sale_all_id").html("货品总数：" + 0 + "件");
+            }
+            if (typeof (priceall) != "undefined" && !isNaN(priceall)) {
+                $("#sale_all_price").html("应收款：￥" + priceall + "");
+                $("#price_id").val(priceall);
+            } else {
+                $("#sale_all_price").html("应收款：￥" + 0 + ".00");
+            }
+            if (relief > 0) {
+                $("#sale_relief_id").html("优惠：￥" + relief + "");
+                $("#favorableprice_id").val(relief);
+            } else {
+                $("#sale_relief_id").html("优惠：￥" + 0 + ".00");
+            }
+            $("#sale_total_money_id").html("应收款：￥" + (priceall - relief) + "");
+            $("#fiprice_id").val(priceall - relief);
+            $("#seller_id").val();
+
+        }
+        //加载信息
+        function message() {
+            //提取cookie
+            staticMessage(staticmessage);
+            $('#seller_id option:selected').val(storegeeditutil("userid"));
+            $('#seller_id option:selected').html(storegeeditutil("name"));
+            var a = storegeeditutil("priceall");
+            if (isnotnull(a)) {
+                priceall = parseInt(a);
+            } else {
+                storegeeditutil("priceall", 0);
+                storegeeditutil("saleall", undefined);
+            }
+            console.log("cookie=" + storegeeditutil("saleall"));
+            $('#distributid_id').val(staticmessage.distributid);
+            $('#groupid_id').val(staticmessage.groupid);
+            $('#gsid_id').val(staticmessage.gsid);
+            saleall = JSON.parse(storegeeditutil("saleall"));
+
+            console.log(saleall);
+        }
+        //生成位置选择列表
+        function changeMapSelect(result) {
+            console.log(result);
+            var html = "";
+            addressitem.province = result.province;
+            addressitem.city = result.city;
+            for (var x in result.zr) {
+                var item = "<li>"
+                item += "<div class=\"map_title\" lng=\"" + result.zr[x].point.lng + "\" lat=\"" + result.zr[x].point.lat + "\">" + result.zr[x].title + "</div>";
+                item += "<div class=\"map_main\" pin=\"\" >" + result.zr[x].address + "</div>";
+                item += "</li>";
+                html += item;
+            }
+            $("#map_select_id").html(html);
+        }
+        //动态加载添加
+        function addAct() {
+            var a = true;
+            $('.nav-toggle').click(function () {
+                var a = $(".nav").css("display");
+                $(".nav").css("display") == "none" ? $(".nav").css("display", "block") : $(".nav").css("display", "none");
+                $('body').toggleClass('nav-open');
+            });
+            $(window).on("scroll", function () {
+                if ($(window).scrollTop() > 100) {
+                    $("#back-to-top").fadeIn(500);
+                } else {
+                    $("#back-to-top").fadeOut(500);
+                }
+            });
+
+            $("#back-to-top").on("click", function () {
+                //$('body,html').animate({scrollTop:0},1000);
+                if ($('html').scrollTop()) {
+                    $('html').animate({scrollTop: 0}, 500);
+                    return false;
+                }
+                $('body').animate({scrollTop: 0}, 500);
+                return false;
+            });
+            $('.frame_bottom_cart').on('click', '#send_id', function (event) {
+                var a = validate();
+                var customerphone = $("#customerphone_id").val();
+                var res = /^0\d{3,4}-?\d{7,8}$/;
+                if (customerphone.length != 11 && !res.test(customerphone)) {
+                    app.alert("联系电话格式不对，请核对");
+                    $("#customerphone_id").focus();
+                    return;
+                }
+                cookiemain(priceall, saleall);
+                var salesorder = {};
+                var salesorderitems = new Array();
+                var qtys = 0;
+                for (var x in saleall) {
+                    var salesorderitem = {};
+                    var item = saleall[x];
+                    for (var y in item) {
+                        console.log("keyname:" + y + "\tvale:" + item[y]);
+                        if (y != "defaultcolor" && y != "number") {
+                            salesorderitem[y] = item[y];
+                        }
+                    }
+                    qtys += saleall[x].qtys * saleall[x].number;
+                    salesorderitem.prodqtys = item.number;
+                    salesorderitem.qtys = item.number * item.qtys;
+                    salesorderitem.totprice = parseInt(saleall[x].unprice * saleall[x].number);
+                    salesorderitems.push(salesorderitem);
+                }
+                for (var i = 0, length = $(".input_id").length; i < length; i++) {
+                    console.log($(".input_id").eq(i).val());
+                    var a = $(".input_id").eq(i).attr("pid");
+                    var val = $(".input_id").eq(i).val();
+                    console.log(a + "___" + val);
+                    salesorder[a] = val;
+                }
+                salesorder.adresslongitude = address.adresslongitude;
+                salesorder.adresslatitude = address.adresslatitude;
+                salesorder.salesorderitems = salesorderitems;
+                salesorder.qtys = qtys;
+                salesorder.prodqtys = listnumber(saleall);
+                salesorder.creator = staticmessage.userid;
+                if (a == "true") {
+                    loading_param = zeroModal.loading(2);
+                    setTimeout(function () {
+                        loading_close();
+                    }, 5000);
+                    console.log(salesorder);
+                    $("#send_id").attr("disabled", "true").css("pointer-events", "none");
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: staticmessage.url + "bill/salesorder",
+                        contentType: "application/json",
+                        data: JSON.stringify(salesorder),
+                        success: function (data) {
+                            loading_close();
+                            if (data.status) {
+                                cookiemain(undefined, undefined);
+                                app.alert("开单成功", "../delivery/05delivery_log_daily.html");
+                            } else {
+                                $("#send_id").attr("disabled", "false").css("pointer-events", "auto");
+                                app.alert(data.message)
+                            }
+                        }
+                    });
+
+                } else {
+                    alert(a);
+                    loading_close();
+                }
+            });
+
+            //baidu map
+            $(".map_style_class").on("click", "a", function (e) {
+                var type = $(this).html();
+                var point = {};
+                if ("确认" == type) {
+                    point.lat = $(".map_select_class .cur").find(".map_title").attr("lat");
+                    point.lng = $(".map_select_class .cur").find(".map_title").attr("lng");
+                    $("#adress_id").val($(".map_select_class .cur").find(".map_main").html());
+                    $("#provinces_id").val(addressitem.province);
+                    $("#city_id").val(addressitem.city);
+//                    $("#district_id").val(rs.addressComponents.district);
+                    address.adresslongitude = point.lng;
+                    address.adresslatitude = point.lat;
+                    console.log(point);
+                }
+                $(".map_style_class").css("left", "-140vw");
+            });
+            $('.baidu_map_class').click(function () {
+                $(".map_style_class").css("left", "0vw");
+                $("#adress_id").blur();
+            });
+            $('#adress_id').click(function () {
+                if (!isnotnull(address.adresslongitude)) {
+                    $('.baidu_map_class').trigger("click");
+                }
+            });
+            $('.map_select_class').on("click", "li", function () {
+                $(this).siblings("li").removeClass("cur").end().addClass("cur");
+            });
+            $(".map_ensure_class").on("click", function () {
+                my_map.searchOther("武汉市", $("#map_input_id").val());
+            });
+        }
+
+        $("#devdate_id").on("change", function () {
+            var nowDate = new Date();
+            var year = nowDate.getFullYear();
+            var month = nowDate.getMonth() + 1 < 10 ? "0" + (nowDate.getMonth() + 1) : nowDate.getMonth() + 1;
+            var day = nowDate.getDate() < 10 ? "0" + nowDate.getDate() : nowDate.getDate();
+            var sysdate = year + "-" + month + "-" + day;
+            var devdatestamp = $("#devdate_id").val();
+            if (nowDate.getHours() >= 12 && devdatestamp == sysdate) {
+                app.alert("抱歉,无法当天下午送到,请重新选择");
+                $("#devdate_id").val("");
+                $("#insdate_id").val("");
+            }
+            $("#insdate_id").val(devdatestamp);
+
+
+        })
+
+        $(function () {
+            FastClick.attach(document.body);
+            $("#devdate_id").val(GetDateStr(1));
+            $("#insdate_id").val(GetDateStr(1));
+            init();
+        });
+    </script>
+</html>
+<script type="text/javascript">
+    addLoadEvent(function () {
+        my_map.init("map_container");
+    });
+</script>

@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>云驼联盟</title>
+        <link href="../../css/common.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../js/deliverymain.js"></script>
+        <script src="../../js/deliveryutil.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            #order_list_id{
+                width: 99%;
+                background: #fff;
+                margin-left: 0vw;
+                box-shadow: 0 0.02rem 0.38rem 0 #c4c7ce;
+                border-radius: 2vw;
+            }
+            #order_list_id td{
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="top_nav">
+            <i class="top_left back iconfont icon-back"></i>
+            <div class="top_menu">订单取消</div>
+            <div class="top_right"></div>
+        </div>
+        <div  id="backend" class="content" style="margin-top:14vw;line-height:10vw;color: #666;">
+            <div class="innercontent">
+                <div>客户地址：<span class="gray"> <textarea id="all_address_id" rows="1" class="input_id need no_out_border" placeholder="订单填写栋、单元、楼层、门牌信息" style="width: 70vw;height: 16px;" autoHeight="true"></textarea></span></div>
+                <div>客户姓名：<span class="gray"><input id="customer_id" class="input_id need no_out_border"  type="text" placeholder="订单客户名" style="width: 25vw;"></span></div>
+                <div>客户电话：<span class="gray"><input id="cusphone_id" class="input_id need no_out_border"  type="text" placeholder="订单手机或电话" style="width:32vw;"></span></div>
+                <div>预送日期：<span class="gray"> <input type="text" id="devdate_id" pid="devdate" class="input_id need no_out_border" placeholder="订单送货时间" readonly="true" disabled="true" style="width:32vw;height: 7vw;margin-left: 1vw;"/></span></div>
+                <div><span style="line-height:8vw;vertical-align: top;">提货地址：</span><span class="gray"><textarea id="warehouseadress_id" rows="1" class="input_id need no_out_border" placeholder="订单提货地址" style="width:70vw;" autoHeight="true"></textarea></span></div>
+            </div>
+            <div style="width:100%;height:2vw;margin-top:2vw;background:#f3f5f7;"></div>
+            <div class="innercontent " style="padding-bottom: 24vw;">
+                <div class="blueblock left"></div>
+                <div class="left" style="font-weight:bold;color:rgba(51,51,51,1);">订单详情</div>
+                <div class="clear"></div>
+                <table id="order_list_id" class="bottom_cart_list sale_cart_main">
+                </table>
+            </div>
+        </div>
+        <!--底部功能-->
+        <div class="bottom_cart">
+            <div id="send_id" class="bottom_button">确认取消</div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var type;
+        var staticmessage = {};         //用户gsid，groupid，distributi等
+        var deliveryoderid;
+        var prolist;
+        var canpro;
+        var deliveryoder;
+        $(function () {
+            FastClick.attach(document.body);
+            function init() {
+                staticMessage(staticmessage);
+                deliveryoderid = GetQueryString("deliveryoderid");
+                canpro = GetQueryString("isafremark");
+                filter();
+            }
+            function filter() {
+                $.post(staticmessage.url + "onlydelivery/findorder",
+                        {
+                            "orderid": deliveryoderid
+                        }
+                , function (data) {
+                    console.log(data);
+                    deliveryoder = data.del;
+                    for (var x in deliveryoder) {
+                        if ("number" == typeof (deliveryoder[x]) && deliveryoder[x] > 1000000000) {
+                            deliveryoder[x] = timeFormat(deliveryoder[x]);
+                        }
+                        $("#" + x + "_id").val(deliveryoder[x]);
+                    }
+                    $("#all_address_id").val(deliveryoder.customeradress + deliveryoder.addressdetailed);
+                    for (var x in deliveryoder.deliveryoderitems) {
+                        deliveryoder.deliveryoderitems[x].number = deliveryoder.deliveryoderitems[x].prodqtys;
+                    }
+                    var itemhtml = htmladd("onlyorder", deliveryoder.deliveryoderitems);
+                    changeAll("order_list_id", itemhtml);
+                    $('textarea[autoHeight]').autoHeight();
+                });
+            }
+            function send() {
+                $.post(staticmessage.url + "delivery/deleteone",
+                        {
+                            "orderid": deliveryoderid,
+                            "type": "after",
+                            "userid": staticmessage.userid
+                        }
+                , function (data) {
+                    console.log(data);
+                    app.alert("订单" + deliveryoderid + "删除成功", "../sale/84canceldel.html?findtype=return");
+                });
+            }
+            function act() {
+                //>>>最终添加:监听事件 end-1
+                $('#send_id').on('click', function (event) {
+                    $("#send_id").attr("disabled", "true").css("pointer-events", "none").css("background", "#666");
+                    send();
+                });
+                $('.back').on('click', function (event) {
+                    window.location.href = "../sale/84canceldel.html?findtype=return";
+                });
+            }
+
+            //初始化整个页面
+            init();
+            //动态加载
+            act();
+        });
+    </script>
+</html>

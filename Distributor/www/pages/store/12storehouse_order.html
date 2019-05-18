@@ -1,0 +1,329 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>云驼联盟</title>
+        <link href="../../css/style.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="../../js/jquery.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../js/map.rest.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/purchaseymain.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            .frame_storehouse_order{
+                margin-top: 12vw;
+            }
+            .form_item_twice.notitle{
+                margin-top: 0;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!--地图框架start-->
+        <div class="map_style_class">
+            <div class="map_out_id"><input id="map_input_id"  type="text" placeholder="查询"> <div class="map_ensure_class" href="javascript:void(0);">查询</div></div>
+            <div class="map_main_class">
+                <div id="map_container" class="" style="height: 90%;">
+                </div> 
+                <img id="map_pin_id" src="../../images/map_pin.png" alt="" style="width: 6vw"/>
+                <div class="clear"></div>
+            </div>
+            <div class="map_bottom_class">
+                <a class="confirm_class" href="javascript:void(0);">确认</a>
+                <a class="cancel_class" href="javascript:void(0);">取消</a>
+                <div class="clear"></div>
+            </div>   
+        </div>
+        <!--地图框架end-->
+
+        <div class="body_mask"></div>
+        <!--<div class="body_to_top"></div>-->
+        <!--logo区-->
+        <div class="main_top">
+            <ul class="main_top_left">
+                <a class="main_top_back" href="../menu/61send.html"></a>
+                <script type="text/javascript">
+                    page3();
+                </script>
+                <a class="main_top_menu nav-toggle" href="javacript:void(0);"></a>
+            </ul>
+            <ul class="main_top_title">
+                <li>提货单</li>
+            </ul>
+            <ul class="main_top_right">
+                <a class="main_top_history" href="#">历史订单</a>
+            </ul>
+        </div>
+
+        <div class="frame_storehouse_order">
+            <!--输入客户信息-->
+            <div class="sale_order_form">
+                <ul class="form_item_twice form_item_twice_left notitle data_title_class">
+                    <li class="form_item_title" style=" margin-bottom: 3vw;">采购单号</li>
+                    <li class="form_item_title" style=" margin-bottom: 3vw;">物流单号</li>
+                </ul>
+                <ul  class="form_item_twice form_item_twice_right notitle data_time_class">
+                    <li class="form_item_text" style=" margin-bottom: 4vw;">
+                        <select id="good_list_id" pid="goodsorderid" class = "input_id form_select">
+                            <option value ="0" >无采购单号</option>
+                        </select>
+                        <div class="form_item_dot"><img src="../../images/ico_section.png" alt=""/></div>
+                    </li>
+                    <li class="form_item_text">
+                        <input id="logisticsorderid_id" pid="logisticsorderid" class="input_id need" type="text" placeholder="请填写物流单号">
+                        <div class="form_item_dot"><img src="../../images/ico_preson.png" alt=""/></div>
+                    </li>
+                </ul>
+                <div class="clear"></div>
+                <ul class="form_item_twice form_item_twice_left notitle data_title_class">
+                    <li class="form_item_title" style=" margin-bottom: 3vw;">物流公司</li>
+                    <li class="form_item_title" style=" margin-bottom: 3vw;">提货地址</li>
+                </ul>
+                <ul  class="form_item_twice form_item_twice_right notitle data_time_class">
+                    <li class="form_item_text" style=" margin-bottom: 4vw;">
+                        <input id="logistics_id" pid="logistics" class="input_id need"type="text" placeholder="请填写物流公司的名称">
+                    </li>
+                    <li class="form_item_text">
+                        <input  id="address_id"  pid="adress" class="input_id need" type="text" placeholder="请填写提货的详细地址">
+                        <div class="form_item_dot" style="pointer-events: auto;"><img class="baidu_map_class" src="../../images/ico_ads.png" alt=""/></div>
+                    </li>
+                </ul>
+                <div class="clear"></div>
+                <ul class="form_item_twice form_item_twice_left notitle data_title_class">
+                    <li class="form_item_title" style=" margin-bottom: 4vw;">提货要求</li>
+                    <li class="form_item_title" style=" margin-bottom: 4vw;">提货时间</li>
+                </ul>
+                <ul  class="form_item_twice form_item_twice_right notitle data_time_class">
+                    <li class="form_item_text" style=" margin-bottom: 4vw;">
+                        <input pid="remarks" class="input_id" type="text" placeholder="请填写提货的要求">
+                    </li>
+                    <li class="form_item_text">
+                        <div class="form_item_letter"><input type="date" id="createdate_id" pid="createdate" class="input_id" placeholder="请输入安装时间"/></div>
+                        <div class="form_item_dot"><img src="../../images/ico_date.png" alt=""/></div>
+                    </li>
+                </ul>
+                <div class="clear"></div>
+                <ul class="form_item_twice form_item_twice_left notitle data_title_class">
+                    <li class="form_item_title" style=" margin-bottom: 3vw;">收 货 仓</li>
+                    <li class="form_item_title" style=" margin-bottom: 3vw;">送装要求</li>
+                </ul>
+                <ul  class="form_item_twice form_item_twice_right notitle data_time_class">
+                    <li class="form_item_text" style=" margin-bottom: 4vw;">
+                        <select id="warehouseid_id" pid="warehouseid" class="input_id form_select" >
+
+                        </select>
+                        <div class="form_item_dot"><img src="../../images/ico_section.png" alt=""/></div>
+                    </li>
+                    <li class="form_item_text">
+                        <input id="" pid="test" type="text" placeholder="请填写客户送装特殊要求">
+                    </li>
+                </ul>
+                <div class="clear"></div>
+                <ul class="form_item_twice form_item_twice_left notitle data_title_class">
+                    <li class="form_item_title" style=" margin-bottom: 2vw;">取货说明</li>
+                </ul>
+                <ul  class="form_item_twice form_item_twice_right notitle data_time_class">
+                    <li class="form_item_text form_item_text_textarea" style=" margin-bottom: 2vw;">
+                        <textarea id="" pid="test" ></textarea>
+                    </li>
+                </ul>
+            </div>
+
+            <!--底部功能-->
+            <div class="frame_bottom_cart">
+                <a href="javascript:void(0);" id="send_id"  class="bottom_button_max">完成订单</a>
+            </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var goods = new Array();
+        var good = {};
+        var staticmessage = {};
+        var warhousearray = new Array();
+        var address = {};
+        var warhouse;
+
+        function init() {
+            staticMessage(staticmessage);
+            message();
+        }
+        function message() {
+            $.post(staticmessage.url + "store/findone", {"gsid": staticmessage.gsid}
+            , function (data) {
+                console.log(data);
+                goods = data.goodsorder;
+                for (var x in data.goodsorder) {
+                    $("#good_list_id").append("<option>" + data.goodsorder[x].goodsorderid + "</option>");
+                }
+            });
+
+            $.post(staticmessage.url + "purchase/find", {"gsid": staticmessage.gsid}
+            , function (data) {
+                console.log(data);
+                warhousearray = data.find;
+                for (var x in data.find) {
+                    $("#warehouseid_id").append("<option value =\"" + data.find[x].warehouseid + "\" pid=\"" + data.find[x].whtype + "\">" + data.find[x].warehouseadress + "</option>");
+                }
+            });
+        }
+        //查询select的选择项
+        function findselectWarhouse() {
+            var item2 = $("#warehouseid_id option:selected").attr("pid");
+            var item = $("#warehouseid_id option:selected").val();
+            warhouse = warhousearray[listonefiledtwo("warehouseid", item, "whtype", item2, warhousearray)];
+        }
+        function htmlhelp() {
+
+        }
+        function act() {
+            $('#send_id').on('click', function (event) {
+                findselectWarhouse();
+                var picksorder = {};
+                for (var i = 0, length = $(".input_id").length; i < length; i++) {
+                    console.log($(".input_id").eq(i).val());
+                    var a = $(".input_id").eq(i).attr("pid");
+                    var val = $(".input_id").eq(i).val();
+                    console.log(a + "___" + val);
+                    picksorder[a] = val;
+                }
+                for (var y in good) {
+                    if (y != "defaultcolor") {
+                        picksorder[y] = good[y];
+                    }
+                }
+                copyob(warhouse, picksorder);
+                picksorder.creator = staticmessage.username;
+                picksorder.adresslongitude = address.adresslongitude;
+                picksorder.adresslatitude = address.adresslatitude;
+                console.log(picksorder);
+                var gid = $("#good_list_id").val();
+                var a = validate();
+                if (a == "true") {
+                    $("#send_id").attr("disabled", "true").css("pointer-events", "none");
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: staticmessage.url + "store/send",
+                        contentType: "application/json",
+                        data: JSON.stringify(picksorder),
+                        success: function (data) {
+                            console.log(data);
+                            if (data.status) {
+                                app.alert("提货成功", "../menu/61send.html");
+                            } else {
+                                app.alert(data.message);
+                                $('#send_id').attr("disabled", "false").css("pointer-events", "auto");
+                            }
+                        }
+                    });
+                } else {
+                    alert(a);
+                }
+//                window.location.href = "../01home.html";
+            }
+            );
+            $('#good_list_id').on('change', function (event) {
+                findselect();
+                for (var x in good) {
+                    console.log("keyname:" + x + "\tvale:" + good[x]);
+                    var id = x + "_id";
+                    if ($('#' + id).length) {
+                        console.log("keyhave++++" + x + "\tvale:" + good[x]);
+                        $('#' + id).val(good[x]);
+                    }
+                }
+                //补充
+                $("#warehouseid_id option[value='" + good.warehouseid + "']").attr("select", "selected");
+            });
+            $(".map_style_class").on("click", "a", function (e) {
+                var type = $(this).html();
+                if ("确认" == type) {
+                    var point = my_map.getCenter();
+                    var addressitem = "";
+                    my_map.pointToAddress(new BMap.Point(point.lng, point.lat), function (rs) {
+                        addressitem = rs.address;
+                        $("#address_id").val(addressitem);
+                    });
+                    address.adresslongitude = point.lng;
+                    address.adresslatitude = point.lat;
+                    console.log(point);
+
+                }
+                $(".map_style_class").css("left", "-99vw");
+            });
+            $('.baidu_map_class').click(function () {
+                $(".map_style_class").css("left", "0vw");
+                $("#address_id").blur();
+            });
+            $('#address_id').click(function () {
+                if (!isnotnull(address.adresslongitude)) {
+//                    app.alert("请定位精准坐标");
+//                    $(".map_style_class").css("left", "0vw");
+                    $('.baidu_map_class').trigger("click");
+                }
+            });
+            $(".map_ensure_class").on("click", function () {
+                var a = $("#map_input_id").val();
+                my_map.addressToPoint(a, function (point) {
+                    my_map.setCenter(point);
+                })
+            });
+
+        }
+
+        //查询select的选择项
+        function findselect() {
+            var item = $("#good_list_id option:selected").val();
+            if (item == "0") {
+                $("#logisticsorderid_id").val("");
+                $("#logistics_id").val("");
+                good = {};
+                return;
+            }
+            good = goods[listonefiledone("goodsorderid", item, goods)];
+        }
+        $(function () {
+            FastClick.attach(document.body);
+            //初始化整个页面
+            init();
+            //动态加载
+            act();
+        });
+    </script>
+</html>
+<script type="text/javascript">
+    addLoadEvent(function () {
+        var truckPoint = {};
+        my_map.getLocation(function (point) {
+            console.log(point);
+            if (point.success) {
+//                my_map.addressToPoint("湖北省武汉市硚口区建一路2号两岸咖啡", function (point) {
+                var truckPoint = new BMap.Point(point.lng, point.lat);
+                my_map.init("map_container", truckPoint);
+//                my_map.init("map_container");
+//                });
+            } else {
+                my_map.init("map_container");
+                console.log(my_map.getCenter());
+            }
+        });
+//        my_map.setZoom(16);
+//        my_map.map.addEventListener('click', function (e) {
+//            my_map.removeMarker(newMarker);
+//            newPoint = new BMap.Point(e.point.lng, e.point.lat)
+//            newMarker = new my_map.TruckOverlay(newPoint)
+//            my_map.addMarker(newMarker);
+//            console.log(e);
+//            console.log('您点击了地图');
+//            console.log('点击坐标: ' + e.point.lng + ', ' + e.point.lat);
+//        });
+    });
+</script>

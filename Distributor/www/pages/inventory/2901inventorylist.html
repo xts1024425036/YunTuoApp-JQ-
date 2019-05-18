@@ -1,0 +1,184 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>库存清单</title>
+        <link href="../../css/style.css" rel="stylesheet" type="text/css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/inventory.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            #search_img_id{    display: inline-block;width: 6vw;line-height: 5vw;margin-top: 3vw;float: right;margin-right: 4vw;}
+            .search_class{display: inline-block;width: 30%}
+            .search_input_class{    display: inline-block;width: 37%;float: right;}
+            .form_item_unable .radio_class{display: inline-block;width: 30%;margin-top: 1.8vh;}
+            .form_item_unable .radio_class input{width: 40%;}
+            .radio_li_class {height: 6vh}
+            .radio_li_class span{font-size: 2vh}
+            .sale_reports_table table .log_class th {
+                font-weight: 500;
+                background: #f3f3f361;
+                line-height: 200%;
+            }
+            .form_item_title {
+                margin-left: 1vw;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!--logo区-->
+        <div class="main_top">
+            <ul class="main_top_left">
+                <div class="main_top_back"></div>
+            </ul>
+            <ul class="main_top_title">
+                <li>库存清单</li>
+            </ul>
+        </div>
+        <div class="frame_sale_order">
+            <!--输入客户信息-->
+            <div class="sale_order_form " >
+                <!--                <ul class="form_item">
+                                    <li class="form_item_title">仓库类型</li>
+                                    <li class="form_item_text">
+                                    <li class="form_item_text form_item_unable radio_li_class"> 
+                                        <label class="radio_class"><input  type="radio" name="storage" value="1" /><span>自有仓库</span></label>
+                                        <label class="radio_class"><input  type="radio" name="storage" value="2" /><span>平台仓库</span></label>
+                                        <label class="radio_class"><input  type="radio" checked name="storage" value="null" /><span>全部</span></label>
+                                    </li>
+                                </ul>-->
+                <ul class="form_item">
+                    <li class="form_item_title form_item_text">
+                        <span>分类</span>
+                        <select id="cate_id">
+                            <option value ="null">所有</option>
+                        </select>
+                        <div class="form_item_dot"><img src="../../images/ico_section.png" alt=""/></div>
+                    </li>
+                </ul>
+                <ul class="form_item ">
+                    <li class="search_class form_item_title">搜索</li>
+                    <li class="form_item_title search_input_class">(点击小图标搜索)</li>
+                </ul>
+                <ul class="form_item" style="margin-bottom: 4vw;">
+                    <li class="form_item_text">
+                        <input id="money_down_id" type="text" placeholder="可按照产品名称,编号搜索" style="width: 85%">
+                        <img id="search_img_id" src="../../images/ico03.png" height="20">
+                    </li>
+
+                </ul>
+
+            </div>
+            <div class="change_ensure_class">确定修改</div>
+            <div class="sale_reports_table" id="order_list_id">
+
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var staticmessage = {};
+        var filterjson;
+        var cate;
+        var storetype;
+        var params = new Array();
+        //初始化整个页面
+        function init() {
+            staticMessage(staticmessage);
+            filterjson = "";
+            cate = "";
+            storetype = "null";
+            filter();
+            $.post(staticmessage.url + "inventory/findcate", {"gsid": staticmessage.gsid}
+            , function (data) {
+                console.log(data.map);
+                for (var x in data.map) {
+                    $("#cate_id").append("<option value =\"" + x + "\">" + data.map[x] + "</option>");
+                }
+            });
+        }
+        function filter() {
+            $.post(staticmessage.url + "inventory/findlist", {"gsid": staticmessage.gsid, "filter": filterjson, "cate": cate, "storetype": storetype}
+            , function (data) {
+                console.log(data);
+                var smallHtml = htmladd("store", data.list);
+                var json = {};
+                json.itemhtml = smallHtml;
+                var mainhtml = temp7.format(json)
+                change("order_list_id", mainhtml);
+                $("#log_order_id tr").on("change", function () {
+                    var param = {};
+                    var rows = $(this).prevAll().length;
+                    param.locationid = parseInt($("#log_order_id tr:eq(" + rows + ") th:eq(0)").html());
+                    param.gsid = $("#log_order_id tr:eq(" + rows + ") th:eq(1)").html();
+                    param.prodcodes = $("#log_order_id tr:eq(" + rows + ") th:eq(2)").html();
+                    param.prodqtys = parseInt($(this).find("input").val());
+                    params.push(param);
+                    console.log(params);
+                })
+            });
+
+        }
+        //动态加载
+        function act() {
+            //顶部
+            $('#search_img_id').on('click', function (event) {
+                filterjson = $("#money_down_id").val();
+                filter();
+            });
+            $('.radio_class').on('change', 'input', function (event) {
+                storetype = $('input:radio:checked').val();
+                filter();
+            });
+            $('.sale_order_form').on('change', '#cate_id', function (event) {
+                cate = $("#cate_id").val();
+                filter();
+            });
+
+            $(".change_ensure_class").on("click", function () {
+                if (params.length > 0) {
+                    $.ajax({
+                        url: staticmessage.url + "inventory/updateNumber",
+                        type: "post",
+                        data: JSON.stringify(params),
+                        dataType: "json",
+                        contentType: 'application/json',
+                        success: function (data) {
+                            if (data.status = "true") {
+                                params.splice(0, params.length);
+                                filter();
+                                app.alert("修改成功");
+                            } else {
+                                app.alert("修改失败");
+                            }
+                        }
+                    });
+                } else {
+                    app.alert("请修改数量");
+                }
+
+            })
+        }
+
+        $(".main_top_back").click(function () {
+            var url = storegeeditutil("returnUrl");
+            window.location.href = url;
+        });
+
+        $(function () {
+            FastClick.attach(document.body);
+            act();
+            init();
+        });
+
+    </script>
+</html>
+

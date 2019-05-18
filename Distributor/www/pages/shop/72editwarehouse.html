@@ -1,0 +1,362 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>云驼联盟</title>
+        <link href="../../css/common.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../js/map.rest.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/shopedit.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            .show_name_class{
+                display: none;
+            }
+            .iconfont {
+                font-size:7vw;
+            }
+            .bottom_button_class {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 11vw;
+                line-height: 11vw;
+                font-size: 5.5vw;
+                font-weight: bold;
+                letter-spacing: 3vw;
+                z-index: 100;
+                padding: 0;
+                box-shadow: 0 0 1vh #dedede;
+                color: #FFFFFF;
+                text-align: center;
+            }
+            .warehouse_type_class  .gray{
+                display: none;
+                margin-left: 4vw;
+                position: relative;
+                float: left;
+                width: 12vw;
+                font-size: 3.2vw;
+                height: 6.4vw;
+                line-height: 2vw;
+                margin: 2vw 3.5vw 0.5vh 0.5vw;
+                padding: 1vh 1vw;
+                background: #FFF;
+                border: 0.2vw #A3A3A3 solid;
+                border-radius: 1vw;
+                width: 13vw;
+                text-align: center;
+                color: #A3A3A3;
+            }
+            .address_edit_class .warehouse_type_class .show{
+                display: block;
+            }
+            .user_name_class .menuoptionbmy{
+                background: #D0DFFF;
+                color: #3A63B8;
+                border: none;
+                font-weight: 600;
+                line-height: 2.5vw;
+            }
+            .input_class{
+                width: 70%;
+            }
+            .top_menu .edit_title{
+                font-size: 4.5vw;
+                margin-left: 20vw;
+            }
+            .type_edit .add_new{
+                display: none;
+            }
+            .type_add .edit_one{
+                display: none;
+            }
+            .input_class textarea{
+                vertical-align: middle;
+            }
+            .top_nav .top_menu {
+                width: 94vw;
+                left: 5vw;
+            }
+            .delete_class {
+                margin-top: 4vw;
+                margin-right: -1vw;
+            }
+            input:-webkit-autofill { box-shadow: 0 0 0px 1000px #F0F0F0 inset;}
+            #popup{
+                height: 100%;
+                top:0;
+                padding-top: calc(20px);
+                padding-top: calc(constant(safe-area-inset-top));
+                padding-top: calc(env(safe-area-inset-top));
+            }
+        </style>
+    </head>
+    <body>
+        <div class="top_nav">
+            <i class="top_left back iconfont icon-back"></i>
+            <div class="top_menu">
+                <span class="title edit_one edit_title">编辑提货地址</span>
+                <span class="title add_new">新增提货地址</span>
+                <div class="right delete_class edit_one"><i class="iconfont icon-delete"></i></div>
+            </div>
+        </div>
+        <div class="address_edit_class innercontent top_innercontent" id="baobiao" style="margin-top:15vw;">
+            <div class="menuline user_name_class">
+                <div class="menutext title">联系人：</div>
+                <div class="menutext gray input_class"><input id="link_man_id" class="need" maxlength="15" type="text" placeholder="请填写提货联系人"/></div>
+                <div class="clear"></div>
+            </div>
+            <div class="menuline user_name_class">
+                <div class="menutext title">手机号：</div>
+                <div class="menutext gray input_class"><input id="link_phone_id" class="need"  maxlength="15"  type="tel" placeholder="请填写提货联系人电话"/></div>
+                <div class="clear"></div>
+            </div>
+            <div class="menuline address_main">
+                <div class="menutext menuline_sex title">详细地址:</div>
+                <div class="menutext gray input_class"><textarea id="address_id" class="need" readonly="true" autoHeight="true" rows="1" placeholder="请填写详细地址"></textarea></div>
+                <i class="iconfont icon-right"></i>
+                <div class="clear"></div>
+            </div>
+            <div class="menuline">
+                <div class="menutext menuline_sex title">地址门牌:</div>
+                <div class="menutext gray input_class"><input id="addressitem_id" class="need" type="text"  maxlength="32" placeholder="请填写提货地址详细门牌详细"/></div>
+                <div class="clear"></div>
+            </div>
+            <div class="menuline user_name_class warehouse_type_class">
+                <div class="menutext title">地址类型:</div>
+                <div class="menutext gray wtype_c show" data-pid="C">仓库</div>
+                <div class="menutext gray wtype_c show" data-pid="W">物流</div>
+                <div class="menutext gray wtype_c show" data-pid="Z">展会</div>
+                <div class="menutext gray wtype_c wtype_s" data-pid="S">商铺</div>
+                <div class="clear"></div>
+            </div>
+            <div id="popup" class="new_map_popup">
+                <div style="margin-bottom:2vw;" class="search_title">
+                    <div class="select2_map">
+                        <select id="city_id" class ="form_select no_out_border" style="float: left;text-align: center;font-size: 4vw;">
+                            <option value ="武汉市" selected>武汉市</option>
+                        </select>
+                    </div>
+                    <i class="iconfont icon-xiangxiajiantoushixin" style="font-size: 4vw;float: left;"></i>
+                    <div class="input gray map_input">
+                        <i class="iconfont icon-search" style="font-size: 5vw;"></i>
+                        <input id="map_input_id"  type="text" class="no_out_border " placeholder="请输入小区名搜索">
+                    </div>
+                    <div id="closehere"  class="right gray" style="color:#535050">取消</div>
+                    <div class="clear"></div>
+                </div>
+                <div id="address_select_id" class="popupcontainer address_select_item">
+
+                </div>
+            </div>
+        </div>
+        <div id="add_msg"></div>
+        <div class="bottom_button_class">
+            <!--<div class="left half whitebutton delete_class" style="border: 0vw; ">作废</div>-->
+            <div class="left half ensure_class" style="background: #5478c4; width: 100vw;">保存</div>
+            <div class="clear"></div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var staticmessage = {};
+        var user = {};
+        var address_obj = {};
+        var searchtime;
+        var json = {};
+        var old = storegeeditutil("oldurl");
+        //初始化整个页面
+        function init() {
+            staticMessage(staticmessage);
+            MyPush.register(build_duri(storegeeditutil("userid"), "PAFE"));
+            var haveshop = storegeeditutil("havashop");
+            if ("false" == haveshop) {
+                $(".wtype_s").css("display", "block");
+            }
+
+            var findid = GetQueryString("findid");
+            if (isnotnull(findid)) {
+                $(".top_menu").addClass("type_edit");
+                message(findid);
+            } else {
+                $(".top_menu").addClass("type_add");
+                $(".wtype_c[data-pid='C']").addClass("menuoptionbmy");
+            }
+        }
+
+        function confirmOk(param1, param2) {
+            if ("delete" == param1) {
+                deletewarehouse();
+            } else if ("edit" == param1) {
+                edituser();
+            }
+        }
+        function message(findid) {
+            $.post(staticmessage.url + "shopedit/findoneware",
+                    {
+                        "warehouseid": findid
+                    }
+            , function (data) {
+                console.log(data);
+                json = data.warehouse;
+                var address = json.warehouseadress.substring(0, json.warehouseadress.indexOf(";"));
+                var addressitem = json.warehouseadress.substring(json.warehouseadress.indexOf(";") + 1, json.warehouseadress.length);
+                if (isnotnull(address)) {
+                    $("#address_id").val(address);
+                    $("#addressitem_id").val(addressitem);
+                } else {
+                    $("#address_id").val(json.warehouseadress);
+                }
+                $("#link_phone_id").val(json.warehousemobile);
+                $("#link_man_id").val(json.warehouselinkman);
+                if (isnotnull(json.wtype)) {
+                    if ("S" == json.wtype) {
+                        $(".wtype_c").removeClass("show");
+                        $(".wtype_s").addClass("show");
+                    }
+                    $(".warehouse_type_class .gray[data-pid='" + json.wtype + "']").addClass("menuoptionbmy");
+                } else {
+                    $(".warehouse_type_class .gray[data-pid='C']").addClass("menuoptionbmy");
+                }
+                address_obj.adresslongitude = json.adresslongitude;
+                address_obj.adresslatitude = json.adresslatitude;
+                $('textarea[autoHeight]').autoHeight();
+            });
+        }
+        //动态加载
+        function deletewarehouse() {
+            $.post(staticmessage.url + "shopedit/warehousedelete", {
+                "userid": json.warehouseid,
+            }
+            , function (data) {
+                console.log(data);
+                app.alert("提货地址已删除!", "74addressmanage.html");
+            });
+        }
+        function edituser() {
+            var message = validate();
+            if (message != "true") {
+                refushmessage(message);
+                return;
+            }
+            json.adresslongitude = address_obj.adresslongitude;
+            json.adresslatitude = address_obj.adresslatitude;
+            json.warehouseadress = $("#address_id").val() + ";" + $("#addressitem_id").val();
+            json.warehousemobile = $("#link_phone_id").val();
+            json.warehouselinkman = $("#link_man_id").val();
+            json.distributid = staticmessage.distributid;
+            json.gsid = staticmessage.gsid;
+            json.groupid = staticmessage.groupid;
+            json.wtype = $(".menuoptionbmy").attr("data-pid");
+            json.isactive = true;
+            $.post(staticmessage.url + "shopedit/warehouseedit", {
+                "gsid": staticmessage.gsid,
+                "json": JSON.stringify(json),
+            }
+            , function (data) {
+                console.log(data);
+                if (!isnotnull(json.warehouseid)) {
+                    transition("仓库已新建", data.warehouse.warehouseid);
+                } else {
+                    transition("仓库已修改", data.warehouse.warehouseid);
+                }
+                MyPush.send("CS0000", "仓库改变");
+            });
+        }
+        //生成建筑物列表
+        function changeMapSelect(result) {
+            $("#address_select_id").html("");
+            console.log(result);
+            var s = [];
+            for (var i = 0; i < result.getCurrentNumPois(); i++) {
+                s.push(result.getPoi(i));
+            }
+            var itemhtml = htmladd("mapselect", s);
+            changeAll("address_select_id", itemhtml);
+        }
+        function transition(message, returnid) {
+            app.alert(message, "74addressmanage.html?id=" + returnid);
+        }
+        function act() {
+            //退货
+            $('.menuline_post').on('click', '.post_class', function (event) {
+                $(this).toggleClass("set_post");
+                $(this).toggleClass("menuoptionw");
+                $(this).toggleClass("menuoptionbmy");
+            });
+            $('.delete_class').on('click', function (event) {
+                app.confirm(confirmOk, "确定删除仓库?", "delete", "0");
+            });
+            $('.menuline').on('click', '.menuimg_name_class', function (event) {
+                $(".user_name_class .gray").toggleClass("show_name_class");
+            });
+            $('.wtype_c').on('click', function (event) {
+                $(this).siblings(".wtype_c").removeClass("menuoptionbmy").end().addClass("menuoptionbmy");
+                json.wtype = $(".menuoptionbmy").attr("data-pid");
+            });
+            $('.ensure_class').on('click', function (event) {
+                app.confirm(confirmOk, "确定新建/修改仓库?", "edit", "0");
+            });
+            $(".back").on("click", function () {
+                window.location.href = "74addressmanage.html";
+            })
+            //打开地图
+            $('#address_id,.icon-right').click(function () {
+                document.getElementById('popup').style.display = "block";
+                $("#backend,.bottom_cart").css("position", "fixed");
+                document.getElementById('closehere').style.display = "block";
+                $("#map_input_id").focus();
+                $("#fixed_position_id").css("display", "none");
+            });
+            $('#closehere').click(function () {
+                document.getElementById('popup').style.display = "none";
+                $(".bottom_cart").css("position", "fixed");
+                $("#backend").css("position", "static");
+                document.getElementById('closehere').style.display = "none";
+                $("#fixed_position_id").css("display", "block");
+            });
+            //baidu map
+            $("#popup").on("click", ".select_item", function (e) {
+                var point = {};
+                $("#address_id").val($(this).attr("pad"));
+                address_obj["adresslatitude"] = $(this).attr("lat");
+                address_obj["adresslongitude"] = $(this).attr("lng");
+                $('#closehere').trigger("click");
+                $('textarea[autoHeight]').autoHeight();
+            });
+            //弹出地图选择框
+            $('#map_input_id').on('input', function () {
+                $(".address_select_item").css("display", "block");
+                clearTimeout(searchtime);
+                searchtime = setTimeout(function () {
+                    if ($("#map_input_id").val().length >= 2) {
+                        my_map.searchOther($("#city_id").val(), $("#map_input_id").val(), changeMapSelect);
+                    }
+                }, 1000 * 1);
+
+            });
+        }
+        $(function () {
+            FastClick.attach(document.body);
+            init();
+            act();
+        });
+    </script>
+</html>
+<script type="text/javascript">
+    addLoadEvent(function () {
+        my_map.init("map_container");
+    });
+</script>

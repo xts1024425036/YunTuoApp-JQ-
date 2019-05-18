@@ -1,0 +1,212 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>云驼联盟</title>
+        <link href="../../css/style.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/pageorder.js"></script>
+        <script src="../../js/templatorder.js"></script>	
+        <script src="../../js/templateutils.js"></script>   
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            .list_item{
+                height: 18vw;
+            }
+            .list_item_detail {
+                width: 100%;
+            }
+            .log_sort a {
+                width: 48.8vw;
+            }
+            .frame_log {
+                margin-top: 0vh;
+                position: absolute;
+                overflow: scroll;
+                height: 83%;
+                float: left;
+                padding: 13vw 0 8vh 0;
+                width: 100%;
+                background: #f3f3f3;
+            }
+            .show_false,.show_\{isupdate\}{display: none;}
+            .log_total ul .stauts_c{color: #0529b0;float: left;}
+            .log_total li {
+                float: right;
+            }
+            .log_total {
+                width: 100%;
+            }
+            .red_bc{
+                background: #fff6f6;
+            }
+            .show_true{
+                display: none;
+            }
+            #log_order_id .log_list_tool {
+                display: block;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="body_mask"></div>
+        <!--logo区-->
+        <div class="main_top">
+            <ul class="main_top_left">
+                <li><a class="main_top_back" href="../menu/97service.html"></a></li>
+            </ul>
+            <ul class="main_top_title">
+                <li>送装跟踪</li>
+            </ul>
+            <ul class="main_top_right">
+                <!--<a class="main_top_search" href="#"></a>-->
+            </ul>
+        </div>
+        <!--货品总体分类-->
+        <div id="type_id" class="main_sort log_sort">
+            <a href="#" class="act" pid="notok">未完成</a>
+            <span></span>
+            <a href="#" pid="isok">已完成</a>
+        </div>    
+        <div id="log_order_id" class="frame_log log_sale new_order_list" style="padding-top: 13vh; padding-bottom: 0vh;">
+            <!--报表-->
+            <div class="no_order_message">您还没有订单信息哦!</div>
+        </div>
+        <div id="menu_buttom_id">
+
+        </div>
+        <script type="text/javascript">
+            table.htmlTabel("two");
+        </script>
+        <script type="text/javascript">
+            "use strict";
+            var type;
+            var staticmessage = {};
+            var delall = new Array();
+            var startPage = 0;
+            var flag = false;
+
+            //初始化整个页面
+            function init() {
+                staticMessage(staticmessage);
+//                type = "notoknozero";
+                type = "notok";
+                filter();
+            }
+            function filter() {
+                var sctype = "asc";
+                if ("isok" == type) {
+                    sctype = "desc";
+                }
+                $.post(staticmessage.url + "salelog/findOKStore",
+                        {
+                            "type": type,
+                            "gsid": staticmessage.gsid,
+                            "startPage": startPage,
+                            "sctype": sctype,
+                            "showtype": "all"
+                        }
+                , function (data) {
+                    console.log(data);
+                    console.log(data.message);
+                    delall = data.deliveryoder;
+                    console.log(delall);
+                    if (data.deliveryoder.length > 0) {
+                        if (0 == $("#log_order_id .log_item").length) {
+                            $("#log_order_id").html("");
+                        }
+                        flag = true;
+                        for (var x in data.deliveryoder) {
+                            var itemhtml = orderfun.htmledit("order_list_item", data.deliveryoder[x].deliveryoderitems);
+                            data.deliveryoder[x].itemhtml = itemhtml;
+                            data.deliveryoder[x].display = (data.deliveryoder[x].status == 1) ? "block" : "none";
+                            data.deliveryoder[x].otype = isnotnull(data.deliveryoder[x].suporderid) ? "havasup" : "nosup";
+                            data.deliveryoder[x].operationhtml = orderfun.oneobjhtmledit("order_operation_track", data.deliveryoder[x]);
+                        }
+                    } else {
+                        flag = false;
+                    }
+                    var smallHtml = orderfun.htmledit("order_list_main", data.deliveryoder, "mdh");
+                    temputils.htmlappend("log_order_id", smallHtml);
+                });
+            }
+            $("#log_order_id").on("click", ".del_message", function () {
+                var did = $(this).parent(".log_item").attr("pid");
+                var status = $(this).parent(".log_item").attr("data-sid");
+                var queryparam = setQueryString({deliveryoderid: did, isafremark: false, status: status})
+                var url = "../delivery/85deliverydetails.html" + queryparam;
+                transitionLocation("85deliverydetails", "../sale/32sale_log_daily.html", url);
+            });
+            //顶部
+            $('#type_id').on('click', 'a', function (event) {
+                startPage = 0;
+                $("#log_order_id").html("");
+                var element = event.target;
+                var a = $(element).attr("pid");
+                type = a;
+                console.log(type);
+                $(element).siblings().removeClass("act");
+                $(element).addClass("act");
+                filter();
+            });
+            //转送装
+            $('#log_order_id').on('click', '#log_return_id', function (event) {
+                var element = event.currentTarget;
+                var deliveryoderid = $(element).closest(".log_item").attr("pid");
+                var status = $(this).attr("data-sid");
+                var url = "../delivery/25delivery_track.html?deliveryoderid=" + deliveryoderid + "&isafremark=false&status=" + status;
+                transitionLocation("25delivery_track", "../sale/32sale_log_daily.html", url);
+            });
+            //修改货品
+            $('#log_order_id').on('click', '#log_cancel_id', function (event) {
+                var orderid = $(this).closest(".log_item").attr("pid");
+                $.post(staticmessage.url + "onlydelivery/findorder",
+                        {
+                            "orderid": orderid
+                        }
+                , function (data) {
+                    console.log(data);
+                    if (isnotnull(data.del.isupdate) && ("true" == data.del.isupdate || true == data.del.isupdate)) {
+                        storegeeditutil("changedel", JSON.stringify(data.del));
+                        storegeeditutil("changeselect", null);
+                        var url = "../onlydelivery/70changedelivery.html?findid=" + data.del.deliveryoderid;
+                        window.location.href = url;
+                    } else {
+                        refushmessage("抱歉,您无整改单权限!");
+                    }
+
+                });
+            });
+
+            $("#log_order_id").scroll(function () {
+                var scrollTop = $(this).scrollTop(); //滚动条距离顶部的高度
+                var eleheight = $(this).height(); //滚动条距离顶部的高度
+                var scrollAll = document.getElementById("log_order_id").scrollHeight; //滚动条距离顶部的高度
+//            console.log("scrollTop>>>>>" + scrollTop);
+//            console.log("scrollAll>>>>>" + scrollAll);
+                var isok = ((scrollAll - eleheight * 2) < scrollTop);
+                if (flag && isok) {
+                    // console.log("top:"+scrollTop+",doc:"+scrollHeight+",client:"+clientHeight);
+                    //滚动条到达底部
+                    startPage += 10;
+                    flag = false;
+                    filter();
+                }
+            });
+
+            $(function () {
+                FastClick.attach(document.body);
+                init();
+            });
+        </script>
+    </body>
+</html>

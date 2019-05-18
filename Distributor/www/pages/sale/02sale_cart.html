@@ -1,0 +1,266 @@
+<!doctype html>
+<html>
+    <head>
+        <title>购物车 - 云驼联盟</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <link href="../../css/style.css" rel="stylesheet" type="text/css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/salemain.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            .sale_cart_input{
+                border:2px solid
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div class="body_mask" style="display:block;"></div>
+        <!--logo区-->
+        <div class="main_top">
+            <ul class="main_top_left">
+                <a class="main_top_back" href="../01home.html"></a>
+                <!--                <script type="text/javascript">
+                                    page3();
+                                </script>
+                -->
+            </ul>
+            <ul class="main_top_title">
+                <li>销售开单</li>
+            </ul>
+            <ul class="main_top_right">
+                <!--<a class="main_top_search" href="#"></a>-->
+            </ul>
+        </div>
+        <!--货品总体分类-->
+        <div class="main_sort">
+            <a href="#" class="act">功能分类</a>
+            <span></span>
+            <a href="#">区域分类</a>
+            <span></span>
+            <a href="#">扫码</a>
+        </div>
+        <div class="frame_sale_list">
+            <!--货品大类-->
+            <ul class="sale_list_category">
+                <li class="act">床</li>
+                <li>桌子</li>
+                <li>柜子</li>
+                <li>沙发</li>
+                <li>茶几</li>
+            </ul>
+            <ul class="sale_list_context">
+                <!--货品小类-->
+                <div  class="sale_list_title">
+                    <div  class="sale_list_title_state"><img src="../images/ico_down.png" alt=""/></div>
+                    <ul class="act">
+                        <li>单人床</li>
+                        <div class="dot">2</div>
+                    </ul>
+                    <ul>
+                        <li>双人床</li>
+                    </ul>
+                    <ul>
+                        <li>沙发床</li>
+                        <div class="dot">1</div>
+                    </ul>
+                    <ul>
+                        <li>高低床</li>
+                    </ul>
+                    <ul>
+                        <li>床1</li>
+                    </ul>
+                    <ul>
+                        <li>床2</li>
+                    </ul>
+                    <ul>
+                        <li>床3</li>
+                    </ul>
+                    <ul>
+                        <li>床4</li>
+                    </ul>
+                    <ul>
+                        <li>床5</li>
+                        <div class="dot">1</div>
+                    </ul>
+                    <ul>
+                        <li>床6</li>
+                    </ul>
+                </div>      
+                <!--货品列表-->
+                <div  class="list_item_frame">
+
+                </div>
+            </ul>
+        </div>
+        <!--底部功能-->
+        <div class="frame_bottom_cart">
+            <a href="02sale.html" id="sale_to_cart" class="bottom_button_cart">
+                <div class="button_cart_ico">
+                    <img src="../../images/ico_cart.png" alt=""/>
+                </div>
+                <ul class="button_cart_text">
+                    <div class="dot">0</div>
+                </ul>
+            </a>
+            <a id="next_id" href="javascript:void(0)" class="bottom_button_next">去结算</a>
+        </div>
+        <!--点击购物车按钮后显示的购物详情-->
+        <div id="sale_cart_id" class="bottom_cart_list" style="display:block;height:70%;overflow-y: scroll;">
+
+        </div>
+        <div class="sale_detail" style="height: 13%">
+            <div id="all_number_id" style="margin-left: 4vw;">货品数量</div>
+            <div id="all_price_id">货品总价:</div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        //点击货品小类显示所有货品
+
+        var staticmessage = {};         //用户gsid，groupid，distributi等
+        var saleall = new Array();
+        var priceall = parseFloat(0);
+        var oldprice = parseFloat(0);
+        //初始化整个页面
+        function init() {
+            //动态加载
+            addAct();
+            //加载资源
+            message();
+            //刷新数据
+            refush();
+        }
+        //生成页面
+        function htmlhelp() {
+            //刷新货品列表
+            htmlhelpmain("购物车", saleall);
+        }
+        //修改后刷新数量
+        function refush() {
+            htmlhelp();
+            cookiemain(priceall, saleall);
+            refushdetail(priceall, saleall);
+            $(".list_item").find("input").on("focus", function () {
+                oldprice = $(this).val();
+                $(this).val("");
+            });
+            $(".list_item").find("input").on("blur", function () {
+                var price = parseFloat(0);
+                priceall = parseFloat(0);
+                if ($(this).val() == "") {
+                    price = oldprice;
+                    $(this).val(oldprice);
+                }
+                for (var i = 0; i < saleall.length; i++) {
+                    var saleone = saleall[i];
+                    $(".list_item").each(function () {
+                        var pid = $(this).find("input").attr("pid");
+                        if (saleone.prodcodes == pid) {
+                            price = parseFloat($(this).find("input").val());
+                            saleone.unprice = price;
+                            priceall += (parseFloat(price) * parseFloat(saleone.number));
+                            cookiemain(priceall, saleall);
+                        }
+                    })
+
+                }
+                if (typeof (priceall) != "undefined" && isnotnull(priceall)) {
+                    $("#all_price_id").html("总价格:￥" + priceall + "");
+                } else {
+                    $("#all_price_id").html("总价格:￥" + 0 + "");
+                }
+            });
+        }
+        //选择框回调函数
+        function confirmOk(param1, param2) {
+            if (param1 == "delete") {
+                var x = listone(param2, saleall);
+                if (x != 999) {
+                    priceall -= saleall[x].unprice;
+                    (saleall[x].number)--;
+                    if (saleall[x].number == 0) {
+                        saleall.splice(x, 1);
+                    }
+                }
+                refush();
+            } else if (param1 == "") {
+
+            }
+        }
+        //加载信息
+        function message() {
+            //提取cookie
+            staticMessage(staticmessage);
+            priceall = parseFloat(storegeeditutil("priceall"));
+            console.log("cookie=" + storegeeditutil("saleall"))
+            saleall = JSON.parse(storegeeditutil("saleall"));
+            console.log(saleall)
+        }
+
+        //删除货品
+        function deleteall(prodcode) {
+            var x = listone(prodcode, saleall);
+            priceall -= parseInt(saleall[x].unprice * saleall[x].number);
+            saleall.splice(x, 1);
+            refush();
+        }
+        //添加货品
+        function addone(element, prodcode) {
+            $(".list_item").find("input").blur();
+            var x = listone(prodcode, saleall);
+            priceall += saleall[x].unprice;
+            if (x != 999) {
+                (saleall[x].number)++;
+            }
+            refush();
+        }
+        //减少货品 
+        function deleteone(prodcode) {
+            $(".list_item").find("input").blur();
+            var x = listone(prodcode, saleall);
+            if (x != 999) {
+                if ((saleall[x].number) == 1) {
+                    app.confirm(confirmOk, "确定不选购该货品?", "delete", prodcode);
+                } else {
+                    priceall -= saleall[x].unprice;
+                    (saleall[x].number)--;
+                    if (saleall[x].number == 0) {
+                        saleall.splice(x, 1);
+                    }
+                }
+            }
+            refush();
+        }
+        //动态加载添加
+        function addAct() {
+            //购物辅助
+            salecontroller(priceall, saleall);
+            $('#sale_to_cart').on('click', function () {
+                cookiemain(priceall, saleall);
+            });
+
+            $('.frame_bottom_cart').on('click', '#next_id', function (event) {
+                if (typeof (saleall) != "undefined" && saleall.length > 0) {
+                    window.location.href = "03sale_order.html";
+                } else {
+                    console.log("购物车为空");
+                }
+            });
+
+        }
+        $(function () {
+            FastClick.attach(document.body);
+            //初始化整个页面
+            init();
+        });
+    </script>
+</html>

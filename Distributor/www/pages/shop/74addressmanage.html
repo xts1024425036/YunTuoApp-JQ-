@@ -1,0 +1,183 @@
+<!doctype html>
+<html>
+    <head>
+        <title>云驼联盟</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <link href="../../css/common.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script type="text/javascript" src="../../js/jquery.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../js/shopedit.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../js/deliveryutil.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            .menutext span{display: none;}
+            .menutext span.needshow{display: inline-block;}
+            .iconfont {
+                font-size: 6vw;
+            }
+            .menuline {
+                width: 100%;
+                border-bottom: none;
+                background: #fff;
+                margin: 2vw 0 2vw 0;
+                position:relative;
+            }
+            .menuline {
+                border-radius: 2vw;
+                padding: 1vw 0 1vw 1vw;
+                line-height: 8vw;
+            }
+            .address_now:before{
+                content: "";
+                color: #b93636;
+                width: 0;
+                height: 0;
+                right: 3vw;
+                border-width: 5.7vw 0px 0px 8vw;
+                border-style: solid;
+                border-color: #5478c4 transparent transparent transparent;
+                position: absolute;
+            }
+            .address_now .select_now_tb{
+                position: absolute;
+                color: #b93636;
+                width: 0;
+                height: 0;
+                right: 5vw;
+                border-style: solid;
+                border-color: #5478c4 transparent transparent transparent;
+                position: absolute;
+            }
+
+            .address_now .select_now_tb:before,.address_now .select_now_tb:after {
+                content: '';
+                pointer-events: none;
+                position: absolute;
+                color: white;
+                border: 1px solid;
+                background-color: white;
+            }
+            .address_now .select_now_tb:before {
+                width: 0.3vw;
+                height: 1px;
+                left: -0.9vw;
+                top: 0.9vw;
+                transform: skew(0deg,50deg);
+            }
+            .address_now .select_now_tb:after {
+                width: 2vw;
+                height: 1px;
+                left: 45%;
+                top: 42%;
+                transform: skew(0deg,-50deg);
+            }
+            .now_select_c{
+                width: 5vw;
+                float: left;
+                margin: 1vw;
+            }
+            .now_select_c .iconfont{
+                color: #b93636;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="top_nav">
+            <i class="top_left back iconfont icon-back"></i>
+            <div class="top_menu">提货地址管理</div>
+            <div class="top_right"></div>
+        </div>
+        <div class="innercontent_have_color innercontent top_innercontent address_manage" id="_warehouse_list" style="overflow-y: scroll;max-height: 88vh;margin-top:12vw;background: #f3f5f7;padding:1vw 0vw">
+        </div>
+        <div class="bottom_button">
+            <div id="storage_show_id">新增地址</div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var type;
+        var staticmessage = {};
+        var warhousearray;
+        var oldurl = storegeeditutil("oldurl");
+        var warhouseselect = {};
+        var postname = ['1', '2', '3', '4'];
+        var setid;
+        var selectAddress;
+        $(function () {
+            FastClick.attach(document.body);
+            //初始化整个页面
+            function init() {
+                setid = GetQueryString("id");
+                selectAddress = storegeeditutil("selectaddressitem");
+                staticMessage(staticmessage);
+                warhouseselect = isnotnull(storegeeditutil(selectAddress)) ? JSON.parse(storegeeditutil(selectAddress)) : new Object();
+                filter();
+            }
+            function filter() {
+                var type = "all";
+                var thisurl = window.location.pathname;
+                if (thisurl.indexOf(oldurl.split(",")[0]) > 0) {
+                    type = "true";
+                }
+                $.post(staticmessage.url + "inventory/find", {"gsid": staticmessage.gsid, "groupid": staticmessage.groupid, "type": type}
+                , function (data) {
+                    console.log(data);
+                    warhousearray = data.find;
+                    var smallHtml = htmladd("address", data.find);
+                    change("_warehouse_list", smallHtml);
+                    $(".menuline[data-pid='" + warhouseselect.warehouseid + "']").addClass("address_now");
+                    if (isnotnull(setid)) {
+                        $(".menuline[data-pid='" + setid + "'] .address_title").trigger("click");
+                    }
+                    storegeeditutil("havashop", data.havashop);
+                    $(".menuline").each(function () {
+                        if ($(this).attr("warehouse-type") == "S" || $(this).attr("warehouse-type") == "P") {
+                            $(this).find("i").hide();
+                        }
+                    })
+                });
+            }
+            //动态加载
+            function act() {
+                $('#_warehouse_list').on('click', ".iconfont", function (event) {
+                    var warehouseid = $(this).closest(".menuline").attr("data-pid");
+                    window.location.href = "72editwarehouse.html?findid=" + warehouseid;
+                });
+                $('#storage_show_id').on('click', function (event) {
+                    window.location.href = "72editwarehouse.html";
+                });
+                $('#_warehouse_list').on('click', ".address_title,.address_text", function (event) {
+                    var selectitem = $(this).closest(".menuline")
+                    if (isnotnull(oldurl)) {
+                        var item = selectitem.attr("data-pid");
+                        var item2 = selectitem.attr("data-wtype");
+                        var warhouseselect = warhousearray[deliveryutil.listonefiledtwo("warehouseid", item, "whtype", item2, warhousearray)];
+                        delete warhouseselect['typename'];
+                        delete warhouseselect['addresstype'];
+                        storegeeditutil(selectAddress, JSON.stringify(warhouseselect));
+                        locationold("old", "../menu/63my.html");
+                        console.log(warhouseselect);
+                    }
+                });
+                $(".back").on("click", function () {
+                    if (isnotnull(oldurl)) {
+                        locationold("old", "../menu/63my.html");
+                    } else {
+                        window.location.href = "../menu/63my.html";
+                    }
+                })
+            }
+            init();
+            act();
+        });
+    </script>
+</html>

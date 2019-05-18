@@ -1,0 +1,291 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>云驼联盟--注册</title>
+        <link rel="stylesheet" type="text/css" href="../css/iconfont.css">
+        <link rel="stylesheet" type="text/css" href="../css/newcommon.css">
+        <link href="../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="../js/jquery.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <script type="text/javascript" src="../js/map.rest.js"></script>
+        <script type="text/javascript" src="../js/common.js"></script>
+        <script src="../js/fastclick.js"></script>
+        <script src="../js/loginutil.js"></script>
+        <script src="../js/inventory.js"></script>
+        <script src="../cordova.js"></script>
+
+        <script src=""></script>	
+        <style type="text/css">
+            body{
+                background-color: #ffffff;
+                background-image: url(../images/log-in-bg.png);
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+                width: 100%;
+            }
+            .main-logo{
+                margin: 1.8rem 0 0.8rem 0;
+            }
+            .nav-bar{
+                background: transparent;
+                border-bottom: none;
+                box-shadow: none;
+                color:#FFFFFF;
+
+            }
+            .nav-bar>li{
+                line-height: 1.4rem;
+                letter-spacing: .2rem;
+            }
+            .icon-fanhui{color:#FFFFFF;}
+            .footer-bar{
+                background: transparent;
+                border-top: none;
+            }
+            .version{
+                font-size: .22rem;
+                color:#FFFFFF;
+                text-align: center;
+                opacity: .6;
+            }
+            .cell-list{
+                padding: 1.5rem 0.8rem 0 0.8rem;
+                position: relative;
+                color: #FFFFFF;
+            }
+            .cell-list .cell {
+                color: #FFFFFF;
+                font-size: .28rem;
+                padding:0;
+                border:none;
+                margin-bottom: .8rem;
+            }
+            .cell-list .cell+.cell{
+                border-top: none;
+            }
+            .cell-list .cell i.left{
+                color:#FFFFFF;text-align:left;
+            }
+            .cell-list .cell input{
+                color:#fff;
+                font-size: .32rem;
+                flex: 1;
+                background:transparent;
+                border-bottom: .01rem solid #F0F0F0;
+                padding: .1rem;
+                border-radius:0;
+                margin-left: .14rem;
+            }
+            .cell-list .cell input::-webkit-input-placeholder{
+                color: #fff;
+                font-size: .28rem;
+                opacity: .6;
+            }
+            .security-code{
+                width: 1.9rem;
+                height:.6rem;
+                background:#4373BB;
+                border-radius:.1rem;
+                line-height: .6rem;
+                font-size: .22rem;
+                position: absolute;
+                bottom: .14rem;
+                right: .8rem;
+            }
+
+            .log-btn{
+                width:5.4rem;
+                height:.8rem;
+                background:#2C4975;
+                border-radius:.4rem;
+                line-height: .8rem;
+                color: #FFFFFF;
+                font-size: .32rem;
+                letter-spacing: .2rem;
+                margin:1rem auto 0 auto;
+            }
+            .refushtop{
+                padding: 0.5rem;
+            }
+        </style>
+    </head>
+
+    <body class="refushback">
+        <ul class="nav-bar flex">
+            <li class="left txtl">
+                <i class="iconfont back icon-fanhui"></i>
+            </li>
+            <li class="flex-item txtc">注册</li>
+            <li class="right txtr"></li>   
+        </ul>
+        <div class="txtc">
+            <div class="cell-list refushpagetop">
+                <a class="cell">
+                    <i class="left iconfont icon-gongyingshangmingxi"></i>
+                    <input placeholder="经销商名称"  id="chainname_id" data-pid="chainname"  maxlength="20" class="cell-text txtl input_id need">
+                </a>
+                <a class="cell">
+                    <i class="left iconfont icon-shop" style="font-size: .46rem;"></i>
+                    <input placeholder="店铺名称" id="shopname_id" data-pid="shopname" maxlength="20"  class="cell-text txtl input_id need">
+                </a>
+                <a class="cell">
+                    <i class="left iconfont icon-ren" style="font-size: .4rem;"></i>
+                    <input placeholder="店铺联系人" id="shoplinkman_id" maxlength="11" data-pid="shoplinkman"  class="cell-text txtl input_id need">
+                </a>
+
+                <a class="cell">
+                    <i class="left iconfont icon-iLinkapp-"></i>
+                    <input type="tel" placeholder="联系人电话" id="shopmobile_id" maxlength="11" data-pid="shopmobile" class="input_id need cell-text txtl">
+                </a>
+                <a class="cell">
+                    <i class="left iconfont icon-yanzhengma"></i>
+                    <input type="tel" placeholder="验证码" id="login_number_id" maxlength="6" data-pid="shopmobile" class="cell-text txtl need">
+
+                </a>
+                <div id="send_bumber_id" class="security-code">发送验证码</div>
+            </div>
+            <div class="txtc-btn txtc">
+                <div id="send_id" class="log-btn">提交</div>
+
+            </div>
+            <div id="add_msg"></div>
+            <!--            <div class="footer-bar need_resize_obj">
+                            <div class="version txtc">Copyright © 2019 YUNTUO</div>
+                        </div>-->
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var staticmessage = {}; //用户gsid，groupid，distributid
+        var searchtime = {};
+        var address = {};
+        var sendcode = true;
+        MyPush.register(build_duri(storegeeditutil("userid"), "D"));
+        MyPush.register(build_duri(storegeeditutil("userid"), "P"));
+        $(function () {
+            FastClick.attach(document.body);
+            pageutil.refushbackground();
+            pageutil.refushpagetop();
+            function init() {
+                staticMessage(staticmessage);
+                message();
+            }
+            function act() {
+                //=========业务逻辑=========
+                $(".back").on("click", function () {
+                    window.location.href = "../login.html";
+                });
+                //--发送验证码
+                $("#send_bumber_id").on("click", function () {
+                    var phone = $("#shopmobile_id").val();
+                    if (!isnotnull(phone)) {
+                        refushmessage("请输入店铺联系人电话号码");
+                        return false;
+                    }
+                    var disabled = $("#send_bumber_id").attr("disabled");
+                    if (disabled == true || disabled == "disabled") {
+                        return false;
+                    }
+                    if (sendcode) {
+                        sendcode = false;
+                        setTimeout(function () {
+                            sendcode = true;
+                        }, 6000);
+                        refushmessage("正在发送:" + phone);
+                        $.post(staticmessage.url + 'signup/send',
+                                {Bphone: phone},
+                                function (data) {
+                                    console.log(data);
+                                    if (data.status) {
+                                        refushmessage("验证码发送成功");
+                                        $("#isCode").focus();
+                                        sendcode = true;
+                                        var _generate_code = $("#send_bumber_id");
+                                        _generate_code.attr("disabled", true);
+                                        login_util.countdown(_generate_code);
+                                    } else {
+                                        sendcode = true;
+                                        refushmessage(data.message);
+                                    }
+                                }, "json");
+                    } else {
+                        refushmessage("验证码请求已发送,5秒后可重新尝试");
+                    }
+                });
+                //---提交表单
+                $("#send_id").on("click", function () {
+                    var customerphone = $("#shopmobile_id").val();
+                    var res = /^0\d{3,4}-?\d{7,8}$/;
+                    if (customerphone.length != 11 && !res.test(customerphone)) {
+                        app.alert("联系电话格式不对，请核对");
+                        $("#shopmobile_id").focus();
+                        return;
+                    }
+                    var message = validate();
+                    if ("true" == message) {
+                        send();
+                    } else {
+                        refushmessage(message);
+                    }
+                });
+                function send() {
+                    var condistributorshop = {};
+                    for (var i = 0, length = $(".input_id").length; i < length; i++) {
+                        console.log($(".input_id").eq(i).val());
+                        var a = $(".input_id").eq(i).attr("data-pid");
+                        var val = $(".input_id").eq(i).val();
+                        console.log(a + "-----" + val);
+                        condistributorshop[a] = val;
+                    }
+                    condistributorshop.shopadresslatitude = 0.00;
+                    condistributorshop.shopadresslongitude = 0.00;
+                    condistributorshop.supervisorid = '0';
+                    condistributorshop.shopadress = "未设置";
+                    condistributorshop.createdate = new Date();
+                    var uuid = RndNum(8);
+                    if (typeof (device) != "undefined") {
+                        uuid = isnotnull(device.uuid) ? device.uuid : RndNum(8);
+                    }
+                    $("#send_id").attr("disabled", "true").css("pointer-events", "none").css("background", "#666");
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: staticmessage.url + "signup/addshop",
+                        data: {
+                            shop: JSON.stringify(condistributorshop),
+                            code: $("#login_number_id").val(),
+                            UUID: uuid
+                        },
+                        success: function (data) {
+                            console.log(data);
+                            loading_close();
+                            if (data.status) {
+                                MyPush.send("PD0000", "新增经销商");
+                                login_util.createcache(data);
+                            } else {
+                                app.alert(data.message);
+                            }
+                        }
+                    });
+                }
+            }
+            //加载信息
+            function message() {
+            }
+            function sendbefore() {
+
+            }
+            function send() {
+            }
+            //初始化整个页面
+            init();
+            //动态加载
+            act();
+        });
+    </script>
+</html>

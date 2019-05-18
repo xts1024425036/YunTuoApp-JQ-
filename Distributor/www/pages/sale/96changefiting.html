@@ -1,0 +1,357 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>云驼联盟</title>
+        <link rel="stylesheet" type="text/css" href="../../css/iconfont.css">
+        <link rel="stylesheet" type="text/css" href="../../css/newcommon.css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/pageorder.js"></script>
+        <script src="../../js/templatorder.js"></script>	
+        <script src="../../js/templateutils.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style type="text/css">
+            .item-info{
+                line-height: 1.3em;padding: 0.1rem 0;
+            }
+            .main{
+                width: 100%;
+                margin-top: 0.9rem;
+                padding-bottom: 12vw;
+                position: absolute;
+                overflow: scroll;
+                height: 83%;
+            }
+            .main-list{
+                background: #ffffff;
+                margin-top: 0.2rem;
+                padding: 0.3rem 0;
+            }
+            .bg-shadow{
+                margin: auto;
+            }
+            .info-bg{
+                background: #DDE8FF;
+                color: #5478C4;
+                font-size: 0.24rem;
+                font-weight: bold;
+                padding: 0 0.3rem;
+                border-radius: 0.16rem 0.16rem 0 0;
+            }
+            .user-time{
+
+                line-height: 0.7rem;
+            }
+            .info-bg .address{
+                line-height: 1.4em;
+                padding-bottom: .8em;
+            }
+            .icon-shijian{
+                font-size: 0.36rem;
+                margin-right: 0.2rem;
+            }
+            .list-all{
+                padding: 0.3rem;
+            }
+            .list-text .type,
+            .list-text .namber {
+                line-height: 1.8em;
+                font-size: 0.24rem;
+                color:#666666;
+                margin: 7px 0 4px 0px;
+            }
+
+            .list-text .name{
+                font-size: 0.28rem;
+                color:#333333;
+                font-weight: 500;
+            }
+            .list-text .color{
+                font-size: 0.24rem;
+                color:#333333;
+                margin-left: 0.6rem;
+            }
+            .list-text .name .fr{
+                font-size: 0.28rem;
+                color:#999999;
+            }
+            .list-text .separate{
+                margin: 0.2rem 0;
+            }
+            .list-text .namber .fr{
+                font-size: 0.24rem;
+                color:#5478C4;
+            }
+            .icon-bottom,.icon-zhankai{
+                font-size: 0.24rem;
+                color:#5478C4;
+            }
+            .main-list .add{
+                height: 0.9rem;
+                line-height: 0.9rem;
+            }
+            .all-number{
+                margin: 0.1rem 0.3rem;
+                font-size: 0.28rem;
+                color: #333333;
+            }
+            .all-number span{
+                font-size: 0.36rem;
+                font-weight: bold;
+            }
+            .add-btn{
+                margin: 0rem 0.3rem 0.2rem 0;
+                height: 1em;
+            }
+            .add-btn .center{
+                width: 1.8rem;
+                height: 0.64rem;
+                border:1px solid #5478C4;
+                color: #5478c4;
+                border-radius:0.32rem;text-align: center;
+                line-height: 0.64rem;
+                display: inline-block;
+            }
+
+            .table-info{
+                background-color: #F0F0F0;
+                box-shadow:none;
+                border-radius:0.1rem;
+                margin-top: 0.1rem;
+                display: none;
+            }
+            .table-info textarea{
+                width: 100%;
+                background: transparent;
+                padding: .2rem;
+                color: #000000;
+                font-size: 0.24rem;
+            }
+            .list-text {
+                width: 84vw;
+                display: inline-block;
+            }
+            .nav-bar {
+                position: fixed;
+                top: 0;
+                height: 0.88rem;
+                background: #FFF;
+                border-bottom: 1px solid #f0f0f0;
+                box-shadow: 0 0.01rem 0.01rem #dedede;
+                z-index: 100;
+            }
+            .isclick .icon_c {
+                transform: rotate(-180deg);
+            }
+            .icon_c{
+                width: 4vw;
+                display: block;
+                margin-left: 2vw;
+                float: right;
+            }
+            .list-text .namber{
+                /*border-bottom: rgba(240,240,240,1) solid 1px;*/
+            }
+        </style>
+    </head>
+
+    <body>
+        <ul class="nav-bar flex">
+            <li class="left txtl back">
+                <i class="iconfont icon-fanhui"></i>
+            </li>
+            <li class="flex-item txtc">更换配件</li>
+            <li class="right txtr"></li>   
+        </ul>
+        <!--        <div class="filter-bar flex txtc">
+                    <a href="#" class="flex-item select" pid="not-ok">未完成</a>
+                    <a href="#" class="flex-item" pid="is-ok">已完成</a>
+        
+                </div>-->
+
+        <div class="main" id="log_order_id">
+
+        </div>
+        <div id="add_msg"></div>
+        <div id="menu_buttom_id">
+
+        </div>
+        <script type="text/javascript">
+            table.htmlTabel("two");
+        </script>
+        <script type="text/javascript">
+            "use strict";
+            var type;
+            var staticmessage = {};
+            var delall = new Array();
+            var startPage = 0;
+            var flag = false;
+
+            var fitingArray = new Array();
+            var newdelorder = {};
+            var issend = false;
+            var findtype = "exchange";
+            //初始化整个页面
+            function init() {
+                staticMessage(staticmessage);
+                findtype = GetQueryString("findtype");
+                if ("fiting" == findtype) {
+                    $("#type_id").hide();
+                }
+                filter();
+            }
+            function filter() {
+                var sctype = "asc";
+                if ("isdelete" == type) {
+                    sctype = "desc";
+                }
+                $.post(staticmessage.url + "salelog/findOKStore",
+                        {
+                            "type": "exchange",
+                            "gsid": staticmessage.gsid,
+                            "startPage": startPage,
+                            "sctype": sctype,
+                            "showtype": "all"
+                        }
+                , function (data) {
+                    console.log(data);
+                    console.log(data.message);
+                    for (var x in data.deliveryoder) {
+                        delall.push(data.deliveryoder[x]);
+                    }
+                    console.log(delall);
+                    if (data.deliveryoder.length > 0) {
+                        if (0 == $("#log_order_id .main-list").length) {
+                            $("#log_order_id").html("");
+                        }
+                        flag = true;
+                        for (var x in data.deliveryoder) {
+                            var itemhtml = orderfun.htmledit("order_list_fitingitem", data.deliveryoder[x].deliveryoderitems);
+                            data.deliveryoder[x].itemhtml = itemhtml;
+                            var ordertype = ("01BYZOP".indexOf(data.deliveryoder[x].status) >= 0 || "PE" == data.deliveryoder[x].status || "PD" == data.deliveryoder[x].status) ? "can" : "not";
+                            data.deliveryoder[x].displayshwo = (ordertype == "can") ? "1" : "0";
+                            data.deliveryoder[x].display = (data.deliveryoder[x].status == 1) ? "block" : "none";
+                            data.deliveryoder[x].otype = isnotnull(data.deliveryoder[x].suporderid) ? "havasup" : "nosup";
+                        }
+                    } else {
+                        flag = false;
+                    }
+                    var smallHtml = orderfun.htmledit("order_list_fiting", data.deliveryoder);
+                    temputils.htmlappend("log_order_id", smallHtml);
+                    $(".show_true").closest(".log_list_title").addClass("red_bc");
+                });
+            }
+            function sendmain() {
+                console.log(newdelorder);
+                if (!issend) {
+                    issend = true;
+                } else {
+                    refushmessage("正在提交,请稍后...");
+                }
+                for (var x in fitingArray) {
+                    fitingArray[x].isnoinstall = "true";
+                }
+                newdelorder.isurgent = false;
+                newdelorder.suporderid = newdelorder.deliveryoderid;
+                newdelorder.deliveryoderitems = fitingArray;
+                newdelorder.issample = "0";
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: staticmessage.url + "onlydelivery/deliveryone?creator=" + staticmessage.userid + "&type=fiting",
+                    contentType: "application/json",
+                    data: JSON.stringify(newdelorder),
+                    success: function (data) {
+                        issend = false;
+                        if (data.status) {
+                            app.alert("补配件下单成功" + data.message);
+                            window.location.href = "../delivery/07delivery_order_pay.html";
+                        } else {
+                            app.alert(data.msg);
+                        }
+                        console.log(data);
+                    }
+                });
+            }
+            $("#log_order_id").on("click", ".center", function () {
+                var parent = $(this).parents(".main-list");
+                var orderid = parent.attr("data-pid");
+                var x = orderfun.listoneparam("deliveryoderid", orderid, delall);
+                newdelorder = delall[x];
+                fitingArray = new Array();
+                var remarksmsg = "";
+                var isok = true;
+                $(parent).find(".isclick").each(function () {
+                    var value = $(this).siblings(".table-info").find("textarea").val();
+                    var prodcode = $(this).attr("data-item");
+                    if (isnotnull(value)) {
+                        var y = orderfun.listoneparam("prodcodes", prodcode, newdelorder.deliveryoderitems);
+                        fitingArray.push(newdelorder.deliveryoderitems[y]);
+                        remarksmsg += "[" + prodcode + "备注:--" + value + "] # ";
+                    } else {
+                        refushmessage("请填写配件备注或者取消更换此配件");
+                        isok = false;
+                        return;
+//                        $(this).siblings(".table-info").hide(300);
+                    }
+                });
+
+                if (isok) {
+                    newdelorder.remarks = remarksmsg;
+                    newdelorder.createdate = timeFormat(new Date(), "YYMMDD");
+                    newdelorder.insdate = timeFormat(newdelorder.insdate, "YYMMDD");
+                    newdelorder.devdate = timeFormat(newdelorder.devdate, "YYMMDD");
+                    delete newdelorder.serialVersionUID;
+                    delete newdelorder.statusname;
+                    delete newdelorder.lastupdatetime;
+                    delete newdelorder.itemhtml;
+                    delete newdelorder.displayshwo;
+                    delete newdelorder.otype;
+                    delete newdelorder.display;
+                    console.log(remarksmsg);
+                    app.confirm(function () {
+                        sendmain()
+                    }, "替换配件会产生新的订单 , 替换配件信息 : " + remarksmsg + ",是否确认?")
+                }
+            });
+            $(".main").on("click", ".change_fr", function () {
+                $(this).toggleClass("isclick");
+                if ($(this).hasClass("isclick")) {
+                    $(this).siblings(".table-info").show(300);
+                } else {
+                    $(this).siblings(".table-info").hide(300);
+                }
+            });
+            $('.back').on('click', function () {
+                window.location.href = "../menu/61send.html";
+            });
+            $("#log_order_id").scroll(function () {
+                var scrollTop = $(this).scrollTop(); //滚动条距离顶部的高度
+                var eleheight = $(this).height(); //滚动条距离顶部的高度
+                var scrollAll = document.getElementById("log_order_id").scrollHeight; //滚动条距离顶部的高度
+//            console.log("scrollTop>>>>>" + scrollTop);
+//            console.log("scrollAll>>>>>" + scrollAll);
+                var isok = ((scrollAll - eleheight * 2) < scrollTop);
+                if (flag && isok) {
+                    // console.log("top:"+scrollTop+",doc:"+scrollHeight+",client:"+clientHeight);
+                    //滚动条到达底部
+                    startPage += 10;
+                    flag = false;
+                    filter();
+                }
+            });
+
+            $(function () {
+                FastClick.attach(document.body);
+                init();
+            });
+        </script>
+    </body>
+</html>

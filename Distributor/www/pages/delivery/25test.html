@@ -1,0 +1,313 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>云驼联盟</title>
+        <link href="../../css/newcommon.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../js/pageorder.js"></script>
+        <script src="../../js/templatorder.js"></script>	
+        <script src="../../js/templateutils.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style type="text/css">
+            body{
+                background-color: #ffffff;
+                background-attachment: fixed;
+                width: 100%;
+                background-size:100% 100%;
+            }
+            body,.nav-bar{
+                background-image: url(../../images/deltrack.png);
+                background-repeat: no-repeat;
+            }
+            .nav-bar{
+                border-bottom: none;
+                background-size: 100% auto;
+                box-shadow: none;
+            }
+            .main{
+                width: 100%;
+            }
+            .main-state{
+                margin: 0.3rem;
+                height: 1.3rem;
+                background-color: #FFFFFF;
+                margin: .3rem auto;
+                border-radius: 0.16rem;
+                width: 92%;
+            }
+            .state-left{
+                width: 1.1rem;
+                border-radius:0.16rem 0 0 0.16rem;
+                background:linear-gradient(110deg,rgba(98,52,232,1),rgba(52,196,232,1));
+                display: flex;
+            }
+            .icon-dingdanzhuangtai-daijiedan{
+                font-size: .56rem;
+                color:#FFFFFF;
+                margin: auto;
+            }
+            .state-right{
+                margin: auto 0.3rem;
+                line-height: 2em;
+            }
+            .state-number{
+                font-size: .32rem;
+                color: #333333;
+            }
+            .state-ok{
+                font-size: .28rem;
+                color: #5478C4;
+                font-weight: bold;
+            }
+
+            .list-content{
+                padding: 0.4rem 0.3rem;
+            }
+            .is-ing,.is-past{
+                display: -webkit-flex;
+                display: flex;
+                -webkit-align-items: center;
+                align-items: center;
+                font-size: 0.28rem;
+            }
+            .time-table, .time-bg{
+                flex-shrink:0;/* flex布局中设置禁止缩小 */
+            }
+            .is-ing{
+                color:#333333;
+
+                font-weight: 500;
+            }
+            .time-table{
+                font-size: 0.24rem;
+                width: 5em;
+                line-height: 1.2em;
+            }
+            .time-bg{
+                width: 0.48rem;
+                height: .48rem;
+                border-radius: 50%;
+                background: #5478C4;
+                text-align: center;
+                line-height: 0.48rem;
+                margin-right: 0.3rem;
+            }
+            .is-ing .flex-item,.is-past .flex-item{
+                max-height:2em;
+            }
+            .time-bg i{
+                line-height: 0.48rem;
+            }
+            .icon-shijian{
+                font-size: 0.32rem;
+                color: #FFFFFF;
+
+            }
+            .list-content .timeline{
+                width: 0.02rem;
+                height: 1rem;
+                background: #bbb;
+                margin-left: 1.44rem;
+            }
+            .is-past{
+                color:#999999;
+            }
+            .is-past .time-bg{
+                background: #FFFFFF;
+                border: 1px solid #bbb;
+            }
+            .is-past .icon-shijian{
+                color: #BBBBBB;
+                position: relative;
+                top:-1px;
+            }
+            .items_content_img{width:80vw;position: relative;}
+            .items_content_img img{
+                width: 22vw;
+                margin-left: 1.5vw;
+                max-height: 12vw;
+                border: #ccc 2px solid;
+            }
+            #_big_img{position: fixed;width: 80%;margin-top: 15%;margin-left: 10vw;}
+            #_big_img img{width: 100%;}
+            .icon-round_close_light{float: right;color: #ff0000;font-size: 10vw;}
+            .imgcontent{height: 250%;opacity: 0.97;background: #fff;display: none}
+            .img_item_c{float: left;}
+            .txtl .icon-fanhui {
+                font-size: 0.55rem;
+            }
+            #_big_img{
+                position: fixed;
+                width: 88%;
+                margin-top: 15%;
+                margin-left: 6vw;
+            }
+            #_big_img img{width: 100%;}
+            .icon-round_close_light{float: right;color: #ff0000;font-size: 10vw;}
+            .imgcontent{
+                position: fixed;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(255, 255, 255, 0.7);
+            }
+            .img_item_c{float: left;}
+            #log_order_id{
+                max-height: 75vh;
+                overflow-y: scroll;
+            }
+        </style>
+    </head>
+
+    <body>
+        <ul class="nav-bar flex">
+            <li class="left txtl">
+                <i class="iconfont back icon-fanhui"></i>
+            </li>
+            <li class="flex-item txtc">送装跟踪</li>
+            <li class="right txtr"></li>   
+        </ul>
+        <div class="main new">
+            <div class="main-state flex">
+                <div class="state-left">
+                    <i class="iconfont icon-dingdanzhuangtai-daijiedan"></i>
+                </div>
+                <div class="state-right">
+                    <div class="state-number">订单号：<span id="order_id"></span></div>
+                    <div class="state-ok">已认证</div>	
+                </div>
+            </div>
+            <div class="list-item">
+                <div id="list_add_class" class="list-content">
+
+
+                </div>
+            </div>
+        </div>
+        <!--大图位置-->
+        <div class="imgcontent">
+            <div id="_big_img">
+                <div class="big_close"><i class="iconfont icon-round_close_light"></i></div>
+                <img id="_big_src" src="">
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var type;
+        var staticmessage = {};         //用户gsid，groupid，distributi等
+        var deliveryoderid;
+        var prolist;
+        var canpro;
+        $(function () {
+            FastClick.attach(document.body);
+            function init() {
+                staticMessage(staticmessage);
+                deliveryoderid = GetQueryString("deliveryoderid");
+                canpro = GetQueryString("isafremark");
+                var status = GetQueryStringByEncode("status");
+                $(".state-ok").html(status);
+                $("#order_id").html(deliveryoderid + "-001");
+                if (true == canpro || "true" == canpro) {
+                    findpro(deliveryoderid + "-001");
+                } else {
+                    searchTrack(deliveryoderid + "-001");
+                }
+            }
+            //判断是否有查看整改单的权限并且查找整改单
+            function findpro(deliveryoderid) {
+                $.post(staticmessage.url + "salelog/findpro",
+                        {
+                            "did": deliveryoderid
+                        }
+                , function (data) {
+                    console.log(data);
+                    prolist = data.pro;
+                    searchTrack(deliveryoderid);
+                });
+            }
+            function timeedit(list, param) {
+                for (var x in list) {
+                    var obj = list[x];
+                    obj['date'] = obj[param].substr(5, 6);
+                    obj['time'] = obj[param].substr(11, 14);
+                }
+            }
+            function searchTrack(sid) {
+                $.post(staticmessage.url + "salelog/logdelivery",
+                        {
+                            "dsid": sid
+                        }
+                , function (data) {
+                    console.log(data);
+                    var head = " <div id=\"log_order_id\" class=\"track_items_content\">";
+                    timeedit(data.list, "createdate");
+                    var smallHtml = head + orderfun.htmledit("track", data.list);
+                    if ("true" == canpro && prolist.length > 0) {
+                        timeedit(prolist, "createdate");
+                        var htmlitem = orderfun.htmledit("trackpro", prolist);
+                        smallHtml += htmlitem + "</div>";
+                    } else {
+                        smallHtml += "</div>";
+                    }
+                    $("#list_add_class").append(smallHtml);
+                    for (var x in data.list) {
+                        if (isnotnull(data.list[x].imgpath)) {
+                            var imglist = data.list[x].imgpath.split(",");
+                            console.log("送装结束,展示图片" + imglist);
+                            var imghtml = "";
+                            for (var x in imglist) {
+                                var path = staticmessage.url + "file/returnimg?url=" + imglist[x];
+                                imghtml += "<div class='img_item_c'><img src='" + path + "'></div>"
+                            }
+                            $(".items_content_img[pid='" + data.list[x].status + "']").html(imghtml);
+                        }
+                    }
+                    if ("true" == canpro) {
+                        for (var y in prolist) {
+                            var imglist = prolist[prolist.length - 1].imgpath.split(",");
+                            var imghtml = "";
+                            for (var x in imglist) {
+                                var path = staticmessage.url + "file/returnimg?url=" + imglist[x];
+                                imghtml += "<div class='img_item_c'><img src='" + path + "'></div>"
+                            }
+                            $(".items_content_img[pid='" + prolist[y].afid + "']").html(imghtml);
+                        }
+
+                    }
+                });
+            }
+            function act() {
+                $('#list_add_class').on("click", ".items_content_img img", function () {
+                    var _href = $(this).attr("src");
+                    $("#_big_src").attr("src", _href).parents(".imgcontent").fadeIn("1000");
+                });
+                $(".back").click(function () {
+                    window.location.href = "../sale/32sale_log_daily.html";
+                });
+                $('.icon-round_close_light').on("click", function () {
+                    $(".imgcontent").fadeOut()("1000");
+                });
+                $(document).on("click", ".find_all", function () {
+                    var sid = $(this).attr("pid");
+
+                });
+                //顶部
+            }
+
+            //初始化整个页面
+            init();
+            //动态加载
+            act();
+        });
+    </script>
+</html>

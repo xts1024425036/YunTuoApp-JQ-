@@ -1,0 +1,267 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>退货单 - 云驼联盟</title>
+        <link href="../../css/style.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="../../js/jquery.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/deliverymain.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            .detail_number{display: block;}
+            .frame_return_goods .sale_order_list .main_css{width: 11vw;}
+            .frame_return_goods .log_item_delivery_detail .item_detail_number{top: 1vw;}
+            .item_detail_number .main {display: block;}
+            .detail_number {right: 11vw;}
+            .item_detail_number {right: 18vw;}
+        </style>
+    </head>
+
+    <body>
+        <div class="body_mask"></div>
+        <!--logo区-->
+        <div class="main_top">
+            <ul class="main_top_left">
+                <a class="main_top_back" href="../delivery/05delivery_log_daily.html"></a>
+                <script type="text/javascript">
+                    page3();
+                </script>
+
+            </ul>
+            <ul class="main_top_title">
+                <li>送装单退货</li>
+            </ul>
+            <ul class="main_top_right">
+                <!--<a class="main_top_search" href="#"></a>-->
+            </ul>
+        </div>
+        <div class="frame_return_goods">
+            <div class="log_item log_item_pay">
+                <div class="log_list_title">
+                    <div id="time_id" class="log_list_time">2018年5月4日11:23:49</div>
+                    <div id="sn_id" class="log_list_person">#20180315001</div>
+                </div>
+                <div class="log_item_delivery_detail log_item_pay_detail">
+                    <ul>
+                        <li  class="delivery_detail_title">地址：</li>
+                        <li id="addressdetailed_id" class="delivery_detail_text">武汉市江岸区XX路XX巷X号602 </li>
+                    </ul>
+                    <ul>
+                        <li class="delivery_detail_title">送装费：</li>
+                        <li class="delivery_detail_text"><span id="fee1">配送费:￥100</span><span id="fee2">安装费:￥100</span><span id="fee3">吊装费:￥0</span></li>
+                    </ul>
+                </div>
+            </div>
+            <!--输入订单货品列表-->
+            <div class="sale_order_list">
+                <div id="sale_return_all_id" class="sale_order_list_title">货品清单</div>
+            </div>
+            <!--结算汇总-->
+            <div class="sale_order_total">
+                <div id="all_allnumber_id" class="sale_total_money">退货总数：0件</div>
+                <div id="all_allother_id" class="sale_total_money">配件总数：0件</div>
+            </div>
+        </div>
+        <div>
+            <!--            <div>退货记录</div>
+                        <div class="return_title_class">时间</div>
+                        <div class="return_title_class">大件</div>
+                        <div class="return_title_class">小件</div>
+                        <div class="return_list_class">
+                        </div>-->
+        </div>
+        <!--底部功能-->
+        <div class="frame_bottom_cart">
+            <a href="javascript:void(0);" id="sure_id" class="bottom_button_max">准备退货</a>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var itemsale;
+        var pagesale;
+        var staticmessage = {};
+        var num1 = 0;           //货品退货数量
+        var num2 = 0;          //配件总数
+        $(function () {
+            FastClick.attach(document.body);
+            //初始化整个页面\
+            init();
+            function init() {
+                staticMessage(staticmessage);
+                var sorderid = GetQueryString("sorderid");
+                $.post(staticmessage.url + "return/findone",
+                        {
+                            "sorderid": sorderid
+                        }
+                , function (data) {
+                    console.log(data);
+                    pagesale = data.sorder;
+                    if (pagesale.salesorderitems.length > 0 && typeof (pagesale) != "undefined") {
+                        htmlhelp();
+                    }
+                });
+                console.log(pagesale);
+            }
+            act();
+            //动态加载
+            function act() {
+                $("#sure_id").on("click", function () {
+                    send();
+                });
+                $(document).on('click', '.detail_number_add,.detail_number_delete,.item_detail_delete', function () {
+                    var element = $(this);
+                    var classtype = $(this).attr("type");
+                    var sn = $(this).closest(".log_item_list").attr("pid");
+                    var from = $(this).closest(".log_item_delivery_detail").attr("pid");
+                    var saleone = pagesale.salesorderitems[listonesn(sn, pagesale.salesorderitems)];
+                    if ("add" == classtype) {
+                        if ("main" == from) {
+                            numberedit(classtype, from, element, saleone);
+                        } else {
+                            numberedit(classtype, from, element, saleone);
+                        }
+                    } else if ("minus" == classtype) {
+                        numberedit(classtype, from, element, saleone);
+                    } else if ("all" == classtype) {
+                        numberedit("all", from, element, saleone);
+                    }
+                });
+
+            }
+            function htmlhelp() {
+                $("#time_id").html(pagesale.createdate);
+                $("#sn_id").html("#" + pagesale.sorderid);
+                $("#addressdetailed_id").html(pagesale.addressdetailed);
+                $("#fee1").html("配送费:￥" + pagesale.installationfee);
+                $("#fee2").html("安装费:￥" + pagesale.transprotfee);
+                $("#fee3").html("吊装费:￥" + pagesale.upstairsfee);
+                for (var x in pagesale.salesorderitems) {
+                    pagesale.salesorderitems[x].proportion = pagesale.salesorderitems[x].qtyshave;
+                }
+                var smallHtml = htmladd("退货", pagesale.salesorderitems);
+                $("#sale_return_all_id").html(smallHtml);
+            }
+            function findreturn() {
+                $(".other").each(function () {
+                    num2 += parseInt($(this).html());
+                })
+                $(".main").each(function () {
+                    num1 += parseInt($(this).html());
+                })
+            }
+            //辅助 ： 编辑css
+            function cssedit(othernow, mainnow, qtys, prodqtys, element) {
+                var otherhtml = $(element).closest(".log_item_list").find(".other");
+                var mainhtml = $(element).closest(".log_item_list").find(".main");
+                (othernow > 0) ? $(otherhtml).prev().css("display", "block") : null;
+                (mainnow > 0) ? $(mainhtml).prev().css("display", "block") : null;
+                (othernow == 0) ? $(otherhtml).prev().css("display", "none") : null;
+                (mainnow == 0) ? $(mainhtml).prev().css("display", "none") : null;
+                (othernow < qtys) ? $(otherhtml).next().css("display", "block") : null;
+                (othernow == qtys) ? $(otherhtml).next().css("display", "none") : null;
+            }
+            //all edit
+            function numberedit(type, from, element, saleone) {
+                var othernow = $(element).closest(".log_item_list").find(".other");
+                var mainnow = $(element).closest(".log_item_list").find(".main");
+                var othernowint = parseInt($(othernow).html());
+                var mainnowint = parseInt($(mainnow).html());
+                var qtys = saleone.qtys;
+                var prodqtys = saleone.prodqtys;
+                var proportion = parseInt($(element).closest(".log_item_list").attr("num"));
+                if ("other" == from) {//调整配件
+                    if ("all" == type) {//全退
+                        $(othernow).html(qtys);
+                        $(mainnow).html(prodqtys);
+                    } else if ("add" == type) {//单个添加
+                        if (othernowint < qtys) {
+                            othernowint++;
+                            $(othernow).html(othernowint);
+                            if (othernowint % proportion == 0 && othernowint != 0) {
+                                $(mainnow).html(mainnowint + 1);
+                            }
+                        }
+                    } else {//单个减少
+                        if (othernowint > 0) {
+                            othernowint--;
+                            $(othernow).html(othernowint);
+                        }
+                        if ((othernowint + 1) % proportion == 0 && othernowint != 0) {
+                            $(mainnow).html(mainnowint - 1);
+                        }
+                    }
+                } else {//调整货品
+                    if ("add" == type) {//退一件
+                        //如果现有总件数小于或者等于总件数减一且配件数大于每件配件数
+                        if (mainnowint < prodqtys && (othernowint + proportion) <= qtys) {
+                            $(othernow).html(othernowint + proportion);
+                            $(mainnow).html(mainnowint + 1);
+                        }
+                    } else {//取消一件
+                        if (mainnowint > 0 && (othernowint - proportion) <= qtys) {
+                            $(othernow).html(othernowint - proportion);
+                            $(mainnow).html(mainnowint - 1);
+                        }
+                    }
+                }
+                cssedit(parseInt($(othernow).html()), parseInt($(mainnow).html()), qtys, prodqtys, element);
+            }
+            function edit() {
+                var returnitems = new Array();
+                var editone = {};
+                $(".log_item_list").each(function () {
+                    var sn = $(this).attr("pid");
+                    var name = $(this).find(".prodname").html();
+                    var main = $(this).find(".main").html();
+                    var other = $(this).find(".other").html();
+                    if (main > 0 || other > 0) {
+                        var returnitem = {};
+                        returnitem.sorderid = pagesale.sorderid;
+                        returnitem.sn = sn;
+                        returnitem.prodname = name;
+                        returnitem.proportion = parseInt($(this).closest(".log_item_list").attr("num"));
+//                                    returnitem.oldmain = parseInt($(this).find(".oldmain").html());
+//                                    returnitem.oldother = parseInt($(this).find(".oldother").html());
+                        returnitem.main = main;
+                        returnitem.other = other;
+                        returnitem.status = pagesale.status;
+                        returnitems.push(returnitem);
+                    }
+                })
+                editone.prodqtys = pagesale.prodqtys;
+                editone.qtys = pagesale.qtys;
+                editone.returnitems = returnitems;
+                editone.addressdetailed = pagesale.addressdetailed;
+                editone.customer = pagesale.customer;
+                editone.customerphone = pagesale.customerphone;
+                editone.sorderid = pagesale.sorderid;
+//                    storegeeditutil('salereturn', '', {expires: -1});
+                console.log(JSON.stringify(editone));
+                storegeeditutil("salereturn", JSON.stringify(editone), {expires: 7});
+                console.log(JSON.parse(storegeeditutil("salereturn")));
+                return true;
+            }
+
+            function number() {
+                $("#all_allnumber_id").html("退货总数：" + (num1) + "件");
+                $("#all_allother_id").html("配件总数：" + (num2) + "件");
+                num1 = 0;
+                num2 = 0;
+            }
+            function send() {
+                if (edit()) {
+                    window.location.href = "10return_sure.html";
+//                        window.location.href = "09return_goods.html";
+                }
+            }
+        });
+    </script>
+</html>

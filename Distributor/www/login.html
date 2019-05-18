@@ -1,0 +1,257 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>登陆</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Page-Enter" content="RevealTrans(duration=5,Transitionv=11)">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <link rel="stylesheet" type="text/css" href="css/iconfont.css">
+        <link rel="stylesheet" type="text/css" href="css/newcommon.css">
+        <script src="cordova.js"></script>
+        <script src="js/jquery.js"></script>
+        <script src="js/common.js"></script>
+        <script src="js/loginutil.js"></script>
+        <script src="js/fastclick.js"></script>
+        <style type="text/css">
+            body{
+                background-color: #ffffff;
+                background-image: url(images/log-in-bg.png);
+                background-repeat: no-repeat;
+                background-size: 100% 13rem;
+                width: 100%;
+            }
+            .main-logo{
+                margin: 1.8rem 0 0.8rem 0;;
+            }
+            .footer-bar{
+                background: transparent;
+                border-top: none;
+            }
+            .version{
+                font-size: .22rem;
+                color:#FFFFFF;
+                text-align: center;
+                opacity: .6;
+            }
+            .cell-list{
+                padding: 0 0.8rem;
+                position: relative;
+                color: #FFFFFF;
+            }
+            .cell-list .cell{
+                color: #FFFFFF;
+                font-size: .28rem;
+                padding:0;
+                border:none;
+                margin-bottom: 0.6rem;
+            }
+
+            .cell-list .cell+.cell{
+                border-top: none;
+            }
+            .cell-list .cell i.left{
+                color:#FFFFFF;text-align:left;
+            }
+            .cell-list .cell input{
+                color:#fff;
+                font-size: .32rem;
+                flex: 1;
+                background:transparent;
+                border-bottom: .01rem solid #F0F0F0;
+                padding: .1rem;
+                border-radius:0;
+                margin-left: .14rem;
+            }
+            .cell-list .cell input::-webkit-input-placeholder{
+                color: #fff;
+                font-size: .28rem;
+                opacity: .6;
+            }
+
+
+            .security-code{
+                color: inherit;
+                width: 7em;
+                height:.6rem;
+                background:#4373BB;
+                border-radius:.1rem;
+                line-height: .6rem;
+                font-size: .22rem;
+                position: absolute;
+                bottom: .14rem;
+                right: .8rem;
+            }
+            .explain{
+                font-size: .22rem;
+                color: #FFFFFF;
+                margin-top: -0.3rem;
+                padding: 0 .8rem;
+            }
+            .explain span{
+                color: #65A3FF;font-weight: bold;
+            }
+            .log-btn{
+                width:5.4rem;
+                height:.8rem;
+                background:#2C4975;
+                border-radius:.4rem;
+                line-height: .8rem;
+                color: #FFFFFF;
+                font-size: .32rem;
+                letter-spacing: .2rem;
+                margin:1rem auto 0.3rem auto;
+            }
+            .log-btn2{
+                width:5.4rem;
+                height:.8rem;
+                border:.02rem solid #ffffff;
+                border-radius:.4rem;
+                line-height: .8rem;
+                color: #FFFFFF;
+                font-size: .32rem;
+                letter-spacing: .2rem;
+                margin:0.6rem auto;
+            }
+            .frame_img{
+                position: fixed;
+                top: 0;
+                background-image: url(images/bg.png);
+                background-repeat: no-repeat;
+                background-size:100% 100%;
+                width: 100%;
+                height: 100%;
+            }
+            .main-logo{
+                margin: 2.2rem 0 1.6rem 0;;
+            }
+            .footer-bar{
+                background: transparent;
+                border-top: none;
+            }
+            .refushtop{
+                padding: 0.4rem;
+                margin: 1rem 0 1rem 0;
+            }
+        </style>
+    </head>
+
+    <body class="refushback">
+        <div class="txtc">
+            <div class="main-logo refushpagetop">
+                <img src="images/log-in-logo.png">
+            </div>
+            <div class="cell-list">
+                <a class="cell">
+                    <i class="left iconfont icon-iLinkapp-"></i>
+                    <input  id="phone" type="tel" placeholder="手机号" class="cell-text txtl" maxlength="13">
+                </a>
+                <a class="cell">
+                    <i class="left iconfont icon-yanzhengma"></i>
+                    <input  id="isCode" type="tel" placeholder="验证码" class="cell-text txtl"  maxlength="6">
+                </a>
+                <div id="send" class="security-code">发送验证码</div>	
+            </div>
+            <div class="explain txtl">点击登录，即表示已阅读并同意<a id="privacy_id" href="serviceAgreement.html">《APP用户协议》</a>和<span><a id="privacy_id" href="privacyPolicy.html">《隐私政策》</a></span></div>
+            <div class="txtc-btn txtc">
+                <div class="log-btn" id="login">登录</div>
+                <div class="log-btn2" id="registry">注册</div>
+            </div>
+            <div class="footer-bar need_resize_obj">
+                <div class="version txtc">Copyright © 2019 YUNTUO</div>
+            </div>
+            <div id="add_msg"></div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var staticmessage = {};
+        var a = true; //辅助修复号码删除BUG
+        var privacytime = "20180928";
+        var sendcode = true;
+//        var privacy = isnotnull(storegeeditutil('privacy')) ? JSON.parse(storegeeditutil('privacy')) : new Object();
+        $(function () {
+            FastClick.attach(document.body);
+            pageutil.refushbackground();
+            pageutil.refushpagetop();
+            staticMessage(staticmessage);
+
+            $("#phone").on("keyup", function () {
+                var value = $(this).val().replace(/\s/g, '').replace(/(^\d{3}|\d{4})(?=\d)/g, "$1 ");
+                $(this).val(value);
+            });
+            $("#registry").on("click", function () {
+                window.location.href = "pages/01signup.html";
+            });
+
+            $("#login").on('click', function (evnet) {
+//                window.location.href = "pages/01home.html";
+//                if ($("#phone").val() != "" && $("#isCode").val() == "") {
+//                    app.alert("请输入验证码");
+//                    return;
+//                }
+                var uuid = RndNum(8);
+                if (typeof (device) != "undefined") {
+                    uuid = isnotnull(device.uuid) ? device.uuid : RndNum(8);
+                }
+                $.post(staticmessage.url + 'login/dislogin',
+                        {
+                            Bphone: $('#phone').val().replace(/\s/g, ""),
+                            Bcode: $('#isCode').val(),
+                            UUID: uuid
+                        },
+                        function (data) {
+                            console.log(data);
+                            if (data.status) {
+                                login_util.createcache(data);
+                            } else {
+                                app.alert("验证失败:" + data.message);
+                                console.log("验证失败")
+                            }
+                        }, "json");
+            });
+            $("#send").on('click', function (event) {
+                var disabled = $("#send").attr("disabled");
+                if (disabled) {
+                    return false;
+                }
+                var phone = $("#phone").val().replace(/\s/g, "");
+                if ($("#phone").val() == "" || phone.length != 11) {
+                    refushmessage("请输入正确电话号码");
+                } else {
+                    if (sendcode) {
+                        sendcode = false;
+                        setTimeout(function () {
+                            sendcode = true;
+                        }, 6000);
+                        refushmessage("正在发送:" + phone);
+                        if (staticmessage.url.indexOf("back.51yuntuo.com") > 0 && "15800000066" == $('#phone').val().replace(/\s/g, "")) {
+                            staticmessage.url = "https://test.51yuntuo.com/datacenter/api/";
+                        }
+                        $.post(staticmessage.url + 'login/send',
+                                {Bphone: phone},
+                                function (data) {
+                                    console.log(data);
+                                    if (data.status) {
+                                        refushmessage("验证码发送成功");
+                                        $("#isCode").focus();
+                                        sendcode = true;
+                                        var _generate_code = $("#send");
+                                        _generate_code.attr("disabled", true);
+                                        login_util.countdown(_generate_code);
+                                    } else {
+                                        sendcode = true;
+                                        refushmessage(data.message);
+                                    }
+                                }, "json");
+                    } else {
+                        refushmessage("验证码请求已发送,5秒后可重新尝试");
+                    }
+                }
+            });
+        });
+    </script>
+</html>

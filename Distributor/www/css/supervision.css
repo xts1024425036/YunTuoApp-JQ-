@@ -1,0 +1,463 @@
+@charset "utf-8";
+/*** CSS Document ***/
+.home_tool{
+    margin:2vw 3%;
+    width:94%;
+    height:50vw;
+    background:#FFF;
+}
+.home_tool .home_tool_item{
+    float:left;
+    width:25%;
+    text-align:center;
+    font-size: 3vw;
+}
+.home_tool .home_tool_item .home_tool_pic{
+    float:left;
+    width:100%;
+    text-align:center;
+}
+.home_tool .home_tool_item .home_tool_pic img{
+    height:15vw;
+}
+.home_tool .home_tool_item .home_tool_text{
+    float:left;
+    width:100%;
+    text-align:center;
+    color:#333333;
+    line-height: 10vw;
+}
+.notification{
+    margin:0 3%;
+    padding:3%;
+    width:94%;
+    margin-bottom: 2vh;
+    background:url(../images/notification.png) 3% center no-repeat;
+    position:relative;
+    background-size: 6vw;
+}
+.notification .text{
+    width:88%;
+    margin-left:8.5%;
+    float:left;
+    font-size: 3.5vw;
+}
+.notification .arrow img{
+    position:absolute;
+    top:40%;
+    right:3%;
+    width: 4vw;
+}
+
+.finish_info td{
+    text-align: left;
+    padding:1vw 2vw;
+    font-size:3.25vw;
+}
+
+.finish_info td:first-child{
+    text-align: center;
+}
+
+.order_menu{
+    border:1px solid #dedede;
+    border-width:1px 0;
+    font-size: 3vw;
+    line-height: 8vw;
+}
+
+.order_menu img{
+    height:3vw;
+    padding: 0 0 0 1vw;
+}
+
+.logistics{
+    color:#999999;
+    padding-top:5vw;
+    position: relative;
+    z-index: 999;
+}
+
+.process_time{
+    float:left;
+    width:15vw;
+    padding-right:1vw;
+    font-size:3vw;
+    text-align: right;
+    line-height: 4vw;
+}
+
+.process_time span{
+    display: block;
+    font-size:2.75vw;
+}
+
+.status_icon{
+    float:left;
+    width:10vw;
+}
+
+.status_icon img{
+    vertical-align: middle;
+    width: 8vw;
+    height: 8vw;
+    margin:0 1vw;
+}
+
+.status_text{
+    float:left;
+    width:60vw;
+    font-size:3vw;
+    line-height: 8vw;
+}
+
+.status_text:first-child{
+    line-height: 4vw;
+}
+
+.status_text span{
+    display: block;
+    font-size:2.75vw;
+    line-height: 4vw;
+}
+
+.connectline{
+    content: "";
+    height:5vw;
+    width:1px;
+    background:#cccccc;
+    position: absolute;
+    top:0;
+    left:20vw;
+}
+
+.cicle{
+    width:4vw;
+    height:4vw;
+    border-radius: 50%;
+    background:#cccccc;
+    margin:2vw auto;
+}
+
+
+.seller{
+    font-size:3.5vw;
+    line-height: 12vw;
+    border-bottom:1px solid #dedede;
+    text-align: center;
+}
+.seller .left{
+    width:30%;
+}
+.seller .title{
+    font-size:4vw;
+    font-weight: 600;
+    text-align: left;
+}
+
+.option{
+    padding:0 2vw;
+    line-height: 7vw;
+    border:1px solid #dedede;
+    border-radius: 25px;
+    float: left;
+    font-size: 3vw;
+    margin-right:1.15vw;
+    width: 26vw;
+    text-align: center;
+    margin-bottom: 2vw;
+}
+
+.option_cur{
+    padding:0 2vw;
+    line-height: 7vw;
+    border:1px solid #0066cc;
+    background:#0066cc;
+    border-radius: 25px;
+    color:#FFFFFF;
+    float: left;
+    font-size: 3vw;
+    margin-right:1.15vw;
+}
+.item{
+    line-height: 12vw;
+    border-bottom:1px solid #dedede;
+    font-size:4.25vw;
+}
+.item .title{
+    font-size:5vw;
+    text-align: left;
+}
+.item span{
+    margin-right:3vw;
+}
+.item .leftcol{
+    width:15%;
+}
+.item label{
+    margin-right:1.5vw;
+    line-height:4vw;
+}
+.bluecheckbox{
+    display:none;
+}
+.bluecheckbox + label::before {
+    content: "\a0";  /*不换行空格*/
+    display: inline-block;
+    width:4vw;
+    height:4vw;
+    vertical-align: 0.1rem;
+    background-color: white;
+    border:1px solid #d3d3d3;
+    margin-right: 1vw;
+    text-indent: .15em;
+}
+.bluecheckbox:checked + label::before {
+    content: "\2713";
+    color:#0066cc;
+}
+
+.item .itemline{
+    width:100%;
+    margin: 3vw 0;
+}
+
+.item .rightcol{
+    width:78%;
+    padding-left:2%;
+    float:left;
+    height: 7vw;
+    line-height: 7vw;
+}
+
+.rightcol input[type="text"]{
+    border: none;
+    height: 7vw;
+    line-height: 7vw;
+    vertical-align: middle;
+    font-size: 4.25vw;
+    float:left;
+}
+.rightcol select{
+    width: 45vw;
+    height: 7vw;
+    line-height: 7vw;
+    border: 1px solid #cccccc;
+    border-radius: 0;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background:url(../images/19.png) 40vw 2vw no-repeat;
+    background-size:3vw;
+    font-size:4.25vw;
+    padding-right:6vw;
+    padding-left:15vw
+}
+
+.install_info td, .install_info th, .install_static td, .install_static th{
+    border:solid #dedede; 
+    border-width:0px 1px 1px 0px;}
+.install_info, .install_static{
+    border:solid #dedede; 
+    border-width:1px 0px 0px 1px;
+}
+.install_info th, .install_static th{
+    background:#0066cc;
+    color:#FFFFFF;
+    font-weight: normal;
+    padding:2vw;
+}
+.install_info td, .install_static td{
+    color:#333333;
+    padding:2vw;
+}
+.install_static td, .install_static th{
+    text-align: center;
+    font-size: 3vw;
+}
+.install_static td:first-child{
+    padding:2vw 0;
+}
+.install_info td:first-child, .install_info td:nth-child(2){
+    text-align: center;
+}
+.install_info td:first-child div{
+    font-size:3vw;
+}
+.install_info td:nth-child(3), .install_info td:nth-child(4){
+    font-size:2.75vw;
+}
+
+.centercol_wo_icon input{
+    border: none;
+    outline: none;
+    background: #F4F7F5;
+    height: 8vw;
+}
+.centercol_w_icon input {
+    border: none;
+    outline: none; 
+    background: #F4F7F5;
+    height: 8vw;
+}
+.dot {
+    position: absolute;
+    display: block;
+    width: 7vw;
+    height: 7vw;
+    line-height: 7vw;
+    /* top: -1vw; */
+    /* right: 15vw; */
+    color: #FFF;
+    text-align: center;
+    font-size: 5vw;
+    background: #cc0037;
+    border-radius: 50%;
+    margin-left: 15vw;
+    margin-top: -1vw;
+}
+
+.bluecheckbox{
+    display:none;
+}
+.bluecheckbox + label::before {
+    content: "\a0";
+    display: inline-block;
+    width: 6vw;
+    height: 6vw;
+    vertical-align: middle;
+    background-color: white;
+    border: 1px solid #d3d3d3;
+    border-radius: 50%;
+    margin-right: 3vw;
+    margin-bottom: 1vw;
+    text-indent: .15em;
+    font-size: 5.5vw;
+    line-height: 6vw;
+}
+.bluecheckbox:checked + label::before {
+    content: "\2713";
+    color:#0066cc;
+}
+
+.full2 .leftcol{
+    width:20%;
+    height: 7vw;
+    line-height: 7vw;
+}
+
+.leftcol {
+    float: left;
+    display: block;
+    text-align: justify;
+    height: 5vw;
+    line-height: 6vw;
+    overflow: hidden;
+}
+
+.full2 {
+    width: 96%;
+    margin: 5% 2%;
+}
+.full2 .colon, .itemline .colon {
+    height: 7vw;
+    line-height: 7vw;
+}
+.colon {
+    float: left;
+    width: 4%;
+    padding-left: 1%;
+    height: 6vw;
+    line-height: 5vw;
+}
+.full2 .centercol_wo_icon {
+    width: 72%;
+}
+.centercol_wo_icon {
+    float: left;
+    width: 76%;
+    display: block;
+}
+.centercol_w_icon {
+    float: left;
+    width: 66%;
+    display: block;
+}
+.righticon {
+    float: right;
+    width: 10%;
+    font-size: 4vw;
+}
+
+/*地图通用*/
+#popup {
+    width: 95vw;
+    height: 92%;
+    z-index: 999;
+    display: none;
+    position: fixed;
+    top: 15vw;
+    left: 3vw;
+    background: #FFFFFF;
+}
+.popupcontainer{
+    border: 1px solid #aaa9a9;
+    border-radius: 10px;
+    box-shadow: 0 0 1vh #dedede;
+    background: #FFFFFF;
+    margin:0 0.5vw;
+    height: 90%;
+    overflow-y: scroll;
+}
+.select2_map{
+    width: 14vw;
+    height: 8vw;
+    line-height: 9vw;
+    background-size: 3vw;
+    float: left;
+    box-sizing: border-box;
+    text-align: center;
+}
+.form_item_pic .pic_item_add {
+    float: left;
+    padding: 1vw;
+    width: 20vw;
+    height: 20vw;
+    font-size: 7vw;
+    line-height: 18vw;
+    color: #a8a9a8;
+    background: #FFF;
+    border: 0.3vw dashed #e1e4e6;
+    border-radius: 1vw;
+    margin-left: 6vw;
+    text-align: center;
+}
+.form_item_pic img {
+    float: left;
+    padding: 1vw;
+    width: 20vw;
+    height: 20vw;
+    background: #FFF;
+    border: 0.2vw solid #e1e4e6;
+    border-radius: 1vw;
+    margin-left: 6vw;
+}
+.form_item_pic {
+    float: left;
+    width: 100%;
+}
+.select_from_c{
+    width: 16vw;
+}
+.select_from_c input{
+    width: 11vw;
+    height: 7vw;
+    display: block;
+    float: left;
+    margin-left: 2vw;
+    border:none;
+}
+#popup .gray{float: right;}
+.item_address_c{width: 100%;color:#cccccc;}
+/*new add end*/

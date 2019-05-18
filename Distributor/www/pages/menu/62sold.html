@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+    <head>
+        <title>云驼联盟</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <link href="../../css/common.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script type="text/javascript" src="../../js/jquery.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <div class="summary">
+
+        </div>
+        <div class="innercontent top_innercontent" id="submenu">
+            <!--            <div class="menuline" uid="../sale/02sale.html" pid="A01">
+                            <div class="menutext">销售开单</div>
+                            <div class="menuimg"><img src="../../images/31.png"></div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="menuline" uid="../delivery/05delivery_log_daily.html" pid="B03">
+                            <div class="menutext">销售转送装</div>
+                            <div class="menuimg"><img src="../../images/24.png"></div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="menuline" uid="../inventory/2901inventorylist.html" pid="B02">
+                            <div class="menutext">当前库存</div>
+                            <div class="menuimg"><img src="../../images/35.png"></div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="menuline" uid="../purchase/13purchase_order.html" pid="C01">
+                            <div class="menutext">采购入库</div>
+                            <div class="menuimg"><img src="../../images/32.png"></div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="menuline" uid="../store/52storehouse_out.html" pid="A04">
+                            <div class="menutext">调拨入库</div>
+                            <div class="menuimg"><img src="../../images/47.png"></div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="menuline" uid="../store/22storehouse_in.html" pid="A04">
+                            <div class="menutext">调拨出库</div>
+                            <div class="menuimg"><img src="../../images/30.png"></div>
+                            <div class="clear"></div>
+                        </div>-->
+            <!--            <div class="menuline" uid="" pid="">
+                            <div class="menutext">库存盘点</div>
+                            <div class="menuimg"><img src="../../images/33.png"></div>
+                            <div class="clear"></div>
+                        </div>-->
+            <div class="menuline menuline_jump" style="border: none;" pid="baobiao" uid="../sale/58baobiao.html">
+                <div class="menutext">查看报表</div>
+                <div class="menuimg"><img src="../../images/34.png"></div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div id="menu_buttom_id">
+
+        </div>
+        <script type="text/javascript">
+            table.htmlTabel("two");
+        </script>
+    </body>
+    <script type="text/javascript">
+        var staticmessage = {};
+        $(function () {
+            FastClick.attach(document.body);
+            $(".menuline").hide();
+            staticMessage(staticmessage);
+            localStorage.setItem("returnUrl", "../menu/62sold.html");
+            var a = storegeeditutil('power');
+            var power = new Array();
+            var sid = storegeeditutil("needstorage");
+            var pids = new Array("A04", "B02", "C01");
+            if (isnotnull(a)) {
+                power = a.split(',');
+            }
+            if (sid == "A") {
+                $(".menuline").show();
+                $(".menuline").find(".menutext").css("color", "#A2A2A2");
+            } else if (sid == "B") {
+                $(".menuline").each(function () {
+                    var pid = $(this).attr("pid");
+                    if ($.inArray(pid, pids) != -1) {
+                        $(this).hide();
+                    } else {
+                        var value = $.inArray(pid, power);
+                        if (value != -1) {
+                            $(this).show();
+                        }
+                    }
+                })
+            } else {
+                $(".menuline").each(function () {
+                    var value = $.inArray($(this).attr("pid"), power);
+                    if (value != -1) {
+                        $(this).show();
+                    }
+                });
+            }
+            $(".menuline_jump").show();
+            $(".menuline_jump").find(".menutext").css("color", "#000");
+            if (sid == "A") {
+                $(".menuline").on("click", function () {
+                    if ($(this).attr("pid") == "baobiao") {
+                        var uid = $(this).attr("uid");
+                        console.log("uid" + uid);
+                        window.location.href = uid;
+                    } else {
+                        alert("销售模块未开通,请开通!");
+                    }
+                })
+            } else {
+                $(".menuline").on("click", function () {
+                    var uid = $(this).attr("uid");
+                    console.log("uid" + uid);
+                    window.location.href = uid;
+                })
+            }
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: staticmessage.url + "statistics/sold",
+                data: {"gsid": staticmessage.gsid},
+                success: function (data) {
+                    console.log(data.soldReturnParam);
+                    if (data.soldReturnParam != null) {
+                        $(".summary").html("<div style='line-height: 8vw;width:55%;margin:0 auto;text-align: left;'>\n\
+                                    今日入库" + data.soldReturnParam.tStorageNum + "件货，出库" + data.soldReturnParam.tDeliveryNum + "件货<br />\n\
+                                    今天销售单" + data.soldReturnParam.tSaleNum + "张，" + data.soldReturnParam.tGoodsNum + "件货<br />\n\
+                                    本周入库" + data.soldReturnParam.wStorageNum + "件货，出库" + data.soldReturnParam.wDeliveryNum + "件货<br />\n\
+                                    本周销售单" + data.soldReturnParam.wSaleNum + "张，" + data.soldReturnParam.tGoodsNum + "件货<br /></div>")
+                    }
+                }
+            })
+
+        });
+    </script>
+</html>

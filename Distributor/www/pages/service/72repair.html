@@ -1,0 +1,1017 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>送装下单 - 云驼联盟</title>
+        <link href="../../css/common.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <link href="../../css/zeroModal.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="../../js/jquery.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../js/map.rest.js"></script>
+        <script src="../../js/zeroModal.js"></script>
+        <script src="../../js/upload.js"></script>
+        <script src="../../js/pageorder.js"></script>
+        <script src="../../js/templatorder.js"></script>	
+        <script src="../../js/templateutils.js"></script>
+        <script src="../../js/mathedit.js"></script>
+        <script src="../../js/deliveryutil.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            #city_id{
+                line-height: 100%;
+            }
+            .close_select,.close_why{
+                right: 0vw;
+                width: 10vw;
+                height: 12vw;
+                line-height: 12vw;
+                position: absolute;
+            }
+            .iconfont {
+                font-size: 5vw;
+            }
+            #why_this_money_pages{
+                background-color: #fff;
+                width: 96%;
+                margin-left: 2vw;
+                display: none;
+                overflow-y: scroll;
+                height: 84%;
+                top: 11vw;
+            }
+            #why_this_money_pages p{
+                margin: 4vw;
+            }
+            .bottom_cart {
+                position: fixed;
+            }
+            body {
+                padding: 0 0 0vw 0;
+            }
+            .select{
+                border: 0px solid #aaa9a9;
+                height: 6vw;
+                line-height: 6vw;
+                background-size: 6vw;
+                margin: 2vw 0;
+                font-size:4vw;
+                width: 72vw;
+                appearance:none;
+                -moz-appearance:none;
+                -webkit-appearance:none;
+            }
+            .blueblock{
+                width:3vw;
+                height:3vw;
+                margin:2vw 0vw 2vw 0;
+                background:#345ab7;
+            }
+            .form_select:focus { 
+                outline: none !important;
+                border: 0px solid #ccc;
+            }
+            .content{
+                width: 100%;
+                position: absolute;
+                height: 90%;
+                overflow-y: scroll;
+            }
+            #upstairs_id{display: none;}
+            .address_sp{
+                line-height: 11.2vw;
+                vertical-align: top;
+                font-size: 3.5vw;
+                margin: 2vw 1vw 0 2vw;
+            }
+            #map_input_before_id .map_input{
+                text-indent: 2vw;
+                width:65vw;
+            }
+            #input_label{
+                width: 52vw;
+                display: block;
+                float: right;
+                padding:0;
+                border:none;  
+            }
+            .content .show_address{
+                background: #F0F0F0;
+                width: 101vw;
+                position: relative;
+                left: -4vw;
+                text-indent: 6vw;
+                background: #F0F0F0;
+            }
+            .icon-location{
+                font-size: 5vw;
+                float: left;
+                z-index: 99;
+                color: #000000;
+                position: relative;
+            }
+            #add_new_service{
+                text-align: center;
+                width: 28vw;
+                border-radius: 8px;
+            }
+            #service_select{
+                position: fixed;
+                left: -300vw;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                z-index: 101;
+                display: block;
+                background: rgba(0, 0, 0, 0.6);
+            }
+            #big_item_type_id{
+                padding-top: 3vw;
+                background-color: #FFF;
+            }
+            #service_select .close_service{
+                width: 30%;
+                float: left;
+                position: absolute;
+                top: 0;
+                left: 0;
+                background-color: #F0F0F0;
+                height: 13vw;
+            }
+            #service_select .close_service .icon-cancel{
+                font-size: 8vw;
+                display: block;
+                padding: 3vw 0 0 11vw;
+                color: #9e0505;
+            }
+            #order_list_id{
+                box-shadow: 0px 1px 7px 1px rgba(35,24,21,0.2);
+                border-radius: 2vw;
+                min-height: 19vw;
+            }
+            #order_list_id .cate_select{
+                display: inline-block;
+                width: 95%;
+                margin: 1vw 3vw;
+                vertical-align: middle;
+                line-height: 5vw;
+                position: relative;
+            }
+            #order_list_id .cate_select div{
+                display: inline-block;
+                margin: 0;
+                float: none;
+                font-size: 0.24rem;
+                color: #333;
+                line-height: 22px;
+            }
+            #order_list_id .cate_select .setnumber{
+                float: right;
+                width: 90px;
+                text-align: right;
+            }
+            .setnumber_delete{
+                border-radius: 0.1rem 0 0 0.1rem;
+            }
+            .setnumber_add{
+                border-radius: 0 0.1rem 0.1rem 0;
+            }
+            .setnumber .detail_number{
+                width:24px;
+                line-height: 22px;
+                text-align: center;
+            }
+            .setnumber .sernum_change{
+                background: #F0F0F0;
+                color: #999999;
+                width: 24px;
+                height:24px;
+                font-size: 14px;
+                float: none;
+                text-align: center;
+                line-height: 22px;
+                padding-bottom: 0;
+                display: inline-block;
+            }
+            .goods-info-title-text {
+                font-size: 0.32rem;
+                width: 100%;
+                margin: 1.5vw 0;
+                font-weight: bold;
+            }
+            #remarks_id{
+                width: 92vw;
+                height: 19vw;
+                padding: 2vw;
+                font-size: 0.28rem;
+                margin-left: 1vw;
+                box-shadow: 0px 1px 7px 1px rgba(35,24,21,0.2);
+                border-radius: 2vw;
+            }
+            #backend{
+                margin-top: 14vw;
+                line-height: 10vw;
+                overflow-y: scroll;
+                max-height: 80vh;
+            }
+            .pic_add img{
+                position: relative;
+                top: -24px;
+                /*border: 0.1vw solid #e1e4e6;*/
+                margin-left: 0vw; 
+            }
+            .pic_add .iconfont{
+                width: 5vw;
+                height: 5vw;
+                display: block;
+                line-height: 4vw;
+                float: right;
+                color: #0041ff;
+                position: relative;
+                border-radius: 6vw;
+                top: -13px;
+                font-size: 5vw;
+                right: -16px;
+                z-index: 99;
+            }
+            #pic_list_id div{
+                float: left;
+                padding: 1vw;
+                width: 20vw;
+                height: 20vw;
+                font-size: 7vw;
+                line-height: 18vw;
+                margin-bottom: 2vw;
+                color: #a8a9a8;
+                background: #FFF;
+                border-radius: 1vw;
+                margin-left: 8vw;
+                text-align: center;
+            }
+            .decorate {
+                width: 0.08rem;
+                display: inline-block;
+                height: 0.30rem;
+                background-color: #5478C4;
+                margin-right: 0.2rem;
+            }
+            .message_item{
+                margin-left: 4vw;
+            }
+            .innercontent {
+                font-size: 0.32rem;
+                color: #666666;
+            }
+            .mes_title{
+                line-height: 1rem;
+                border-bottom: #F0F0F0 solid 1px;
+            }
+            .mes_title.left{
+                border-bottom:none;
+            }
+            .select_item{
+                /*height: 70%;*/
+                margin-top: 35vh;
+            }
+            .service_close{
+                height: 32vh;
+                width: 100%;
+                position: fixed;
+            }
+            .eusure_number{
+                float: right;
+                width: 20vw;
+                height: 7vw;
+                line-height: 7vw;
+                text-align: center;
+                background: #0066cc;
+                color: #fff;
+                border-radius: 6px;
+            }
+            .select_popup_c .title_number{
+                position: absolute;
+                margin-top: 3vw;
+                left: 0;
+                bottom: 4vw;
+            }
+            #cate_select_number{
+                border: none;
+                width: 18vw;
+                text-align: center;
+                margin-left: 1vw;
+            }
+            #big_ins_type_id .swiper-slide {
+                margin-top: 2vw;
+            }
+            #service_select.select_popup_c{
+                display: flex;
+                align-items:flex-end;
+                flex-direction:column;
+            }
+            .select_popup_c .service_close{
+                flex:auto;
+                position: static;
+            }
+            .popup_in_c{
+                left: 0;
+                bottom: 0;
+                height:auto;
+                margin-top: 0;
+                padding-bottom: 14vw;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="top_nav">
+            <i class="top_left back iconfont icon-back"></i>
+            <!-- <i class="top_left back iconfont icon-back"></i>-->
+            <div class="top_menu">维修订单</div>
+            <div class="top_right"></div>
+        </div>
+        <div  id="backend" class="content">
+            <div class="innercontent">
+                <div id="map_input_before_id" class="new_map_popup">
+                    <div class="select2_map" style="margin-left: 0vw;">武汉市</div>
+                    <i class="iconfont icon-unfold" style="font-size: 4vw;float: left;line-height: 12vw;"></i>
+                    <div class="input gray map_input">
+                        <i class="iconfont icon-search" style="font-size: 5vw;"></i>
+                        <div id="input_label" class="gray">请输入地址查询</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <i class="iconfont icon-location" ></i>
+                <div class="blue show_address"><textarea id="adress_id" class="input_id need no_out_border"  autoHeight="true"  rows="1" pid="customeradress"  placeholder="请点击选择维修地点省市区及小区地址" readonly="true" style="width:84vw;background: #F0F0F0;"></textarea></div>
+                <div class="mes_title">楼栋门牌<span class="gray message_item"> <input type="text" id="addressdetailed_id" pid="addressdetailed" class="input_id need no_out_border" placeholder="请填写栋、单元、楼层、门牌信息" style="width: 68vw;"></span></div>
+                <div class="mes_title">客户姓名<span class="gray message_item"><input id="customer_id" pid="customer" class="input_id need no_out_border" maxlength="10"  type="text" placeholder="请填写客户名" style="width: 68vw;text-indent: 2vw;"></span></div>
+                <div class="mes_title">客户电话<span class="gray message_item"><input id="cusphone_id" pid="cusphone" class="input_id need no_out_border"  type="tel" maxlength="11" placeholder="请填写手机或电话" style="width: 68vw;text-indent: 2vw;"></span></div>
+                <div class="clear"></div>
+                <div class="left mes_title">维修日期<span class="gray message_item"><input type="date" id="devdate_id" pid="devdate" class="input_id need no_out_border" placeholder="请选择送货时间" style="width:44vw;height: 7vw;margin-left: 2vw;"></span></div>
+                <div class="right"><label for="devdate_id" style="line-height: 14vw;"><i class="iconfont icon-right"></i></label></div>
+                <div class="clear"></div>
+            </div>
+            <div style="width:100%;height:2vw;margin-top:2vw;background:#f3f5f7;"></div>
+            <div class="innercontent" style="padding-bottom: 24vw;">
+                <div class="left"  style="font-size: 4.3vw;font-weight: bold;color: #333333"><span class="decorate"></span>已选服务</div>
+                <div class="right" id="moreaddress_id" style="color:#5478C4"><div id ="add_new_service">+ 维修项目</div></div>
+                <div class="clear"></div>
+                <div id="order_list_id"> 
+
+                </div>
+                <div class="clear"></div>
+                <div class="left goods-info-title-text"><span class="decorate"></span>维修备注：</div>
+                <textarea id="remarks_id" pid="remarks" rows="2" class="input_id no_out_border" placeholder="请填写备注"></textarea>
+                <div class="clear"></div>
+                <div class="left goods-info-title-text"><span class="decorate"></span>破损照片：</div>
+                <div id="pic_list_id" class="form_item_pic">
+                    <div class="pic_item_add" data-pid="0"><i class="iconfont icon-zhaopian"></i></div>
+                </div>
+            </div>
+        </div>
+        <div id="add_msg"></div>
+        <div id="service_select" class="select_popup_c">
+            <div class="red service_close"></div>
+            <div class="popup_in_c">
+                <div class="title item_show" style="margin-top:4vw;border-top: none" data-pid="bigstyle_id">
+                    <span>项目名称</span>
+                    <i class="iconfont icon-unfold"></i>
+                    <span id="bigstyle_id_select" class="select_show"></span>
+                </div>
+                <div id="out_bigstyle_id" class="select_cate_c pro_show_all" style="margin-top: 1vw;height: 17vw;">
+                    <div id="bigstyle_id" class="submenu swiper-wrapper select_cateitem_c" style="width: 98%;">
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div class="title where_type">
+                    <span class="title_with">维修部位</span>
+                    <div class="select_cate_c pro_show_all"   style="height: 8vw;width: 73%;margin-left: 6vw;">
+                        <div  id="big_ins_type_id" class="submenu swiper-wrapper select_cateitem_c" style="width: 100%;">
+                            <div id="cansee_id" class="swiper-slide cate_cur" data-pid="false">面板</div> 
+                            <div class="swiper-slide" data-pid="true">边角</div> 
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div class="title">规格 <span id="big_item_type_id_select"></span></div>
+                <div id="out_big_item_type_id" class="pro_show_all select_cate_c"  style="margin-top: 1vw;min-height: 1.6rem;max-height: 2.7rem;">
+                    <div  id="big_item_type_id" class="submenu swiper-wrapper select_cateitem_c" style="">
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div class="title">损点数量 <span class="cate_number"><input id="cate_select_number" type="tel" maxlength="2" placeholder="请填数量">处</span></div>
+                <div class="title_number title"><span class="eusure_number">确定</span></div>
+            </div>
+        </div>
+        <!--        
+                
+                <div id="service_select">
+                    <div class="close_service"><i class="iconfont icon-cancel"></i></div>
+                    <div class="service_close"></div>
+                    <div class="select_item" id="bigstyle_id">
+        
+                    </div>
+                    <div class="select_item"  id="big_item_type_id">
+        
+                    </div>
+                </div>-->
+        <div id="popup" class="new_map_popup">
+            <div style="margin-bottom:2vw;" class="search_title">
+                <div class="select2_map">
+                    <select id="city_id" class ="form_select no_out_border" style="float: left;text-align: center;font-size:4vw;">
+                        <option value ="武汉市" selected>武汉市</option>
+                        <option value ="黄石市" >黄石市</option>
+                        <option value ="襄阳市">襄阳市</option>
+                        <option value ="荆州市" >荆州市</option>
+                        <option value ="宜昌市" >宜昌市</option>
+                        <option value ="十堰市" >十堰市</option>
+                        <option value ="孝感市" >孝感市</option>
+                        <option value ="荆门市" >荆门市</option>
+                        <option value ="鄂州市" >鄂州市</option>
+                        <option value ="黄冈市" >黄冈市</option>
+                        <option value ="咸宁市" >咸宁市</option>
+                        <option value ="随州市" >随州市</option>
+                        <option value ="汉川市" >汉川市</option>
+                        <option value ="洪湖市" >洪湖市</option>
+                        <option value ="仙桃市" >仙桃市</option>
+                        <option value ="天门市" >天门市</option>
+                        <option value ="潜江市" >潜江市</option>
+                    </select>
+                </div>
+                <i class="iconfont icon-unfold" style="font-size: 4vw;float: left;"></i>
+                <div class="input gray map_input">
+                    <i class="iconfont icon-search" style="font-size: 5vw;"></i>
+                    <input id="map_input_id"  type="text" class="no_out_border " placeholder="请输入小区名搜索">
+                </div>
+                <div id="closehere"  class="right gray" style="color: rgb(83, 80, 80); display: block;">取消</div>
+                <div class="clear"></div>
+            </div>
+            <div id="address_select_id" class="popupcontainer address_select_item">
+
+            </div>
+        </div>
+
+        <div id="why_this_money_pages" style="border:1px solid #aaa9a9;border-radius:10px;margin-top:2vw;box-shadow:0 0 1vh #dedede; position: fixed;">
+
+        </div>
+        <!--底部功能-->
+        <div id="fixed_position_id_1" class="bottom_cart newbottom">
+            <div class="money_all">
+                <!--<img id="why_this_money" src="../../images/62.png" style="height: 6vw;float: left">-->
+                <div class="left" > 合计 : <span id="all_number_id" ></span> 处</div>
+                <div class="reduce">
+                    <span class="red" id="mmoney_all_id"> ￥ 0</span>
+                    <span class="red" id="reduce_all_id"></span>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="bottom_button" id="send_id">确认下单</div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var staticmessage = {};
+        var warhousearray;
+
+        var warhouseselect = {};
+        var warehouseother = {};
+        var otherDistance = 0;
+        var address = {};
+        var selectall = new Array();
+        var tempobjpage = {};
+        //记录所有费用
+        var devallfee = {"upfee": 0, "urgentfee": 0, "devfee": 0, "insfee": 0, "sortfee": 0, "needurgentfee": 0};
+        var sysdate = deliveryutil.getDateYYYYHHMM();
+        var deliveryoder = {'whtype': true, 'warehouseid': "0000", 'warehouseadress': "维修单", 'warehouselongitude': '0.00', 'warehouselatitude': '0.00',
+            'isurgent': false, 'urgentfee': 0.00, 'upselect': 0, 'upstairsfee': 0, distance: 0, deliveryoderitems: new Array(), issample: 3,
+            toinsure: false, insurance: 0.00, indemnityquota: 0.00, 'spellCoefficient': 1};
+
+        var bigmap = new Array();
+        var smallmap = new Array();
+        var picList = {};
+        var returnlist = {};
+
+        var havaotheraddress = false;
+        var deltypepage = storegeeditutil("deltype");
+
+        var searchtime;
+        var findinterval;
+
+        var bigcater = "";
+        var iswhole = "";
+
+        //直接查询配送费
+        var selectmap = true;
+        function init() {
+            message();
+        }
+        function message() {
+            staticMessage(staticmessage);
+            getshopaddress();
+            getService("big", "");
+            deliveryutil.findcateact();
+        }
+        //通过type判断是读取还是记忆
+        function memoryutil(type) {
+
+        }
+        function getService(type, bigcate) {
+            var findwhole = $("#big_ins_type_id .cate_cur").attr("data-pid");
+            $.post(staticmessage.url + "repair/getrcate" + setQueryString({type: type, bigcate: bigcate, iswhole: findwhole}), {
+            }
+            , function (data) {
+                console.log(data);
+                var temphtml = "";
+                for (var x in data.catelist) {
+                    temphtml += "<div class=\"swiper-slide\" data-bid=\"" + bigcate + "\" data-pid=\"" + data.catelist[x].cateid + "\">" + data.catelist[x].catename + "</div>"
+                }
+                if ("big" == type) {
+                    bigmap = data.catelist;
+                    $("#bigstyle_id").html(temphtml);
+                    $("#bigstyle_id div").first().trigger("click");
+                    $(".item_show").trigger("click");
+                } else if ("small" == type) {
+                    smallmap = data.catelist;
+                    $("#big_item_type_id").html(temphtml);
+                    if (Object.keys(smallmap).length == 1) {
+                        $("#big_item_type_id div").first().trigger("click");
+                    }
+                }
+            });
+        }
+        function getshopaddress() {
+            $.post(staticmessage.url + "home/getshopaddress" + setQueryString({gsid: staticmessage.gsid}), {
+                "gsid": staticmessage.gsid
+            }
+            , function (data) {
+                console.log(data);
+                warhouseselect = data.warehouse;
+                deliveryoder.warehouseid = warhouseselect.warehouseid;
+                deliveryoder.warehouselinkman = warhouseselect.warehouselinkman;
+                deliveryoder.warehousemobile = warhouseselect.warehousemobile;
+                deliveryoder.warehouseadress = warhouseselect.warehouseadress;
+                deliveryoder.warehouselatitude = warhouseselect.adresslatitude;
+                deliveryoder.warehouselongitude = warhouseselect.adresslongitude;
+                deliveryoder.distributid = staticmessage.distributid;
+                deliveryoder.gsid = staticmessage.gsid;
+                deliveryoder.groupid = staticmessage.groupid;
+                deliveryoder.creator = staticmessage.userid;
+                deliveryoder.ordertype = "R";
+            });
+            $.post(staticmessage.url + "repair/getid", {}
+            , function (data) {
+                console.log(data);
+                deliveryoder.deliveryoderid = data.did;
+            });
+        }
+        //查询总价格
+        function needfoundfee() {
+            clearInterval(findinterval);
+            findinterval = setInterval(function () {
+                clearInterval(findinterval);
+                if (isnotnull(address) && selectall.length > 0 && Object.keys(address).length > 0) {
+                    editItem();
+                    findtransfee();
+//                    if (havaotheraddress && warehouseother.warehouseid != warhouseselect.warehouseid) {
+//                        needfoundfee();
+//                    } else {
+//                        deliveryutil.findtrans(address, deliveryoder, findtransfee);
+//                    }
+                }
+            }, 1000);
+        }
+
+        function findtransfee(distanceitem) {
+//            deliveryoder.distance = (isNaN(distanceitem) || 0 == distanceitem ? 1 : distanceitem);
+            deliveryoder.warehousenumber = "1";
+            deliveryoder.otherwarehouseid = null;
+            deliveryoder.otherwarehouselinkman = "";
+            deliveryoder.otherwarehousemobile = "";
+            deliveryoder.otherwarehouseadress = "";
+            deliveryoder.otherwarehouselatitude = null;
+            deliveryoder.otherwarehouselongitude = null;
+            deliveryoder.adresslatitude = address.adresslatitude;
+            deliveryoder.adresslongitude = address.adresslongitude;
+            deliveryoder.city = address.city;
+            deliveryoder.provinces = address.provinces;
+            $.post(staticmessage.url + "onlydelivery/distanceone",
+                    {
+                        "delorder": JSON.stringify(deliveryoder)
+                    }
+            , function (data) {
+                console.log(data);
+                devallfee.devfee = data.transfee;
+                devallfee.insfee = data.installfee;
+                devallfee.upfee = data.upstairsfee;
+                devallfee.sortfee = data.sortfee;
+                if (data.reduce < 0) {
+                    $("#reduce_all_id").html("优惠：￥" + data.reduce);
+                    $(".money_all .reduce").addClass("have_reduce");
+                }
+                $("#all_number_id").html(data.del.prodqtys);
+                editfee();
+            }
+            );
+        }
+        //删除图片逻辑函数
+        function deletePic(param2) {
+            var item = $(param2).parent();
+            delete picList[item.attr("data-pid")];
+            item.remove();
+        }
+        //图片上传
+        function uploadpic(prodcodes, num) {
+            if (Object.getOwnPropertyNames(picList).length > 0) {
+                uploadFile(picList[num], prodcodes, "10", parseInt(num) + 1, "distributor", "create", "", "", staticmessage.groupid);
+            } else {
+//                app.alert("请选择图片");
+            }
+        }
+        //图片上传回调函数
+        function uploadhelp(responseitem, type) {
+            console.log(responseitem);
+            var response = JSON.parse(responseitem);
+            if (typeof (response) != "undefined" && response != "" && response.status) {
+                returnlist[response.number] = response.realUrl;
+            }
+            console.log("图片上传中,已上传第" + response.number-- + "张")
+            var html = $(".form_item_pic div[data-pid=" + response.number + "]");
+            html.attr("isok", "2");
+            html.find("img").attr("src", html.find("img").attr("data-src"));
+        }
+        //图片选择完成后回调函数
+        //编辑图片
+        function htmledit(result, pid) {
+            var imglist = result.images;
+            for (var x in imglist) {
+                //替换原有的
+                //如果是第一张,直接加到pid对应的位置
+                var i = 0
+                for (; i < 9; i++) {
+                    if (!isnotnull(picList[i])) {
+                        picList[i] = imglist[x].path;
+                        break;
+                    }
+                }
+                $(".pic_item_add").before("<div class=\"pic_add\" data-pid=\"" + i + "\"><i class=\"iconfont icon-round_close_light\"></i><img data-src=\"" + imglist[x].path + "\" src=\"../../images/loading2_my.gif\">");
+                uploadpic(deliveryoder.deliveryoderid, i);
+                if (i == 9) {
+                    $(".pic_item_add").remove();
+                }
+            }
+            console.log(result);
+        }
+        //编辑所有费用
+        function editfee() {
+            var allmoney = sumallfee();
+            $("#mmoney_all_id").html("￥" + allmoney);
+        }
+        //计算总价(不算加急的配送价)
+        function sumallfee() {
+            return devallfee.insfee;
+        }
+        //提交表单
+        function send() {
+            var selectmy = $("#warhouse_select_id").val();
+            var customerphone = $("#cusphone_id").val();
+            var res = /^0\d{3,4}-?\d{7,8}$/;
+            if (customerphone.length != 11 && !res.test(customerphone)) {
+                app.alert("联系电话格式不对，请核对");
+                $("#cusphone_id").focus();
+                return;
+            }
+            var a = validate();
+            if (a != "true") {
+                alert(a);
+                return;
+            } else if ("null" == selectmy || "0" == selectmy) {
+                alert("请选择提货地址");
+                return;
+            } else if ("3" == storegeeditutil("deltype") && parseInt($("#upstairs_id").val()) > 2) {
+                alert("非常抱歉,只安装暂不提供搬运上楼,请重新选择楼层");
+                return;
+            }
+            //            var idarray = [];
+            for (var i = 0, length = $(".input_id").length; i < length; i++) {
+                console.log($(".input_id").eq(i).val());
+                var a = $(".input_id").eq(i).attr("pid");
+                var val = $(".input_id").eq(i).val();
+                console.log(a + "___" + val);
+                deliveryoder[a] = val;
+            }
+
+            deliveryoder.isurgent = false;
+            var path = new Array();
+            for (var key of Object.keys(returnlist)) {
+                path.push(returnlist[key]);
+            }
+            deliveryoder.deliveryoderitems[0].imgpath = path.join(",");
+            loading_param = zeroModal.loading(2);
+            $("#send_id").attr("disabled", "true").css("pointer-events", "none").css("background", "#666");
+            //获得省市区:这里只是辅助,因为时间原因可能查询失败
+            my_map.pointToAddress(new BMap.Point(deliveryoder.adresslongitude, deliveryoder.adresslatitude), function (rs) {
+                console.log(rs);
+                var item = rs.addressComponents;
+                deliveryoder.provinces = item.province;
+                deliveryoder.district = item.district;
+                deliveryoder.city = item.city;
+            });
+            var getnumber = 0;
+            var getprovince = setInterval(function () {
+                if (isnotnull(deliveryoder.district) || getnumber > 8) {
+                    clearInterval(getprovince);
+                    sendmain();
+                } else {
+                    getnumber++;
+                }
+            }, 500);
+
+        }
+        function sendmain() {
+            console.log(deliveryoder);
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: staticmessage.url + "onlydelivery/deliveryone?creator=" + staticmessage.userid,
+                contentType: "application/json",
+                data: JSON.stringify(deliveryoder),
+                success: function (data) {
+                    loading_close();
+                    if (data.status) {
+                        orderfun.cacheedit({}, "clear");
+                        app.alert("维修单下单成功" + data.message);
+                        clearstorage("all");
+                        loading_close();
+                        window.location.href = "../delivery/07delivery_order_pay.html";
+                    } else {
+                        loading_close();
+                        $("#send_id").attr("disabled", "false");
+                        app.alert(data.msg);
+                    }
+                    console.log(data);
+                }
+            });
+        }
+        function clearstorage(type) {
+
+        }
+        //生成建筑物列表
+        function changeMapSelect(result) {
+            $("#address_select_id").html("");
+            console.log(result);
+            address.provinces = result.province;
+            var s = [];
+            for (var i = 0; i < result.getCurrentNumPois(); i++) {
+                s.push(result.getPoi(i));
+            }
+            var itemhtml = orderfun.htmledit("mapselect", s);
+            temputils.htmlchange("address_select_id", itemhtml);
+        }
+
+        //提货地址选择
+        function select_address(select) {
+            memoryutil("set");
+            otherDistance = 0;
+            transitionLocation("74addressmanage", "../onlydelivery/57onlydelivery_order.html", "../shop/74addressmanage.html?select=" + select);
+        }
+        //生成散类
+        function editItem() {
+            deliveryoder.deliveryoderitems = new Array();
+            var sn_now = 1;
+            var number = 0;
+            for (var x in selectall) {
+                var item = {deliveryoderitemPK: {}, imgpath: "0000,0000,0000", isdismantling: false, isnoinstall: false,
+                    psize: "10.00*10.00*10.00", remarks: ""};
+                item.deliveryoderitemPK.sn = sn_now++;
+                item.prodcodes = selectall[x].pcate + "_WX001";
+                item.prodid = selectall[x].pcate + "_WX";
+                item.pcate = selectall[x].pcate;
+                item.pbigcate = selectall[x].pbigcate;
+                item.prodname = selectall[x].bigname;
+                item.prodqtys = selectall[x].prodqtys;
+                number += parseInt(item.prodqtys);
+                item.qtys = selectall[x].prodqtys;
+                deliveryoder.deliveryoderitems.push(item);
+            }
+            deliveryoder.qtys = number;
+            deliveryoder.prodqtys = number;
+            $(".all_number_c").html(number);
+        }
+
+        function act() {
+            //动态激活
+            $(window).on("resize", function () {
+                var docheight = window.innerHeight;
+                var bottomx = document.getElementById('fixed_position_id_1');
+                if (isnotnull(bottomx) && selectmap) {
+                    if (docheight < windheight) {
+                        bottomx.style.position = 'static';
+                        bottomx.style.display = 'none';
+                    } else {
+                        bottomx.style.position = 'fixed';
+                        bottomx.style.display = 'block';
+                    }
+                }
+            });
+            //-------------------图片处理----------------------
+            //删除照片
+            $("#pic_list_id").on("click", ".iconfont", function (event) {
+                app.confirm(deletePic, "是否删除当前图片并重新选择破损图片?", this);
+            });
+            $(".back").on("click", function () {
+                window.location.href = "../menu/61send.html";
+            })
+            //添加图片
+            $("#pic_list_id").on("click", ".pic_item_add", function () {
+                var pid = $(this).attr("data-pid");
+                var num = 9 - Object.getOwnPropertyNames(picList).length;
+                cameraTakePicture(num, pid);
+            });
+            $('#send_id').on('click', function (event) {
+                $(this).attr("disabled", "true");
+                if (deliveryoder.deliveryoderitems.length > 0) {
+                    if ((isnotnull(returnlist) && Object.keys(returnlist).length > 0) || staticmessage.profile) {
+                        send();
+                    } else {
+                        refushmessage("请上传维修图片");
+//                        app.confirm(confirmOk, "您未上传破损图片,确定提交?", "send", this);
+                    }
+                } else {
+                    refushmessage("请输入维修种类");
+                }
+            });
+//            $('#order_list_id').on('change', 'input', function (event) {
+//                editItem();
+//            });
+            //点击服务大类型
+            $('#bigstyle_id').on('click', "div", function () {
+                bigcater = $(this).attr("data-pid");
+                $(this).siblings("div").removeClass("cate_cur").end().addClass("cate_cur");
+                if ($(this).html().indexOf("清洗") > 0) {
+                    $(".where_type").css("display", 'none');
+                    $("#cansee_id").trigger("click");
+                } else {
+                    $(".where_type").show();
+                }
+                tempobjpage = {};
+                getService("small", bigcater);
+            });
+            $("#big_ins_type_id").on("click", "div", function () {
+                $(this).siblings(".swiper-slide").removeClass("cate_cur").end().addClass("cate_cur");
+                getService("small", bigcater);
+            });
+            $(".eusure_number").on("click", function () {
+                var number = $("#cate_select_number").val();
+                if (isnotnull(number)) {
+                    if (Object.keys(tempobjpage).length > 0) {
+                        var sn = orderfun.listoneparam("pcate", tempobjpage.pcate, selectall);
+                        if (sn < 99999) {
+                            selectall[sn].prodqtys = parseInt(selectall[sn].prodqtys) + parseInt(number);
+                        } else {
+                            tempobjpage.prodqtys = number;
+                            selectall.push(tempobjpage);
+                        }
+                        $("#bigstyle_id .cate_cur").trigger("click");
+                        $("#cate_select_number").val("");
+                        tempobjpage = {};
+                        var smallHtml = orderfun.htmledit("service_select", selectall);
+                        temputils.htmlchange("order_list_id", smallHtml);
+                        $('#service_select').animate({left: '-300vw'}, 300);
+                        needfoundfee();
+                    } else {
+                        refushmessage("请选择规格");
+                    }
+                } else {
+                    refushmessage("请填写损点数量");
+                }
+            });
+            //点击服务小类型
+            $('#big_item_type_id').on('click', "div", function () {
+                var cate = $(this).attr("data-pid");
+                var tempobj = {};
+                tempobj.pbigcate = $(this).attr("data-bid");
+                tempobj.pcate = cate;
+                tempobj.bigname = bigmap[tempobj.pbigcate].catename;
+                tempobj.catename = smallmap[tempobj.pcate].catename;
+                tempobj.warehousetype = 1;
+                console.log(tempobj);
+                tempobjpage = tempobj;
+                $(this).siblings(".swiper-slide").removeClass("cate_cur").end().addClass("cate_cur");
+            });
+            //修改数量
+            $("#order_list_id").on("click", ".sernum_change", function () {
+                var type = $(this).attr("data-type");
+                var cate = $(this).parents(".cate_select").attr("data-did");
+                var sn = orderfun.listoneparam("pcate", cate, selectall);
+                if ("add" == type) {
+                    selectall[sn].prodqtys++;
+                } else if ("minus" == type) {
+                    selectall[sn].prodqtys--;
+                    if (0 == selectall[sn].prodqtys) {
+                        selectall.splice(sn, 1);
+                        $(this).parents(".cate_select").remove();
+                        needfoundfee();
+                        return;
+                    }
+                }
+                $(this).siblings(".detail_number").html(selectall[sn].prodqtys);
+                needfoundfee();
+            })
+            $('#add_new_service').on('click', function () {
+                $("#service_select").animate({left: '0'}, 300);
+            });
+            //打开地图
+            $('#map_input_before_id').click(function () {
+                document.getElementById('popup').style.display = "block";
+                selectmap = false;
+                $("#backend,.bottom_cart").css("position", "fixed");
+                document.getElementById('closehere').style.display = "block";
+                $("#map_input_id").focus();
+                $("#fixed_position_id").css("display", "none");
+            });
+            $('#closehere').click(function () {
+                document.getElementById('popup').style.display = "none";
+                selectmap = true;
+                $(".bottom_cart").css("position", "fixed");
+                $("#backend").css("position", "static");
+                document.getElementById('closehere').style.display = "none";
+                $("#fixed_position_id").css("display", "block");
+            });
+//            $('#send_id').on('click', function (event) {
+//                $(this).attr("disabled", "true");
+//                send();
+//            });
+            $(document).on('click', ".close_select", function (event) {
+                $("#address_select_id").hide();
+            });
+            $("#why_this_money").on('click', function (event) {
+                $("#why_this_money_pages").show();
+            });
+            $(".close_why").on('click', function (event) {
+                $("#why_this_money_pages").hide();
+            });
+            //baidu map
+            $("#address_select_id").on("click", ".select_item", function (e) {
+                var selectObj = $(this);
+                address.address = selectObj.attr("pad");
+                address.city = selectObj.attr("data-city");
+                address.provinces = selectObj.attr("data-province");
+                address.adresslongitude = selectObj.attr("lng");
+                address.adresslatitude = selectObj.attr("lat");
+                $("#adress_id").val(address.address);
+                $("#map_input_before_id .select2_map").html(address.city);
+                $("#input_label").html($("#map_input_id").val());
+                $('textarea[autoHeight]').autoHeight();
+                needfoundfee();
+                $('#closehere').trigger("click");
+            });
+            //弹出地图选择框
+            $('#map_input_id').on('input', function () {
+                $(".address_select_item").css("display", "block");
+                clearTimeout(searchtime);
+                searchtime = setTimeout(function () {
+                    var city = $("#city_id").val();
+                    if (city == "" || !isnotnull(city)) {
+                        refushmessage("城市为空,请在地址旁选择城市");
+                        return;
+                    }
+                    if ($("#map_input_id").val().length >= 2) {
+                        my_map.searchOther(city, $("#map_input_id").val(), changeMapSelect);
+                    }
+                }, 1000 * 1);
+
+            });
+            $('.map_select_class').on("click", "li", function () {
+                $(this).siblings("li").removeClass("cur").end().addClass("cur");
+            });
+            $("#devdate_id").on("change", function () {
+                var devdatestamp = $("#devdate_id").val();
+                if (devdatestamp < sysdate) {
+                    $("#devdate_id").val("");
+                    app.alert("日期错误,请重新选择");
+                }
+            });
+        }
+        $(function () {
+            FastClick.attach(document.body);
+            //初始化整个页面
+            init();
+            //动态加载
+            act();
+            //加载
+            setTimeout(function () {
+                memoryutil("get");
+            }, 800 * 1)
+        });
+    </script>
+</html>
+<script type="text/javascript">
+    addLoadEvent(function () {
+        my_map.init("map_container");
+    });
+</script>

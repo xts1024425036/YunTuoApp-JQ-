@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>云驼联盟</title>
+        <link href="../../css/style.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../js/supplier.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            .iconfont {
+                font-size: 5vw;
+            }
+        </style>
+    </head>
+    <body>
+        <!--logo区-->
+        <div class="main_top">
+            <ul class="main_top_left">
+                <a class="main_top_back" href="../menu/77editmenu.html"></a>
+
+            </ul>
+            <ul class="main_top_title">
+                <li>供应商</li>
+            </ul>
+        </div>
+        <div  id="log_order_id" class="frame_supplier">
+            <!--            <div class="supplier_item">
+                            <div class="supplier_info">
+                                <ul class="supplier_info_one">
+                                    <li>供应商：木之本家具</li>
+                                </ul>
+                                <ul>
+                                    <li>联系人：张三</li>
+                                </ul>
+                                <ul>
+                                    <li>电话：15973847384</li>
+                                </ul>
+                                <ul class="supplier_info_one">
+                                    <li>备注：一些特殊信息</li>
+                                </ul>
+                            </div>
+                            <div class="supplier_tool">
+                                <div class="tool_delete"><img src="../../images/ico_delete.png"></div>
+                                <div class="tool_edit"><img src="../../images/ico_edit.png"></div>
+                            </div>            -->
+        </div>
+        <!--底部功能-->
+        <div id="add_msg"></div>
+        <div class="frame_bottom_cart">
+            <a href="18supplier_add.html" class="bottom_button_max">新增供应商</a>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var staticmessage = {};         //用户gsid，groupid，distributid
+        var consupplier = {};
+        $(function () {
+            FastClick.attach(document.body);
+            function init() {
+                //加载资源
+                message();
+                //动态生成html页面
+                htmlhelp();
+            }
+            function act() {
+                $(".frame_supplier").on("click", ".tool_edit", function () {
+                    if (storegeeditutil("post").indexOf("1") != -1 || storegeeditutil("post").indexOf("0") != -1) {
+                        var supplier = $(this).closest(".supplier_item").attr("pid");
+                        var url = "18supplier_add.html?supplier=" + supplier;
+                        window.location.href = url;
+                    } else {
+                        refushmessage("无员工管理权限,请联系店铺管理员");
+                    }
+                });
+                $(".frame_supplier").on("click", ".tool_delete", function () {
+                    if (storegeeditutil("post").indexOf("1") != -1 || storegeeditutil("post").indexOf("0") != -1) {
+                        var html = $(this).closest(".supplier_item");
+                        var supplier = $(html).attr("pid");
+                        $.post(staticmessage.url + "consupplier/deleteone", {
+                            "supid": supplier
+                        }
+                        , function (data) {
+                            if (data.update == 1 && data.status == true) {
+                                $(html).remove();
+                                refushmessage("删除成功");
+                            }
+                        });
+                    } else {
+                        refushmessage("无员工管理权限,请联系店铺管理员");
+                    }
+                });
+            }
+            //加载信息
+            function message() {
+                //提取cookie
+                staticMessage(staticmessage);
+                serviceMessage();
+            }
+            //服务端请求信息
+            function serviceMessage() {
+                $.post(staticmessage.url + "consupplier/findsome", {
+                    "groupid": staticmessage.groupid
+                }
+                , function (data) {
+                    console.log(data);
+                    consupplier = data.consupplier;
+                    for (var x in consupplier) {
+                        console.log(consupplier[x]);
+                        var smallHtml = htmladd("gys", consupplier);
+                        change("log_order_id", smallHtml);
+                    }
+                    if (storegeeditutil("post").indexOf("1") == -1 && storegeeditutil("post").indexOf("0") == -1) {
+                        $(".frame_bottom_cart").hide();
+                    }
+                });
+            }
+            //动态生成
+            function htmlhelp() {
+            }
+
+            //初始化整个页面
+            init();
+            //动态加载
+            act();
+        });
+    </script>
+</html>

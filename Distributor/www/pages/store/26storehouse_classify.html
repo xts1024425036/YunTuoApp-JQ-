@@ -1,0 +1,218 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>云驼联盟</title>
+        <link href="../../css/style.css" rel="stylesheet" type="text/css">
+        <link href="../../css/mobileSelect.css" rel="stylesheet" type="text/css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../js/mobileSelect.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/inventory.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+    </head>
+
+    <body>
+        <div class="body_mask"></div>
+        <!--logo区-->
+        <div class="main_top">
+            <ul class="main_top_left">
+                <a class="main_top_back" href="11storehouse.html"></a>
+            </ul>
+            <ul class="main_top_title">
+                <li>货品分类</li>
+            </ul>
+            <ul class="main_top_right">
+            </ul>
+        </div>
+        <div class="frame_choose_classify">
+            <div class="choose_classify_title">大类</div>
+            <div class="tab_classify">
+                <div id="select_big_id">
+                    <!--<div class="act">床</div>-->
+                </div>
+                <div class="add" id="big_add_id" pid="add" in="">+</div>
+                <div class="add" id="big_del_id" pid="del" in="big">-</div>
+            </div>
+            <div class="choose_classify_title">小类</div>
+            <div class="content_classify">
+                <div id="select_small_id">
+                    <!--<div>双人床</div>-->
+                </div>
+                <div class="add" id="small_add_id" pid="add" in="small">+</div>
+                <div class="add" id="small_del_id" pid="del" in="small">-</div>
+            </div>
+            <div id="select_id" style="display: none"></div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        $(function () {
+            FastClick.attach(document.body);
+            var type;
+            var operate;
+            var staticmessage = {};         //用户gsid，groupid，distributi等
+            var bigArray = new Array();
+            var smallArray = new Array();
+            var bigName = new Array();
+            var smallName = new Array();
+            var weekdayArr = ["a"];
+            var mobileSelect1 = new MobileSelect({
+                trigger: '#select_id',
+                title: '添加大类',
+                wheels: [
+                    {data: weekdayArr}
+                ],
+                triggerDisplayData: false,
+                position: [2], //初始化定位 打开时默认选中的哪个 如果不填默认为0
+                transitionEnd: function (indexArr, data) {
+                    //console.log(data);
+                },
+                callback: function (indexArr, data) {
+                    console.log(data);
+                    console.log(indexArr);
+                    editCate(indexArr);
+                }
+            });
+            function init() {
+                staticMessage(staticmessage);
+                serviceMessage();
+            }
+            function editCate(data) {
+                var id;
+                if ("big" == type) {
+                    if ("del" == operate) {
+                        id = findid(data[0], bigArray);
+                    } else {
+
+                    }
+                } else {
+                    if ("del" == operate) {
+                        id = findid(data[0], smallArray);
+                    } else {
+
+                    }
+                }
+                $.post(staticmessage.url + "store/editcate",
+                        {
+                            "type": type,
+                            "operate": operate,
+                            "id": id,
+                            "gsid": staticmessage.gsid
+                        }
+                , function (data) {
+                    console.log(data);
+                });
+            }
+
+            function findid(number, array) {
+                var i = 0;
+                for (var x in Array) {
+                    if (i == number) {
+                        return x;
+                    }
+                    i++;
+                }
+            }
+            function serviceMessage() {
+                $.post(staticmessage.url + "store/findbigcate",
+                        {
+                            "gsid": staticmessage.gsid
+                        }
+                , function (data) {
+                    console.log(data.big);
+                    bigArray = data.big;
+                    for (var x in data.big) {
+                        bigName.push(data.big[x]);
+                        $("#select_big_id").append("<div value =\"" + x + "\">" + data.big[x] + "</div>");
+                    }
+                });
+            }
+            function act() {
+                $('.nav-toggle').click(function () {
+                    var a = $(".nav").css("display");
+                    $(".nav").css("display") == "none" ? $(".nav").css("display", "block") : $(".nav").css("display", "none");
+                    $('body').toggleClass('nav-open');
+                });
+                //点击大类显示小类
+                $('#select_big_id').on('click', "div", function (event) {
+                    $(this).siblings().removeClass("act");
+                    $(this).addClass("act");
+                    var big = $(this).attr("value");
+                    smallArray = [];
+                    $.post(staticmessage.url + "store/findcate",
+                            {
+                                "big": big,
+                                "gsid": staticmessage.gsid
+                            }
+                    , function (data) {
+                        $("#select_small_id").html("");
+                        console.log(data.small);
+                        smallArray = data.small;
+                        for (var x in data.small) {
+                            smallName.push(data.small[x]);
+                            $("#select_small_id").append("<div value =\"" + x + "\">" + data.small[x] + "</div>");
+                        }
+                    });
+                });
+                //点击删除大类
+                $('#big_del_id').on('click', function (event) {
+                    mobileSelect1.updateWheel(0, bigName); //更改第0个轮子
+                    $("#select_id").trigger('click'); 
+                    type = "big";
+                    operate = "del";
+                });
+                //点击删除小类
+                $('#small_del_id').on('click', function (event) {
+                    console.log(smallArray);
+                    mobileSelect1.updateWheel(0, smallName); //更改第0个轮子
+                    $("#select_id").trigger('click'); 
+                    type = "small";
+                    operate = "del";
+                });
+
+
+                $('.add').on('click', function (event) {
+                    var type = $(this).attr("in");
+                    var dosome = $(this).attr("pid");
+                    $.post(staticmessage.url + "store/filter",
+                            {
+                                "type": type,
+                                "gsid": staticmessage.gsid
+                            }
+                    , function (data) {
+//                        mobileSelect1.updateWheel(0, res.data.area); //更改第0个轮子
+//                        $("#select_id").trigger('click'); 
+                    });
+
+                });
+                $('.add').on('click', function (event) {
+                    var type = $(this).attr("in");
+                    var dosome = $(this).attr("pid");
+                    $.post(staticmessage.url + "store/filter",
+                            {
+                                "type": type,
+                                "gsid": staticmessage.gsid
+                            }
+                    , function (data) {
+//                        mobileSelect1.updateWheel(0, res.data.area); //更改第0个轮子
+//                        $("#select_id").trigger('click'); 
+                    });
+
+                });
+
+            }
+
+            //初始化整个页面
+            init();
+            //动态加载
+            act();
+        });
+    </script>
+</html>

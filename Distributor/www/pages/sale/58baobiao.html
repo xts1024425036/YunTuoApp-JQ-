@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+    <head>
+        <title>云驼联盟</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <link href="../../css/common.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script type="text/javascript" src="../../js/jquery.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../cordova.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            .innercontent .iconfont {
+                font-size: 8vw;
+                margin-right: 2vw;
+                vertical-align: middle;
+                color: #808396;
+            }
+            .iconfont {
+                color: #808396;
+            }
+            .menuimg .iconfont{
+                font-size: 6vw;
+            }
+            .menutext{
+                color: #5a5959;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="top_nav">
+            <i class="top_left back iconfont icon-back"></i>
+            <div class="top_menu">分析报表</div>
+            <div class="top_right"></div>
+        </div>
+        <div class="innercontent top_innercontent" id="baobiao" style="margin-top:14vw;">
+            <!--            <div class="menuline" uid="../sale/28sale_search.html" pid="A06">
+                            <div class="menutext"><i class="iconfont icon-form">订单查询</div>
+                            <div class="menuimg"><i class="iconfont icon-right"></i></div>
+                            <div class="clear"></div>
+                        </div>-->
+            <div class="menuline" uid="../store/24storehouse_delivery.html" pid="B07">
+                <div class="menutext"><i class="iconfont icon-sort"></i>送装日报</div>
+                <div class="menuimg"><i class="iconfont icon-right"></i></div>
+                <div class="clear"></div>
+            </div>
+            <div class="menuline" uid="../store/67storehouse_delivery_month.html" pid="B07">
+                <div class="menutext"><i class="iconfont icon-calendar"></i>送装月报</div>
+                <div class="menuimg"><i class="iconfont icon-right"></i></div>
+                <div class="clear"></div>
+            </div>
+            <!--            <div class="menuline" uid="../sale/29custom_list.html" pid="A07">
+                            <div class="menutext"><i class="iconfont icon-group"></i>客户清单</div>
+                            <div class="menuimg"><i class="iconfont icon-right"></i></div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="menuline" uid="../inventory/2901inventorylist.html" pid="B02">
+                            <div class="menutext"><i class="iconfont icon-list"></i>库存清单</div>
+                            <div class="menuimg"><i class="iconfont icon-right"></i></div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="menuline" uid="../store/23storehouse_log.html" pid="C02">
+                            <div class="menutext"><i class="iconfont icon-more"></i>出入明细</div>
+                            <div class="menuimg"><i class="iconfont icon-right"></i></div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="menuline" uid="../store/30storehouse_out_in.html" pid="B03">
+                            <div class="menutext"><i class="iconfont icon-ordered"></i>出入流水</div>
+                            <div class="menuimg"><i class="iconfont icon-right"></i></div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="menuline" uid="../store/34storehouse_analysis.html" pid="B04">
+                            <div class="menutext"><i class="iconfont icon-indent"></i>采购分析</div>
+                            <div class="menuimg"><i class="iconfont icon-right"></i></div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="menuline" uid="../sale/04sale_log_daily.html" pid="A05">
+                            <div class="menutext"><i class="iconfont icon-round_list_light"></i>营业日报</div>
+                            <div class="menuimg"><i class="iconfont icon-right"></i></div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="menuline" uid="../sale/27sale_reports.html" pid="A05">
+                            <div class="menutext"><i class="iconfont icon-sortlight"></i>营业月报</div>
+                            <div class="menuimg"><i class="iconfont icon-right"></i></div>
+                            <div class="clear"></div>
+                        </div>-->
+        </div>
+        <div id="menu_buttom_id">
+
+        </div>
+        <script type="text/javascript">
+            table.htmlTabel("two");
+        </script>
+    </body>
+    <script type="text/javascript">
+        $(function () {
+            FastClick.attach(document.body);
+            $(".baobiao_class div").addClass("icon-formfill").removeClass("icon-form");
+            $(".menuline").hide();
+            var a = storegeeditutil('power');
+            localStorage.setItem("returnUrl", "../sale/58baobiao.html");
+            var power = new Array();
+            var sid = storegeeditutil('needstorage');
+            var pids = new Array("B02", "B03", "B04", "C02");
+            //修改图标
+            if (isnotnull(a)) {
+                power = a.split(',');
+            }
+            if (sid == "A") {
+                $(".menuline").show();
+                $(".menuline").find(".menutext").css("color", "#A2A2A2");
+            } else if (sid == "B") {
+                $(".menuline").each(function () {
+                    var pid = $(this).attr("pid");
+                    if ($.inArray(pid, pids) != -1) {
+                        $(this).hide();
+                    } else {
+                        var value = $.inArray(pid, power);
+                        if (value != -1) {
+                            $(this).show();
+                        }
+                    }
+                })
+            } else {
+                $(".menuline").each(function () {
+                    var value = $.inArray($(this).attr("pid"), power);
+                    if (value != -1) {
+                        $(this).show();
+                    }
+                });
+            }
+            //强制展示送装报表
+            var array = $(".menuline[pid='B07']").toArray();
+            for (var x in array) {
+                $(array[x]).css("pointer-events", "auto");
+                $(array[x]).find(".menutext").css("color", "#797979");
+            }
+
+            if (sid == "A") {
+                $(".menuline").on("click", function () {
+                    if ($(this).attr("pid") == "B07") {
+                        var uid = $(this).attr("uid");
+                        console.log("uid" + uid);
+                        window.location.href = uid;
+                    } else {
+                        alert("销售模块未开通,请开通!");
+                    }
+                })
+            } else {
+                $(".menuline").on("click", function () {
+                    var uid = $(this).attr("uid");
+                    console.log("uid" + uid);
+                    window.location.href = uid;
+                })
+            }
+            $(".back").on("click", function () {
+                window.location.href = "../01home.html";
+            });
+
+        });
+
+    </script>
+</html>

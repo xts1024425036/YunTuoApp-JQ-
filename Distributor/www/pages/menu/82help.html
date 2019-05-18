@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+    <head>
+        <title>云驼联盟</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <link href="../../css/common.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script type="text/javascript" src="../../js/jquery.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../cordova.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            .innercontent .iconfont {
+                font-size: 8vw;
+                margin-right: 2vw;
+                vertical-align: middle;
+                color: #808396;
+            }
+            .iconfont {
+                color: #808396;
+            }
+            .menuimg .iconfont{
+                font-size: 6vw;
+            }
+            .menutext{
+                color: #5a5959;
+            }
+            .innercontent .menutext .iconfont{
+                font-size: 0.44rem;
+                color: #507AC5;
+            }
+            .innercontent .menuimg .iconfont{
+                font-size: 0.32rem;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="top_nav">
+            <i class="top_left back iconfont icon-back"></i>
+            <div class="top_menu">帮助与反馈</div>
+            <div class="top_right"></div>
+        </div>
+        <div class="innercontent top_innercontent" id="baobiao" style="margin-top:14vw;">
+            <div class="menuline" data-uid="../help/83deleditmoney.html">
+                <div class="menutext gray"><i class="iconfont icon-home"></i>送装计费规则</div>
+                <div class="menuimg"><i class="iconfont icon-right"></i></div>
+                <div class="clear"></div>
+            </div>
+            <div class="menuline" data-uid="../../privacyPolicy.html">
+                <div class="menutext gray"><i class="iconfont icon-yinsitiaokuan"></i>隐私条款</div>
+                <div class="menuimg"><i class="iconfont icon-right"></i></div>
+                <div class="clear"></div>
+            </div>
+            <div class="menuline" data-uid="null" data-did="custom">
+                <div class="menutext gray"><i class="iconfont icon-kefu"></i>联系客服</div>
+                <div class="menuimg"><i class="iconfont icon-right"></i></div>
+                <div class="clear"></div>
+            </div>
+            <div class="menuline" data-uid="../common/about.html" >
+                <div class="menutext gray"><i class="iconfont icon-guanyu"></i>关于</div>
+                <div class="menuimg"><i class="iconfont icon-right"></i></div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div id="menu_buttom_id">
+
+        </div>
+        <script type="text/javascript">
+            table.htmlTabel("two");
+        </script>
+    </body>
+    <script type="text/javascript">
+        $(function () {
+            FastClick.attach(document.body);
+            $(".menuline").on("click", function () {
+                var uid = $(this).attr("data-uid");
+                if ("null" == uid) {
+                    var did = $(this).attr("data-did");
+                    if ("getindex" == did) {
+                        window.localStorage.clear();
+                        window.location.href = "../../index.html";
+                    } else if ("custom" == did) {
+                        window.location.href = "tel:4008135000";
+                    }
+                } else {
+                    transitionLocation("", "", uid);
+                }
+            })
+            $(".back").on("click", function () {
+                window.location.href = "../menu/63my.html";
+            });
+
+        });
+
+    </script>
+</html>

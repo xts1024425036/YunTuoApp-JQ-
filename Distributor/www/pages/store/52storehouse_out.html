@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>云驼联盟</title>
+        <link href="../../css/style.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/inventory.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <div class="body_mask"></div>
+        <!--logo区-->
+        <div class="main_top">
+            <ul class="main_top_left">
+                <a class="main_top_back" href="../menu/62sold.html"></a>
+                <script type="text/javascript">
+                    page3();
+                </script>
+                <!-- -->
+            </ul>
+            <ul class="main_top_title">
+                <li>调拨确认</li>
+            </ul>
+            <ul class="main_top_right">
+                <!--<a class="main_top_search" href="#"></a>-->
+            </ul>
+        </div>
+        <!--货品总体分类-->
+        <div id="log_order_id" class="frame_log log_delivery">
+            <!--报表-->
+            <div class="log_item log_item_delivery">
+                <div class="log_list_title">
+                    <div class="log_list_time">2018年5月4日11:23:49</div>
+                </div>
+                <div class="log_item_delivery_detail">
+                    <div class="delivery_detail_title">货品清单：</div>
+                    <div class="delivery_detail_text">
+                        床 10张，50包；<br>
+                        沙发 20个，40包。
+                    </div>
+                </div>
+                <div class="log_total">
+                    <ul>
+                        <li>货品总数：3件</li>
+                        <li>总配送费：￥999.00</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="menu_buttom_id">
+
+        </div>
+        <script type="text/javascript">
+            table.htmlTabel("two");
+        </script>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var type;
+        var staticmessage = {};
+        var delall = new Array();
+        //初始化整个页面
+        function init() {
+            staticMessage(staticmessage);
+            type = "day";
+            filter();
+        }
+        function filter() {
+            $.post(staticmessage.url + "transorder/findtrans",
+                    {
+                        "type": type,
+                        "gsid": staticmessage.gsid
+                    }
+            , function (data) {
+                console.log(data);
+                console.log(data.message);
+                delall = data.transoder;
+                console.log(delall);
+                for (var x in data.transoder) {
+                    data.transoder[x].transoderitems.prodqtys = data.transoder[x].prodqtys;
+                    var itemhtml = htmladd("tranitem", data.transoder[x].transoderitems);
+                    data.transoder[x].itemhtml = itemhtml;
+                    if (data.transoder[x].status == 1) {
+                        data.transoder[x].display = "block";
+                    } else {
+                        data.transoder[x].display = "none";
+                    }
+                    if (data.transoder[x].status == 0) {
+                        data.transoder[x].displayT = "none";
+                    } else {
+                        data.transoder[x].displayT = "block";
+                    }
+                }
+                var smallHtml = htmladd("translog", data.transoder);
+                change("log_order_id", smallHtml);
+            });
+        }
+        //动态加载
+
+        function act() {
+            //退货
+            $('#log_order_id').on('click', 'a', function (event) {
+                var element = event.currentTarget;
+                var transoder = $(element).closest(".log_item").attr("pid");
+                var type = $(this).attr("pid");
+                if ("0" == type) {
+                    app.confirm(confirmOk, "确定 取消 该项调拨请求?", transoder, type);
+                } else if ("2" == type) {
+                    app.confirm(confirmOk, "确定 同意 该请求?", transoder, type);
+                }
+
+            });
+        }
+
+        function confirmOk(param1, param2) {
+            $.post(staticmessage.url + "transorder/eidtransorder", {"transoder": param1, "type": param2}
+            , function (data) {
+                console.log(data);
+                if (data.status) {
+                    app.alert("该项请求已提交!");
+                    $(".log_item[pid='" + param1 + "']").remove();
+                }
+            });
+        }
+        $(function () {
+            FastClick.attach(document.body);
+            init();
+            act();
+        });
+    </script>
+</html>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>地图测试</title>
+        <link rel="shortcut icon" href="#" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <link href="../../css/style.css" rel="stylesheet" type="text/css">
+        <script src="../../js/axios.min.js"></script>
+        <script type="text/javascript">
+            axios.defaults.timeout = 20000; //超时时间
+//            axios.defaults.baseURL = 'http://app.51yuntuo.com/datacenter/api/'; //默认地址local.51yuntuo.com   app.51yuntuo.com
+            axios.defaults.baseURL = 'http://192.168.5.210/datacenter/api/'; //默认地址local.51yuntuo.com   app.51yuntuo.com
+            // http request 拦截器
+            axios.interceptors.request.use(
+                    config => {
+//                        if (store.state.token) {  // 判断是否存在token,如果存在的话,则每个http header都加上token
+//                            config.headers.Authorization = `Bearer ${store.state.token}`;
+//                        }
+                        config.headers = {
+                            'content-Type': 'application/x-www-form-urlencoded'
+                        }
+                        return config;
+                    },
+                    err => {
+                        return Promise.reject(err);
+                    });
+
+            var params = {status: "oklogintest", msg: "neforemsg"};
+            var qs = require('qs');
+            axios.post('/login/axiostest', qs.stringify(params)).then(function (response) {
+                document.getElementById("text_id").innerHTML = response.data.data;
+                console.log(response);
+            }).catch(function (error) {
+                console.log(error);
+            });
+        </script>
+    </head>
+    <body>
+        测试页面
+        <div id="text_id">
+
+        </div>
+    </body>
+
+</html>

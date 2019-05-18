@@ -1,0 +1,358 @@
+<!doctype html>
+<html>
+    <head>
+        <title>销售开单 - 云驼联盟</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <link href="../../css/common.css" rel="stylesheet" type="text/css">
+        <link href="../../css/zeroModal.css" rel="stylesheet" type="text/css">
+        <link href="../../css/swiper.css" rel="stylesheet" type="text/css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../js/jqueryflymin.js"></script>
+        <script src="../../js/swiper.js"></script>
+        <script src="../../js/zeroModal.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/salemain.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <div class="top_nav">
+            <i class="top_left back iconfont icon-back"></i>
+            <div class="top_menu">
+                <div class="searchInput"><input id="filter_search" type="text" placeholder="请输入名称货号搜索"></div>
+            </div>
+        </div>
+        <div  class="innercontent top_innercontent" style="margin-top:15vw;border-bottom:1px solid #aaa9a9;">
+            <a href="#" id="shop_alltype_png_id" class="right" style="position: fixed"><img src="../../images/down.png" style="height:3vw;margin:5vw 0" /></a>
+            <div id="shop_alltype"   class="swiper-container">
+                <div id="shop_alltype_id" class="submenu swiper-wrapper" style="width: 95%;">
+                    <a class="field5" href="#"><span class="cur">无小类</span></a>
+                </div>
+            </div>
+
+        </div>
+        <div class="innercontent top_innercontent" style="background:#f3f5f7; margin-top: 12vw;">
+            <div class="left" style="width:20vw;" id="list_category_id">
+                <div class="leftmenu">桌子</div>
+                <div class="leftmenu">柜子</div>
+                <div class="leftmenu">沙发</div>
+                <div class="leftmenu">茶几</div>
+            </div>
+            <div id="shop_list_item" class="left" style="width:74vw;background:#FFFFFF;">
+
+            </div>
+            <div class="clear"></div>
+        </div>
+        <!--底部功能-->
+        <div id="add_msg">成功加入购物车！</div>
+        <div class="bottom_cart">
+            <div id="sale_to_cart" class="cart">
+                <img src="../../images/64.png" />
+                <div class="count">2</div>
+            </div>
+            <div class="bottom_button" id="add_bottom_id">去结算</div>
+            <div class="clear"></div>
+        </div>
+
+        <!--点击颜色按钮后显示的颜色详情-->
+        <div class="bottom_choose">
+            <ul class="bottom_choose_title">
+                <li>请选择您需要的颜色：</li>
+            </ul>
+            <ul class="bottom_choose_item" pid="0" id="color_choose_id">
+                <li class="act">颜色A</li>
+            </ul>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var salepage = new Array();             //当前页面的货品
+        //common
+        var showhelp = true;                    //显示所有小类辅助
+        var staticmessage = {};         //用户gsid，groupid，distributi等
+        var priceall;                           //货品总价
+        var allcatename;                        //所有小类名称
+        var color;                              //当前选择颜色的对象
+
+        //filter
+        var clist = new Array();                 //细类
+        var filterMain = "功能分类";               //顶部类型
+        var filterBig;                           //大类
+        var allsmall;
+        var filtersearch;
+
+        var saleall = new Array();               //购物车选择的货品
+
+        var swiper = new Swiper('.swiper-container', {
+            spaceBetween: 10,
+            slidesPerView: 'auto',
+            freeMode: true,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true, //修改swiper的父元素时，自动初始化swiper
+        });
+
+        //初始化整个页面
+        function init() {
+            //加载资源
+            message();
+            //初始化
+            firstFilter("head");
+            priceMethod();
+            //动态加载
+            addAct();
+        }
+        //顶部，大类，选择查询
+        function firstFilter(type) {
+            var firstfilter = {};
+            firstfilter.filterMain = filterMain;
+            firstfilter.filterBig = filterBig;
+            firstfilter.filterSmall = clist;
+            firstfilter.gsid = staticmessage.gsid;
+            firstfilter.filtertype = type;
+            firstfilter.filtersearch = filtersearch;
+            //main.js-初始化查询，默认按照区域-返回按区域的大类和细类
+            if (firstfilter.filterSmall.length == 0) {
+                firstfilter.filterSmall = allsmall;
+            }
+            $.ajax({
+                type: "POST",
+                crossDomain: true,
+                contentType: "application/json; charset=UTF-8",
+                url: staticmessage.url + "sale/filter",
+                data: JSON.stringify(firstfilter),
+                success: function (data) {
+                    loading_close();
+                    console.log(data);
+                    salepage = data.sale;
+                    if ("head" == type) {
+                        //修改大类
+                        var bigHtml = htmladd("大类", data.big);
+                        allcatename = data.small;
+                        change("list_category_id", bigHtml);
+                        $("#list_category_id li:first").addClass("act");
+                        filterBig = $("#list_category_id li:first").attr("pid");
+                        if (!isnotnull(data.big) || data.big.length == 0) {
+                            app.confirm(confirmOk, "货品为空,是否现在添加货品?", "addpro", "../purchase/15produce_add.html");
+                        }
+                    }
+                    if ("big" == type || "head" == type) {
+                        allcatename = data.small;
+                        //修改细类
+                        var smallHtml = htmladd("细类", data.small);
+                        change("shop_alltype_id", smallHtml);
+                        var itemsmall = new Array();
+                        for (var x in  data.small) {
+                            itemsmall.push(x);
+                        }
+                        allsmall = itemsmall;
+                        //                        $("#shop_alltype_id ul:first").addClass('act'); 
+                        //                        clist.push($("#shop_alltype_id ul:first li").attr("pid"));
+                    }
+                    var saleHtml = "";
+
+                    saleHtml = htmladd("货品类", data.sale);
+                    //刷新货品列表
+                    change("shop_list_item", saleHtml);
+                }
+            });
+        }
+        function confirmOk(param1, param2) {
+            if (param1 == "addpro") {
+                window.location.href = param2;
+            }
+        }
+        //加载资源 
+        function message() {
+            //提取cookie
+            staticMessage(staticmessage);
+            priceall = parseInt(0);
+            var a = storegeeditutil("saleall");
+            if (isnotnull(a) && a.length > 0) {
+                saleall = JSON.parse(a);
+            }
+            var b = storegeeditutil("priceall");
+            isnotnull(b) && b != "NaN" ? priceall = parseInt(b) : priceall = parseInt(0);
+            //            cookiemain(undefined, undefined);
+        }
+        //刷新购物车
+        function priceMethod() {
+            refushmain(priceall, saleall);
+            $(".list_item").removeClass("list_item_addnow");
+        }
+        //查询颜色，修改颜色，弹出窗口
+        function coloredit(pid) {
+            $.post(staticmessage.url + "sale/colors", pid, function (data) {
+                console.log(data);
+                var smallHtml = htmladd("颜色", data.colors);
+                change("color_choose_id", smallHtml);
+            });
+            $('.bottom_choose').css('display', 'block');
+        }
+        //颜色选择
+        function selectcolor(colorhtml, type) {
+            var coloritem = $(colorhtml).closest(".list_item").find(".section_text");
+            var pid = $(colorhtml).closest(".list_item").attr("pid");
+            if ("多种颜色" == coloritem[0].innerText) {
+                coloredit(pid);
+            } else {
+                if (coloritem.attr("default") == "多种颜色" && "select" == type) {
+                    coloredit(pid);
+                } else {
+                    console.log("只有一个默认颜色");
+                    $('.bottom_choose').css('display', 'none');
+                    ensureadd(pid);
+                }
+            }
+            $(".bottom_choose_item").attr("pid", pid);
+
+        }
+        //添加货品
+        function addone(element, prodcode) {
+            selectcolor(element, "add");
+        }
+        //确认添加
+        function ensureadd(pid) {
+            var price = listitem(saleall, salepage);
+            priceall += price;
+            var offset = $("#sale_to_cart").offset();
+            var addcar = $(".list_item_addnow[pid='" + pid + "']");
+            var flyer = $('<img class="u-flyer" src="../../images/sale_cart_dot.png">');
+            var x = 15;
+            var y = addcar.offset().top - $(document).scrollTop();
+            flyer.fly({
+                start: {
+                    left: addcar[0].offsetLeft,
+                    top: y
+                },
+                end: {
+                    left: offset.left + 10,
+                    top: offset.top + 10,
+                    width: 0,
+                    height: 0
+                },
+                onEnd: function () {
+                    $("#add_msg").show().animate({width: '250px'}, 400).fadeOut(1000);
+                    addcar.css("cursor", "default").removeClass('orange').unbind('click');
+                    this.destory();
+                    setTimeout(function () {
+                        $("#add_msg").css("width", "0px");
+                    }, 1050)
+                }
+            });
+            priceMethod();
+        }
+
+        //删除货品 
+        function deleteone(prodcode) {}
+        //动态加载添加
+        function addAct() {
+            //加入购物车
+            saleaddnow();
+            $('.nav-toggle').click(function () {
+                var a = $(".nav").css("display");
+                $(".nav").css("display") == "none" ? $(".nav").css("display", "block") : $(".nav").css("display", "none");
+                $('body').toggleClass('nav-open');
+            });
+            $(".frame_bottom_cart").on("mousedown", ".bottom_button_next", function () {
+                var price = listitem(saleall, salepage);
+                priceall += price;
+                priceMethod();
+            });
+            $(".back").on("click", function () {
+                cookiemain(undefined, undefined);
+                window.location.href = "02sale_cart.html";
+            });
+            //点击展开
+            $('#shop_alltype_png_id').on('click', 'img', function () {
+                if (showhelp) {
+                    $("#shop_alltype").addClass("sale_slide_block").andSelf().animate({height: '150vw'});
+                    var o = document.getElementById("shop_alltype_id");
+                    var h = o.offsetHeight; //高度
+                    showhelp = false;
+                } else {
+                    $("#shop_alltype").removeClass("sale_slide_block").andSelf().animate({height: '12vw'});
+                    showhelp = true;
+                }
+            });
+//            //点击解除展开
+            $('#shop_alltype').on('click', function (e) {
+                var a = $(e.target).attr("class");
+                if (!showhelp && a.search("sale_cate_class") < 0) {
+                    $("#shop_alltype").removeClass("sale_slide_block").andSelf().animate({height: '12vw'});
+                    showhelp = true;
+                }
+            });
+            //模拟加入购物车
+            $('#add_bottom_id').on('click', function (e) {
+                $("#sale_to_cart").trigger("click");
+            });
+            //点击购物车写入cookie
+            $('#sale_to_cart').on('click', function () {
+                cookiemain(undefined, undefined);
+                cookiemain(priceall, saleall);
+                window.location.href = "02sale_cart.html";
+            });
+            //搜索
+            $('#filter_search').on('blur', function (event) {
+                filtersearch = $(this).val();
+                if (filtersearch.length > 0) {
+                    firstFilter("search");
+                }
+            });
+            //选择大类
+            $('#list_category_id').on('click', '.leftmenu', function (event) {
+                filterBig = $(this).attr("pid");
+                $(this).siblings("div").removeClass("bigcur").end().addClass("bigcur");
+                clist.pop();
+                firstFilter("big");
+            });
+            //点击细类
+            $('#shop_alltype_id').on('click', '.field5', function (event) {
+                //获取发生事件的对象
+                var child = $(this).attr("pid");
+                var heip = true;
+                for (var i = 0; i < clist.length; i++) {
+                    if (child == clist[i]) {
+                        $(this).removeClass("act");
+                        clist.splice(i, 1);
+                        heip = false;
+                    }
+                }
+                if (heip) {
+                    $(this).addClass("act");
+                    clist.push(child);
+                }
+                firstFilter("small");
+            });
+            //选择颜色
+            $('.bottom_choose_item').on('mousedown', 'li', function (event) {
+                //获取发生事件的对象
+                var element = event.target;
+                $('.bottom_choose_item li').removeClass('act');
+                $(element).addClass("act");
+                var pid = $('.bottom_choose_item').attr("pid");
+                var code = $(this).attr("code");
+                $("[pid='" + pid + "']").find(".section_text").text($(element).text());
+                $("[pid='" + pid + "']").find(".section_text").attr("code", code);
+                $('.bottom_choose').css("display", "none");
+                ensureadd(pid);
+
+            });
+        }
+        $(function () {
+            FastClick.attach(document.body);
+            //严格模式
+            //初始化整个页面
+            init();
+            loading_param = zeroModal.loading(2);
+            setTimeout(function () {
+                loading_close();
+            }, 6000);
+        });
+    </script>
+</html>

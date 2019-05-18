@@ -1,0 +1,196 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>云驼联盟</title>
+        <link href="../../css/newcommon.css" rel="stylesheet" type="text/css">
+        <link href="../../css/iconfont.css" rel="stylesheet" type="text/css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/templateother.js"></script>	
+        <script src="../../js/pageorder.js"></script>	
+        <script src="../../js/templateutils.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+
+        <script src=""></script>	
+        <style type="text/css">
+            body{background: #FFFFFF;}
+            .head-bg{
+                margin-top: .88rem;
+                background:#fe5600;
+                height: 2.7rem;
+            }
+            .head-bg-content{
+                padding: .6rem 0rem 0 0;
+            }
+
+            .money-number{
+                font-size: 0.72rem;
+                font-weight: bold;
+
+            }
+            .money-number span{
+                font-size: 0.48rem;
+                font-weight: bold;
+            }
+
+            .newpage .list-item{
+                overflow-y: scroll;
+                max-height: 76vh;
+                box-shadow:0 .09rem .38rem 0 #f0f0f0;
+                margin-top: 0.6rem;
+            }
+            .pay-icon{
+                width:.6rem;
+                height:.6rem;
+                background:#E3ECFF;
+                border-radius:50%;
+                text-align: center;
+                margin-right: .3rem;
+            }
+            .payment-list .pay-icon.money-r{
+                background: #FFEDED;
+                font-weight: normal;
+            }
+            .payment-list .pay-icon.money{
+                font-weight: normal;
+            }
+            .payment{padding: 0 0.3rem;}
+            .icon-zhichu{
+                font-size: .3rem;
+                color:#5478C4;
+            }
+            .payment-list{
+                line-height: 1.8em;
+                font-size: .32rem;
+                color: #333333;
+                padding:0.3rem 0;
+            }
+            .payment .payment-list+.payment-list{
+                border-top: 1px solid #F0F0F0;
+            }
+            .pay-info{
+                font-size: .24rem;
+                color: #333333;
+            }
+            .pay-date{
+                font-size: .24rem;
+                color: #999999;
+            }
+            .payment-list .money{color:#333333;font-weight: bold;}
+            .icon-jinzhangzhang--{
+                font-size: .26rem;
+                color:#FF0000;
+            }
+        </style>
+    </head>
+
+    <body class="newpage">
+        <ul class="nav-bar flex">
+            <li class="left txtl back">
+                <i class="iconfont icon-fanhui"></i>
+            </li>
+            <li class="flex-item txtc">余额</li>
+            <li class="right txtr"></li>   
+        </ul>
+        <div class="head-bg new">
+            <div class="head-bg-content">
+                <div class="txtc" style="color:#FFFFFF;">
+                    <div><span style="font-size: 0.48rem;">￥</span><span id="red_all_class" class="money-number"></span></div>
+                </div>
+                <div class="list-item">
+                    <div id="log_order_id" class="payment">
+
+                    </div>	
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var staticmessage = {};
+        var user = {};
+        var start = 0;
+        var isend = false;
+        var isok = true;
+        $(function () {
+            FastClick.attach(document.body);
+            //初始化整个页面
+            function init() {
+                staticMessage(staticmessage);
+                message();
+            }
+            function message() {
+                filter();
+            }
+            function filter() {
+                $.post(staticmessage.url + "shopedit/findbalance",
+                        {
+                            "gsid": staticmessage.gsid,
+                            "start": start
+                        }
+                , function (data) {
+                    console.log(data);
+                    isok = true;
+                    if (start == "0") {
+                        start += 20;
+                        filter();
+                    }
+                    $("#red_all_class").html(data.account.cashmount);
+                    for (var x in data.payorder) {
+                        var itemorder = data.payorder[x];
+                        if (itemorder.realin > 0) {
+                            itemorder['iconclass'] = "icon-zhichu";
+                            itemorder['paytype'] = "支付";
+                            itemorder['payclass'] = "money";
+                            itemorder['postpay'] = 0 - itemorder['postpay'];
+                        } else {
+                            itemorder['iconclass'] = "icon-jinzhangzhang--";
+                            itemorder['paytype'] = "退款";
+                            itemorder['payclass'] = "money-r";
+                            itemorder['postpay'] = "+" + (0 - itemorder['postpay']);
+                        }
+                    }
+                    var smallHtml = orderfun.htmledit("money_list", data.payorder);
+                    temputils.htmlappend("log_order_id", smallHtml);
+                });
+            }
+            //动态加载
+            function act() {
+                //退货
+                $(".back").on("click", function () {
+                    window.location.href = "../menu/63my.html";
+                })
+                $("#order_list_id").scroll(function () {
+                    if (isend) {
+                        return;
+                    }
+                    var scrollTop = $(this).scrollTop(); //滚动条距离顶部的高度
+                    var scrollHeight = $(document).height(); //当前页面的总高度
+                    var clientHeight = $(this).height(); //当前可视的页面高度
+                    // console.log("top:"+scrollTop+",doc:"+scrollHeight+",client:"+clientHeight);
+                    if (scrollTop + clientHeight >= scrollHeight && isok) {   //距离顶部+当前高度 >=文档总高度 即代表滑动到底部 
+                        //滚动条到达底部
+//                        alert(3)
+                        start += 20;
+                        isok = false;
+                        filter();
+                    } else if (scrollTop <= 0) {
+                        //滚动条到达顶部
+//                        alert(4)
+//                        
+                        //滚动条距离顶部的高度小于等于0 TODO
+                    }
+                });
+            }
+            init();
+            act();
+        });
+    </script>
+</html>

@@ -1,0 +1,847 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>送装下单 - 云驼联盟</title>
+        <link href="../../css/common.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <link href="../../css/zeroModal.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="../../js/jquery.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../js/map.rest.js"></script>
+        <script src="../../js/zeroModal.js"></script>
+        <script src="../../js/deliveryutil.js"></script>
+        <script src="../../js/pageorder.js"></script>
+        <script src="../../js/mathedit.js"></script>
+        <script src="../../js/pagechangesale.js"></script>
+        <script src="../../js/templateutils.js"></script>
+        <script src="../../js/templateother.js"></script>	
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            #city_id{
+                line-height: 100%;
+            }
+            .close_select,.close_why{
+                right: 0vw;
+                width: 10vw;
+                height: 12vw;
+                line-height: 12vw;
+                position: absolute;
+            }
+            .iconfont {
+                font-size: 5vw;
+            }
+            #why_this_money_pages{
+                background-color: #fff;
+                width: 96%;
+                margin-left: 2vw;
+                display: none;
+                overflow-y: scroll;
+                height: 84%;
+                top: 11vw;
+            }
+            #why_this_money_pages p{
+                margin: 4vw;
+            }
+            .bottom_cart {
+                position: fixed;
+            }
+            body {
+                padding: 0 0 0vw 0;
+            }
+            .select{
+                border: 0px solid #aaa9a9;
+                height: 6vw;
+                line-height: 6vw;
+                background-size: 6vw;
+                margin: 2vw 0;
+                font-size:4vw;
+                width: 72vw;
+                appearance:none;
+                -moz-appearance:none;
+                -webkit-appearance:none;
+            }
+            .blueblock{
+                width:3vw;
+                height:3vw;
+                margin:2vw 0vw 2vw 0;
+                background:#345ab7;
+            }
+            .form_select:focus { 
+                outline: none !important;
+                border: 0px solid #ccc;
+            }
+            .content{
+                width: 100%;
+                position: absolute;
+                height: 90%;
+                overflow-y: scroll;
+            }
+            #upstairs_id{display: none;}
+            .address_sp{
+                line-height: 11.2vw;
+                vertical-align: top;
+                font-size: 3.5vw;
+                margin: 2vw 1vw 0 2vw;
+            }
+            #map_input_before_id .map_input{
+                text-indent: 2vw;
+                width:65vw;
+            }
+            #input_label{
+                width: 52vw;
+                display: block;
+                float: right;
+                padding:0;
+                border:none;  
+            }
+            .content .show_address{
+                background: #F0F0F0;
+                width: 101vw;
+                position: relative;
+                left: -4vw;
+                text-indent: 6vw;
+                background: #F0F0F0;
+            }
+            .icon-location{
+                font-size: 5vw;
+                float: left;
+                z-index: 99;
+                color: #000000;
+                position: relative;
+            }
+            .newbottom  .send_not_ok{
+                pointer-events: none;
+                background-color: #CCC;
+            }
+            #order_list_id div,#order_listother_id div{
+                display: block;
+                float: left;
+                font-size: 0.24rem;
+                color: #666666;
+            }
+            #order_list_id .cate_select .setnumber{
+                float: right;
+            }
+            .detail_number_old,.detail_number{
+                float: left;
+            }
+            #order_list_id .setnumber .detail_number_old{
+                line-height: inherit;
+            }
+            .change_sale{
+                width:1rem;
+                height:.44rem;
+                border:1px solid rgba(84,120,196,1);
+                border-radius:.22rem;
+                text-align: center;
+                line-height: .35rem;
+            }
+            .list_item{
+                width: 66vw;
+                height: 22.7vw;
+                background-color: #FFFFFF;
+                display:flex;
+                box-shadow: 0 0.9vw 3.7vw 0 #f0f0f0;
+                margin: 12px 15px;
+                letter-spacing: 0.01rem;
+                border-radius: 1.3vw;
+            }
+            .list-text{
+                width: 60vw;display: inline-block;
+            }
+            .list-text div{
+                line-height: 3vw;
+            }
+            .add{
+                margin: auto 15px;display: inline-block;
+            }
+            .icon-tianjia{color: #5478C4;font-size: 20px;}
+            .type{
+                font-size: 14px;
+                color: #000;
+                margin: 12px 0 4px 15px;
+            }
+            .pro_message_c{
+                margin: 4vw 0 0 4vw;
+                font-size: 0.25rem;
+                color: #777272;
+                margin-top: 3vw;
+            }
+            #list_category_id {
+                width: 26vw;
+                height: 72%;
+                display: block;
+                float: left;
+                overflow-y: scroll;
+                background-color: #F0F0F0;
+            }
+            .old_sale {
+                background: #fff;
+                padding: 2vw 0;
+                display: block;
+                width: 100%;
+                float: left;
+            }
+            .old_sale .innercontent {
+                box-shadow:0px 7px 35px 0px rgba(0, 0, 0, 0.06);
+                padding: 3vw 0;
+                line-height: 8vw;
+                margin: 0 3.1vw;
+                width: 94%;
+            }
+            .list_item_detail .left {
+                width: 48%;
+                font-size: 3.5vw;
+            }
+            .list_item_detail .left span{
+                width: 33%;
+                float: right;
+                font-size: 0.24rem;
+                color: #333333;
+            }
+            .left_cart_class {
+                width: 70%;
+                display: inline-block;
+                font-size: 0.24rem;
+                line-height: 5vw;
+                color: #666;
+            }
+            .close_c {
+                width: 100%;
+                height: 30%;
+                display: block;
+                float: left;
+            }
+            .right_1 {
+                float: right;
+                width: 25vw;
+                height: 6vw;
+                line-height: 5vw;
+                margin-top: 4vw;
+            }
+            .select_pro_c .setnumber{
+                display: block;
+                margin: 0 0.01rem;
+                float: right;
+                text-align: right;
+                font-size: 0.24rem;
+                color: #666666;
+                width: 120px;
+            }
+            .setnumber .sernum_change{
+                background: #F0F0F0;
+                color: #999999;
+                width: 24px;
+                height:24px;
+                font-size: 14px;
+                float: none;
+                text-align: center;
+                line-height: 22px;
+                padding-bottom: 0;
+                display: inline-block;
+            }
+            .select_pro_c .setnumber .detail_number,.select_pro_c .setnumber .detail_number_old{
+                font-size: 12px;
+                float:none;
+                width: 1em;
+                display: inline-block;
+                line-height: 22px;
+                text-align: left;
+            }
+            .select_pro_c .setnumber .detail_number_old{
+                width:1.5em;
+                text-align: right;
+            }
+            .new_sale {
+                background:rgba(240,240,240,1);
+                padding: 2vw 0;
+                display: block;
+                width: 100%;
+                float: left;
+            }
+            .new_sale .innercontent {
+                background:rgba(255,255,255,1);
+                box-shadow:0px 7px 35px 0px rgba(0, 0, 0, 0.06);
+                border-radius:10px;
+                padding: 3vw 0;
+                line-height: 8vw;
+                margin: 0 3.1vw;
+                width: 94%;
+            }
+            .new_sale .detail_number{
+                width: 10vw;
+            }
+            .innercontent  .new_change_pro{
+                width: 89%;
+                background: rgba(240,240,240,1);
+                margin-left: 3vw;
+                border-radius: 3px;
+            }
+            #order_list_id .change_sale,#order_listother_id .change_sale {
+                margin-top: 2vw;
+            }
+            .new_change_pro div{
+                text-align: center;
+            }
+            .set_newpro{
+                vertical-align: middle;
+                line-height: 0.7rem;
+                width: 93%;
+                margin: 0 5vw;
+            }
+            .set_newpro .setnumber,.set_newpro .ope_class{
+                display: inline-block;
+            }
+            .static2{
+                display: table;
+                border-color: grey;
+                margin-bottom: 3%;
+                width: 100%;
+                padding-bottom: 1vw;
+            }
+            .new_change_pro div{
+                margin-right: 2vw;
+            }
+            .add_pro_bt_first{
+                text-align: center;
+                color: #bb1818;
+            }
+            .new_change_pro .delete .iconfont{
+                color: #bb1818;
+            }
+            .money_all .left {
+                font-size: 0.25rem;
+            }
+            #all_money{
+                color: #5478C4;
+                font-size: 5vw;
+            }
+            .newbottom .money_all {
+                width: 66vw;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="top_nav">
+            <i class="top_left back iconfont icon-back"></i>
+            <!-- <i class="top_left back iconfont icon-back"></i>-->
+            <div class="top_menu">送装单更新</div>
+            <div class="top_right"></div>
+        </div>
+        <div  id="backend" class="content" style="margin-top:14vw;line-height:10vw;">
+            <div class="innercontent">
+                <div class="blue show_address"><textarea id="customeradress_id" class="input_id need no_out_border"  autoHeight="true"  rows="1" pid="customeradress"  readonly="true" style="width:84vw;background: #F0F0F0;"></textarea></div>
+                <div>楼栋门牌：<span class="gray"><input type="text" id="addressdetailed_id" pid="addressdetailed" class="input_id need no_out_border" style="width: 71vw;" readonly="true"></span></div>
+                <div>客户姓名：<span class="gray"><input id="customer_id" pid="customer" class="input_id need no_out_border"  type="text" style="width: 71vw;" readonly="true"></span></div>
+                <div>客户电话：<span class="gray"><input id="cusphone_id" pid="cusphone" class="input_id need no_out_border"  type="text" style="width: 71vw;" readonly="true"></span></div>
+                <div class="clear"></div>
+                <div class="left">预送日期：<span class="gray"><input type="date" id="devdate_id" pid="devdate" class="input_id need no_out_border" placeholder="请选择送货时间" style="width:44vw;height: 7vw;margin-left: 1vw;" readonly="true"></span></div>
+                <div class="clear"></div>
+                <div class="left">订单备注：</div>
+                <input type="text" id="remarks_id" pid="remarks" class="input_id no_out_border" placeholder="请填写备注" style="width:69vw;height: 7vw;margin-left: 1vw;"/>
+                <div class="clear"></div>
+            </div>
+            <div style="width:100%;height:2vw;margin-top:2vw;background:#f3f5f7;"></div>
+            <div class="innercontent" style="padding-bottom: 24vw;">
+                <div class="left"  style="font-size: 4.3vw;font-weight: bold;color: #333333">订单详情</div>
+                <div class="clear"></div>
+                <div id="address_model_1" class="address_model">
+                    <div class="left address_title" data-pid="57warhouse"> 
+                        <span class="address_sp">提货地址：</span>
+                        <span class="gray address_text"><textarea id="warhouse_select_id" class="need no_out_border address_change"  autoHeight="true" placeholder="请选择提货地址" readonly="readonly" rows="1" style="width: 62vw;"></textarea></span>
+                    </div>
+                    <div class="static2" style="margin-bottom:3%;" id="order_list_id"> 
+
+                    </div>
+                </div>
+                <div id="address_model_2" class="address_model" style="display: none;">
+                    <div class="left address_title" data-pid="57warhouseother"> 
+                        <span class="address_sp">带货地址：</span>
+                        <span class="gray address_text"><textarea id="warhouse_selectother_id" class="no_out_border address_change"  autoHeight="true" placeholder="请选择提货地址" readonly="readonly" rows="1" style="width: 62vw;"></textarea></span>
+                    </div>
+                    <div class="static2" style="margin-bottom:3%;" id="order_listother_id"> 
+
+                    </div>
+                </div>
+            </div>
+            <div class="select_pro_c">
+                <div class="close_c"></div>
+                <div id="inner_table_id" class="old_sale inner_table">
+
+                </div>
+                <div id="sale_cart_id" class="new_sale out_table">
+
+                </div>
+                <div id="list_category_id" class="sidebar select_sale">
+                </div>
+                <div class="pro_main select_sale">
+                    <div id="select_cate_now" class="select_now_c">
+                        <div class="select_now_item"></div>
+                    </div>
+                    <div class="clear"></div>
+                    <div id="shop_list_item" class="left pro_list pro_main">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="add_msg"></div>
+        <div id="why_this_money_pages" style="border:1px solid #aaa9a9;border-radius:10px;margin-top:2vw;box-shadow:0 0 1vh #dedede; position: fixed;">
+
+        </div>
+        <!--底部功能-->
+        <div id="fixed_position_id_1" class="bottom_cart newbottom">
+            <div class="money_all">
+                <div class="left" > 合计 : <span id="all_number_id" >0</span> 件</div>
+                <div class="left" > 待补差价 : <span id="all_money">￥0.00</span></div>
+                <div class="clear"></div>
+            </div>
+            <div class="bottom_button" id="send_id">更新订单</div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var staticmessage = {};
+        var warhousearray;
+
+        var warhouseselect = {};
+        var address = {};
+        var warehouseother = {};
+        var otherDistance = 0;
+        var havaotheraddress = false;
+
+        //记录所有费用
+        var devallfee = {"upfee": 0, "insurancefee": 0, "urgentfee": 0, "devfee": 0, "sortfee": 0, "insfee": 0, "needurgentfee": 0};
+        var sysdate = deliveryutil.getDateYYYYHHMM();
+
+        var deliveryoder = {};
+        var changeselect;
+        var searchtime;
+
+        //地址是否为仓库
+        var storageis = false;
+        //直接查询配送费
+        var selectmap = true;
+        var allnumber = 0;
+
+        //选购货品页面
+        var filterBig;
+        var clist = new Array();                 //细类
+        var filtersearch;
+        var allsmall;
+        var saleall = new Array();
+        var salepage = new Array();             //当前页面的货品
+        var allcatename;                        //所有小类名称
+        var color;                              //当前选择颜色的对象
+
+        //临时货品列表
+        var deliveryoderitemsnew = new Array();
+        var deliveryoderitemsadd = new Array();
+        var deliveryoderitemsold = new Array();
+        var proselecttype = "change";
+        var proselectnew = {};
+        var proselectold = {};
+        var ordertype = "exchange";
+
+
+        function init() {
+            message();
+            salefun.firstFilter("head", "");
+            salefun.saleAct();
+
+            //刷新数据
+//            htmlhelp();
+//            refush();
+        }
+        function message() {
+            staticMessage(staticmessage);
+            salefun.refush_cart(saleall);
+            salefun.saleaddnow();
+            deliveryoder = JSON.parse(storegeeditutil("changedel"));
+//            ordertype = ("01BYZ".indexOf(deliveryoder.status) >= 0 || "PE" == deliveryoder.status || "PD" == deliveryoder.status) ? "change" : "exchange";
+            for (var y in deliveryoder.deliveryoderitems) {
+                var items = {};
+                var olditems = {};
+                for (var x in deliveryoder.deliveryoderitems[y]) {
+                    items[x] = deliveryoder.deliveryoderitems[y][x];
+                    olditems[x] = deliveryoder.deliveryoderitems[y][x];
+                }
+                items.prodqtys = 0;
+                items.itemtype = "R";
+                var oldqtys = parseInt(deliveryoder.deliveryoderitems[y].prodqtys);
+                deliveryoder.deliveryoderitems[y].oldqtys = oldqtys;
+                deliveryoder.deliveryoderitems[y].number = 0;
+                deliveryoderitemsnew.push(items);
+                deliveryoderitemsold.push(olditems);
+            }
+            $("#warhouse_select_id").val(deliveryoder.warehouseadress);
+            var change = storegeeditutil("changeselect");
+            if (isnotnull(change) && "" != change) {
+                changeselect = JSON.parse(change);
+                for (var y in changeselect) {
+                    if (y == "defaultcolor" || y == "sn" || y == "unprice"
+                            || y == "defaultcolor" || y == "number" || y == "isactive") {
+                        delete changeselect[y];
+                    }
+                }
+            } else {
+                changeselect = null;
+            }
+            setTimeout(function () {
+                beforemessae();
+            }, 1000);
+        }
+        //生成页面
+        function htmlhelp(param1) {
+            //刷新货品列表
+            salefun.refush_addnew(proselectnew);
+//            delitemtypes = isnotnull(storegeeditutil("deldelitemtypes")) ? JSON.parse(storegeeditutil("deldelitemtypes")) : new Object();
+//            for (var x in delitemtypes) {
+//                $(".list_item[pcode='" + x + "']").find(".send_type_c").attr("data-pid", delitemtypes[x]).html(typedesc[delitemtypes[x]]);
+//            }
+        }
+        function beforemessae() {
+            warhouseselect.warehouselatitude = deliveryoder.warehouselatitude;
+            warhouseselect.warehouselongitude = deliveryoder.warehouselongitude;
+            if ("2" == deliveryoder.warehousenumber) {
+                warehouseother.warehouselatitude = deliveryoder.otherwarehouselatitude;
+                warehouseother.warehouselongitude = deliveryoder.otherwarehouselongitude;
+                deliveryutil.findtransother(warhouseselect, warehouseother, addAllDistance);
+                havaotheraddress = true;
+            }
+        }
+        //通过type判断是读取还是记忆
+        function memoryutil(type) {
+            var remember = {};
+            if ("set" == type) {
+
+            } else if ("get" == type) {
+                for (var x in deliveryoder) {
+                    $("#" + x + "_id").val(deliveryoder[x]);
+                }
+//                $("#devdate_id").val(timeFormat(deliveryoder.devdate, "YYMMDD"));
+                if ("2" == deliveryoder.warehousenumber) {
+                    $("#warhouse_selectother_id").val(deliveryoder.otherwarehouseadress);
+                    $("#address_model_2").show();
+                    var delproitem = new Array();
+                    var delproother = new Array();
+                    for (var x in deliveryoder.deliveryoderitems) {
+                        var item = deliveryoder.deliveryoderitems[x];
+                        if (!isnotnull(item.number)) {
+                            item.number = 0;
+                        }
+                        if ("1" == item.warehousetype) {
+                            delproitem.push(item);
+                        } else {
+                            delproother.push(item);
+                        }
+                    }
+                    var itemhtml = orderfun.htmledit("evoesalenumber", delproitem);
+                    orderfun.change("order_list_id", itemhtml);
+                    var itemhtml2 = orderfun.htmledit("evoesalenumber", delproother);
+                    orderfun.change("order_listother_id", itemhtml2);
+                } else {
+                    var itemhtml = orderfun.htmledit("evoesalenumber", deliveryoder.deliveryoderitems);
+                    orderfun.change("order_list_id", itemhtml);
+                }
+                console.log(timeFormat(deliveryoder.devdate, "YYMMDD_CN"));
+                $("#devdate_id").val(timeFormat(deliveryoder.devdate, "YYMMDD"));
+
+            }
+        }
+        //剔除无用字段
+        function editObject(deliveryoder) {
+            var deliveryoderitemList = new Array();
+            for (var x in deliveryoder.deliveryoderitems) {
+                var deliveryoderitemCopy = {};
+                for (var y in deliveryoder.deliveryoderitems[x]) {
+                    deliveryoderitemCopy[y] = deliveryoder.deliveryoderitems[x][y];
+                }
+                if (deliveryoderitemCopy.prodqtys == 0) {
+                    //标注后台需要删除的小类
+                    deliveryoderitemCopy.gsid = "0000";
+                }
+                delete deliveryoderitemCopy.number;
+                delete deliveryoderitemCopy.oldqtys;
+                deliveryoderitemList.push(deliveryoderitemCopy);
+            }
+            deliveryoder.deliveryoderitems = deliveryoderitemList;
+        }
+        //>>>最终添加:发送代码end-3
+        function sendmain() {
+            deliveryoder.deliveryoderitemsnew = deliveryoderitemsnew;
+            editObject(deliveryoder);
+            addnewproitem(deliveryoder);
+            var ordertype = ("01BYZ".indexOf(deliveryoder.status) >= 0 || "PE" == deliveryoder.status || "PD" == deliveryoder.status) ? "change" : "exchange";
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: staticmessage.url + "onlydelivery/changeorder?creator=" + staticmessage.userid + "&type=" + ordertype,
+                contentType: "application/json",
+                data: JSON.stringify(deliveryoder),
+                success: function (data) {
+                    loading_close();
+                    if (data.status || 5 != data.result) {
+                        if (data.spreadfee < 0) {
+                            app.alert("订单修改成功" + data.message + ",正在为您退款");
+                            window.location.href = "../sale/84canceldel.html?findtype=exchange";
+                        } else {
+                            app.alert("订单修改成功" + data.message + ",请前往补差价");
+                            window.location.href = "../delivery/07delivery_order_pay.html";
+                        }
+                    } else {
+                        $("#send_id").attr("disabled", "false");
+                        app.alert(data.message);
+                    }
+                    console.log(data);
+                }
+            });
+        }
+        //>>>最终添加:提交表单end-2
+        function send() {
+            if (allnumber <= 0) {
+                refushmessage("订单无变化,无需更新");
+                return;
+            }
+            loading_param = zeroModal.loading(2);
+            $("#send_id").attr("disabled", "true").css("pointer-events", "none").css("background", "#666");
+            sendmain();
+        }
+        function addAllDistance(distanceitem) {
+            otherDistance = distanceitem;
+        }
+        //换货的新货品
+        function addnewproitem(deliveryoder) {
+            var addNew = new Array();
+            for (var x in saleall) {
+                var z = salefun.listone(saleall[x].prodcodes, addNew);
+                var saleCopy = {};
+                for (var y in saleall[x]) {
+                    if (y != "defaultcolor" && y != "sn" && y != "unprice"
+                            && y != "number" && y != "isactive" && y != "proqtys"
+                            && y != "oldprocode" && y != "oldqtys") {
+                        saleCopy[y] = saleall[x][y];
+                    }
+                }
+                saleCopy.itemtype = "C";
+                if (z != 999) {
+                    addNew[z].prodqtys = addNew[z].prodqtys + saleCopy.prodqtys;
+                } else {
+                    addNew.push(saleCopy);
+                }
+            }
+            for (var x in  deliveryoder.deliveryoderitemsnew) {
+                delete deliveryoder.deliveryoderitemsnew[x].oldprocode;
+                addNew.push(deliveryoder.deliveryoderitemsnew[x]);
+            }
+            deliveryoder.deliveryoderitemsnew = addNew;
+        }
+        function htmleditnew() {
+            $("#order_list_id").html("");
+            $("#order_listother_id").html("");
+            var delproitem = new Array();
+            var delproother = new Array();
+            for (var x in deliveryoder.deliveryoderitems) {
+                var item = deliveryoder.deliveryoderitems[x];
+                if (!isnotnull(item.number)) {
+                    item.number = 0;
+                }
+                if ("1" == item.warehousetype) {
+                    delproitem.push(item);
+                } else {
+                    delproother.push(item);
+                }
+            }
+            var itemhtml = orderfun.htmledit("evoesalenumber", delproitem);
+            orderfun.change("order_list_id", itemhtml);
+            var itemhtml2 = orderfun.htmledit("evoesalenumber", delproother);
+            orderfun.change("order_listother_id", itemhtml2);
+            for (var x in saleall) {
+                var itemhtml = orderfun.oneobjhtmledit("evoesalenumbernew", saleall[x]);
+                $(".set_newpro[data-oid=" + saleall[x].oldprocode + "]").after(itemhtml);
+            }
+        }
+        function needfoundfee() {
+
+        }
+        function findtransfee(distanceitem) {
+        }
+        function getMoney(deliveryoder) {
+            var deliveryoderCopy = {};
+            for (var x in deliveryoder) {
+                deliveryoderCopy[x] = deliveryoder[x];
+            }
+            deliveryoderCopy.deliveryoderitemsnew = deliveryoderitemsnew;
+            editObject(deliveryoderCopy)
+            addnewproitem(deliveryoderCopy);
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: staticmessage.url + "onlydelivery/changemoney?type=getexchange",
+                contentType: "application/json",
+                data: JSON.stringify(deliveryoderCopy),
+                success: function (data) {
+                    console.log(data);
+//                    var moneyone = floatObj.multiply(data.transfee, 0.5);
+                    var moneyre = floatObj.add(data.transfee, data.installfee);
+                    var moneynewall = floatObj.add(floatObj.add(data.newtransfee, data.newinstallfee), data.newsortfee);
+                    var moneyall = floatObj.add(moneyre, moneynewall);
+                    $("#all_money").html("￥" + moneyall);
+                }
+            });
+        }
+        function act() {
+            //动态激活
+            $(window).on("resize", function () {
+                var docheight = window.innerHeight;
+                var bottomx = document.getElementById('fixed_position_id_1');
+                if (isnotnull(bottomx) && selectmap) {
+                    if (docheight < windheight) {
+                        bottomx.style.position = 'static';
+                        bottomx.style.display = 'none';
+                    } else {
+                        bottomx.style.position = 'fixed';
+                        bottomx.style.display = 'block';
+                    }
+                }
+            });
+            $('.back').on('click', function () {
+                locationold("old", "../menu/61send.html");
+            });
+            $('.innercontent').on('click', ".change_sale", function () {
+                var prodcodes = $(this).attr("data-pid");
+                var y = salefun.listone(prodcodes, deliveryoder.deliveryoderitems);
+                proselectold = deliveryoder.deliveryoderitems[y];
+                if (!isnotnull(proselectold.number)) {
+                    proselectold.number = 0;
+                }
+                var oldlist = new Array();
+                oldlist.push(proselectold);
+                var itemhtml = orderfun.htmledit("add_old_change", oldlist);
+                orderfun.change("inner_table_id", itemhtml);
+                $(".select_pro_c").animate({left: "0vw"}, 300);
+            });
+            //删除改货货品
+            $('.innercontent').on('click', ".delete", function () {
+                var oid = $(this).attr("data-oid");
+                var oldid = $(this).attr("data-old");
+                app.confirm(function (oid, obj) {
+                    var y = salefun.listonefiledtwo("prodcodes", oid, "oldprocode", oldid, saleall);
+                    if (y != 999) {
+                        saleall.splice(y, 1);
+                        $(obj).parents(".new_change_pro").remove();
+                    }
+                }, "是否从换货列表里面删除该货品?", oid, this);
+            });
+            $('.close_c').on('click', function () {
+                $(".new_change_pro").remove();
+                var prodcodes = $(".inner_table").find(".list_item_detail").attr("data-oid");
+                if (proselectold.number == 0) {
+                    refushmessage("未选择退货数量,修改失败,请重新设置");
+                    $(".select_pro_c").animate({left: "-300vw"}, 300);
+                    return;
+                }
+                if (isnotnull(proselectnew) && Object.keys(proselectnew).length > 3) {
+                    proselectnew["oldprocode"] = prodcodes;
+                    var arrCopy = {};
+                    for (var x in proselectnew) {
+                        arrCopy[x] = proselectnew[x];
+                    }
+                    arrCopy.warehousetype = "1";
+                    saleall.push(arrCopy);
+                    proselectold = {};
+                    getMoney(deliveryoder);
+                } else {
+                    refushmessage("未选择新货品");
+                }
+                $(".select_pro_c").animate({left: "-300vw"}, 300);
+                htmleditnew();
+            });
+            //楼层
+            //>>>最终添加:监听事件 end-1
+            $('#send_id').on('click', function (event) {
+                $(this).attr("disabled", "true");
+                send();
+            });
+            $(document).on('click', ".close_select", function (event) {
+                $("#address_select_id").hide();
+            });
+            //修改数量
+            $(".inner_table").on("click", ".sernum_change", function () {
+                var type = $(this).attr("data-type");
+                var number = $(this).parents(".setnumber").attr("pid-sn");
+                var sn = orderfun.listoneparamin("deliveryoderitemPK", "sn", number, deliveryoder.deliveryoderitems);
+                var number = deliveryoder.deliveryoderitems[sn].prodqtys;
+                if ("add" == type) {
+                    if (0 < number) {
+                        deliveryoder.deliveryoderitems[sn].prodqtys--;
+                        deliveryoder.deliveryoderitems[sn].number++;
+                        deliveryoderitemsnew[sn].prodqtys++;
+                        allnumber++;
+                    } else {
+                        refushmessage("退货数已到最大数");
+                        return;
+                    }
+                } else if ("minus" == type) {
+                    if (number < $(this).siblings(".detail_number_old").attr("pid-qtys")) {
+                        deliveryoder.deliveryoderitems[sn].prodqtys++;
+                        deliveryoder.deliveryoderitems[sn].number--;
+                        deliveryoderitemsnew[sn].prodqtys--;
+                        allnumber--;
+                    } else {
+                        refushmessage("数量已无法减少");
+                        return;
+                    }
+                }
+                $(this).siblings(".detail_number").html(deliveryoderitemsnew[sn].prodqtys);
+                $("#all_number_id").html(allnumber);
+
+//                needfoundfee();
+            })
+            //修改数量
+            $(".out_table").on("click", ".sernum_change", function () {
+                var type = $(this).attr("data-type");
+                var canadd = $("#inner_table_id").find()
+                if ("add" == type) {
+                    proselectnew.number++;
+                } else if ("minus" == type) {
+                    if (proselectnew.number <= 1) {
+                        app.confirm(function () {
+                            $("#sale_cart_id").html("");
+                            proselectnew = {};
+                        }, "数量无法减少,是否删除?");
+                        return;
+                    }
+                    proselectnew.number--;
+                }
+                $(this).siblings(".detail_number").html(proselectnew.number);
+            });
+        }
+        $(function () {
+            FastClick.attach(document.body);
+
+            //初始化整个页面
+            init();
+            //动态加载
+            act();
+            //加载
+            setTimeout(function () {
+                memoryutil("get");
+            }, 500 * 1)
+            //            pushHistory();
+        });
+    </script>
+</html>
+<script type="text/javascript">
+    addLoadEvent(function () {
+        my_map.init("map_container");
+    });
+</script>

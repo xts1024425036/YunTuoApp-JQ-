@@ -1,0 +1,348 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>采购入库 - 云驼联盟</title>
+        <link href="../../css/style.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="../../js/jquery.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../js/purchaseymain.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            #suppler_id {display: none;}
+            .frame_storehouse_order {
+                margin-top: 12vw;
+            }
+            .form_item_twice.notitle {
+                margin-top: 0;
+            }
+            .form_item_text textarea {
+                height: 14vw;
+                line-height: 7vw;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="body_mask"></div>
+        <!--<div class="body_to_top"></div>-->
+        <!--logo区-->
+        <div class="main_top">
+            <ul class="main_top_left">
+                <a class="main_top_back" href="../menu/62sold.html"></a>
+                <script type="text/javascript">
+                    page3();
+                </script>
+
+            </ul>
+            <ul class="main_top_title">
+                <li>采购入库单</li>
+            </ul>
+            <ul class="main_top_right">
+                <a class="main_top_history" href="#">历史订单</a>
+            </ul>
+        </div>
+
+        <div class="frame_storehouse_order">
+            <!--输入客户信息-->
+            <div class="sale_order_form">
+                <ul class="form_item_twice form_item_twice_left notitle data_title_class">
+                    <li class="form_item_title" style=" margin-bottom: 2vw;">供 应 商</li>
+                    <li class="form_item_title" style=" margin-bottom: 3vw;">仓　库</li>
+                </ul>
+                <ul  class="form_item_twice form_item_twice_right notitle data_time_class">
+                    <li class="form_item_text" style=" margin-bottom: 4vw;">
+                        <select id="suppler_select_id" pid="supplerid" class ="form_select">
+                            <option value ="null"></option>
+                            <option value ="myself">自填</option>
+                        </select>
+                        <input type="text" id="suppler_id" pid="supplerid" placeholder="请填写供应商">
+                        <div class="form_item_dot"><img id="suppler_select_img_id" src="../../images/ico_section.png" alt=""/></div>
+                    </li>
+                    <li class="form_item_text">
+                        <select id="warhouse_id" pid="warehouseid" class="input_id form_select" >
+
+                        </select>
+                        <div class="form_item_dot"><img src="../../images/ico_section.png" alt=""/></div>
+                    </li>
+                </ul>
+                <div class="clear"></div>
+                <ul class="form_item_twice form_item_twice_left notitle data_title_class">
+                    <li class="form_item_title" style=" margin-bottom: 3vw;">入库方式</li>
+                    <li class="form_item_title" style=" margin-bottom: 3vw;">物流单号</li>
+                </ul>
+                <ul  class="form_item_twice form_item_twice_right notitle data_time_class">
+                    <li class="form_item_text" style=" margin-bottom: 4vw;">
+                        <select id="upstairs_id" pid="type" class = "input_id form_select">
+                            <option value ="0" selected>采购入库</option>
+                            <option value ="1">配送出库</option>
+                            <option value ="2">仓库调拨</option>
+                            <option value ="3">调拨入库</option>
+                            <option value ="4">调拨出库</option>
+                            <option value ="5">盘点整理</option>
+                        </select>
+                        <div class="form_item_dot"><img src="../../images/ico_section.png" alt=""/></div>
+                    </li>
+                    <li class="form_item_text">
+                        <input id="logisticsorderid_id" pid="logisticsorderid" class="input_id need" type="text" placeholder="请填写物流单号">
+                        <div class="form_item_dot"><img src="../../images/ico_preson.png" alt=""/></div>
+                    </li>
+                </ul>
+                <div class="clear"></div>
+                <ul class="form_item_twice form_item_twice_left notitle data_title_class">
+                    <li class="form_item_title" style=" margin-bottom: 2vw;">采购单号</li>
+                </ul>
+                <ul  class="form_item_twice form_item_twice_right notitle data_time_class">
+                    <li class="form_item_text" style=" margin-bottom: 4vw;">
+                        <input type="text" id="logisticsorder_id" pid="purorder" class="input_id" placeholder="请填写采购单号">
+                    </li>
+                </ul>
+                <div class="clear"></div>
+                <ul  class="form_item_twice form_item_twice_right notitle data_time_class" style="width: 100%;">
+                    <li class="form_item_text">
+                        <textarea id="remarks_id" pid="remarks" class="input_id" placeholder="请填写备注，如无备注，请填写“无”"></textarea>
+                    </li>
+                </ul>
+            </div>
+            <!--输入订单货品列表-->
+            <div class="sale_order_list">
+                <div class="sale_order_list_title">货品清单</div>
+                <a href="javascript:void(0);"  id="sale_delete_id"class="sale_order_list_button">全部删除</a>
+                <a href="javascript:void(0);"  id="sale_add_id" class="sale_order_list_button">增加货品</a>
+                <div id="sale_order_id" class="frame_list_item">
+                    <!--货品-->
+                </div>
+            </div>
+            <!--结算汇总-->
+            <!--            <div class="sale_order_total">
+                            <ul class="sale_total_detail">
+                                <li>提货费：￥0.00(请完整填写)</li>
+                                <li>力资费：￥0.00(请完整填写)</li>
+                                <li>提货费用：￥0.00(请完整填写)</li>
+                            </ul>
+                        </div>-->
+        </div>
+
+        <!--底部功能-->
+        <div class="frame_bottom_cart frame_bottom_delivery">
+            <div href="02slae_cart.html" class="bottom_button_cart">
+                <ul class="button_delivery_text">
+                    <li>共<span id="dot">22</span>单 共<span id="dot1">22</span>件</li>
+                    <!--<li>总费用:<span id="price_id">￥1058</span></li>-->
+                </ul>
+            </div>
+            <a href="javascipt:void(0)" id="send_id" class="bottom_button_next">保存</a>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var staticmessage = {};         //用户gsid，groupid，distributid
+        var saleall = new Array();
+        var priceall = 0;           //总价
+        var findService = new Array();
+        var warhousearray = new Array();
+        var warhouse;
+
+        function init() {
+            //加载资源
+            message();
+            //动态生成html页面
+            htmlhelp();
+        }
+        function act() {
+            $('.nav-toggle').click(function () {
+                var a = $(".nav").css("display");
+                $(".nav").css("display") == "none" ? $(".nav").css("display", "block") : $(".nav").css("display", "none");
+                $('body').toggleClass('nav-open');
+            });
+            $("#sale_delete_id").on("click", function () {
+                saleall.splice(0, saleall.length);
+                storegeeditutil("purpriceall", undefined);
+                storegeeditutil("pursaleall", undefined);
+                htmlhelp();
+            });
+            $("#suppler_select_id").on("change", function () {
+                if ($(this).val() == "myself") {
+                    $("#suppler_id").css("display", "block");
+                    $("#suppler_select_id").css("display", "none");
+                }
+            });
+            $("#suppler_select_img_id").on("click", function () {
+                $("#suppler_id").css("display", "none");
+                $("#suppler_select_id").css("display", "block");
+                $("#suppler_select_id").trigger("click");
+            });
+            $("#sale_add_id").on("click", function () {
+                var itemorder = {};
+                for (var i = 0, length = $(".input_id").length; i < length; i++) {
+                    console.log($(".input_id").eq(i).val());
+                    var a = $(".input_id").eq(i).attr("id");
+                    var val = $(".input_id").eq(i).val();
+                    itemorder[a] = val;
+                }
+                if ($("#suppler_id").css("display") == "block") {
+                    itemorder.suppler_id = "block";
+                    itemorder.supplerval = $("#suppler_id").val();
+                }
+                storegeeditutil("itemorder", JSON.stringify(itemorder));
+                window.location.href = "14purchase_order_add.html";
+            });
+            $('#send_id').on('mousedown', function (event) {
+                findselect();
+                var boolean = validateNumber();
+                if (boolean != "true") {
+                    app.alert(boolean);
+                    return true;
+                }
+                var goodsorder = {};
+                goodsorder.gsid = staticmessage.gsid;
+                goodsorder.distributid = staticmessage.distributid;
+                goodsorder.groupid = staticmessage.groupid;
+                var prodqtys = 0;
+                var qtys = 0;
+                var goodsoderitems = new Array();
+                for (var x in saleall) {
+                    var goodsoderitem = {};
+                    var item = saleall[x];
+                    for (var y in item) {
+                        console.log("keyname:" + y + "\tvale:" + item[y]);
+                        if (y != "defaultcolor" && y != "color" &&
+                                y != "number" &&
+                                y != "salesorderitemPK" &&
+                                y != "totprice" && y != "unprice") {
+                            goodsoderitem[y] = item[y];
+                            console.log(y + "====" + goodsoderitem[y]);
+                        }
+                        var arrayhave = ["gsid", "groupid", "distributid"];
+                        copyob(staticmessage, goodsoderitem, arrayhave);
+                    }
+                    goodsoderitem.prodqtys = item.number;
+                    goodsoderitems.push(goodsoderitem);
+                    prodqtys += saleall[x].number;
+                    qtys += saleall[x].number * saleall[x].qtys;
+                }
+                for (var i = 0, length = $(".input_id").length; i < length; i++) {
+                    console.log($(".input_id").eq(i).val());
+                    var a = $(".input_id").eq(i).attr("pid");
+                    var val = $(".input_id").eq(i).val();
+                    console.log(a + "-----" + val);
+                    goodsorder[a] = val;
+                }
+                goodsorder.goodsoderitems = goodsoderitems;
+                goodsorder.creator = staticmessage.userid;
+                goodsorder.prodqtys = prodqtys;
+                goodsorder.qtys = qtys;
+                if ($("#suppler_select_id").val() == "myself" || $("#suppler_select_id").val() == "null") {
+                    goodsorder.supplerid = $("#suppler_id").val();
+                } else {
+                    goodsorder.supplerid = $("#suppler_select_id").val();
+                }
+                var arrayhava1 = ["gsid", "groupid", "distributid"];
+                copyob(warhouse, goodsorder);
+                copyob(staticmessage, goodsorder, arrayhava1);
+                console.log(goodsorder);
+                var a = validate();
+                if (a == "true") {
+                    $("#send_id").attr("disabled", "true").css("pointer-events", "none");
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: staticmessage.url + "purchase/goodsorder",
+                        contentType: "application/json",
+                        data: JSON.stringify(goodsorder),
+                        success: function (data) {
+                            console.log(data);
+                            if (data.status) {
+                                storegeeditutil("purpriceall", undefined);
+                                storegeeditutil("pursaleall", undefined);
+                                storegeeditutil("itemorder", undefined);
+                                app.alert("采购入库成功", "../menu/62sold.html");
+                            } else {
+                                app.alert(data.message);
+                                $("#send_id").attr("disabled", "false").css("pointer-events", "auto");
+                            }
+                        }
+                    });
+                } else {
+                    alert(a);
+                }
+
+            });
+        }
+        //加载信息
+        function message() {
+            //提取cookie
+            staticMessage(staticmessage);
+            priceall = parseInt(storegeeditutil("purpriceall"));
+            var pursaleall = storegeeditutil("pursaleall");
+            console.log(typeof (pursaleall) == "undefined");
+            saleall = (pursaleall == "" || typeof (pursaleall) == "undefined" || pursaleall == "undefined") ? undefined : JSON.parse(pursaleall);
+            console.log(saleall);
+            var idlist = new Array();
+            for (var x in saleall) {
+                idlist.push(saleall[x].prodcodes);
+            }
+            var itemjson = storegeeditutil("itemorder");
+            if (isnotnull(itemjson)) {
+                var itemorder = JSON.parse(itemjson);
+                for (var x in itemorder) {
+                    $("#" + x).val(itemorder[x]);
+                }
+                if (isnotnull(itemorder.suppler_id) && "block" == itemorder.suppler_id) {
+                    $("#suppler_select_id").css("display", "none");
+                    $("#suppler_id").css("display", "block");
+                    $("#suppler_id").val(itemorder.supplerval);
+
+                }
+            }
+            serviceMessage(idlist);
+
+        }
+        //服务端请求信息
+        function serviceMessage(idlist) {
+            console.log(idlist);
+            $.post(staticmessage.url + "purchase/find", {"gsid": staticmessage.gsid}
+            , function (data) {
+                console.log(data);
+                warhousearray = data.find;
+                for (var x in data.find) {
+                    $("#warhouse_id").append("<option value =\"" + data.find[x].warehouseid + "\" pid=\"" + data.find[x].whtype + "\">" + data.find[x].warehouseadress + "</option>");
+                }
+            });
+            $.post(staticmessage.url + "purchase/findconsupplier", {"groupid": staticmessage.groupid}
+            , function (data) {
+                for (var x in data.consupplier) {
+                    $("#suppler_select_id").append("<option value =\"" + x + "\">" + data.consupplier[x] + "</option>");
+                }
+            });
+        }
+        //查询select的选择项
+        function findselect() {
+            var item2 = $("#warhouse_id option:selected").attr("pid");
+            var item = $("#warhouse_id option:selected").val();
+            warhouse = warhousearray[listonefiledtwo("warehouseid", item, "whtype", item2, warhousearray)];
+        }
+        //动态生成
+        function htmlhelp() {
+            var saleHtml = htmladd("订单清单", saleall);
+            change("sale_order_id", saleHtml);
+            $("#dot").html(isnotnull(saleall) ? saleall.length : 0);
+            $("#dot1").html(listnumber(saleall));
+//            $("#price_id").html("￥" + priceall);
+        }
+        $(function () {
+            FastClick.attach(document.body);
+            //初始化整个页面
+            init();
+            //动态加载
+            act();
+        });
+    </script>
+</html>

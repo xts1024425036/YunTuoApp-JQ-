@@ -1,0 +1,77 @@
+body.ios .main_top{
+    padding-top: 20px;
+    padding-top: constant(safe-area-inset-top);
+    padding-top: env(safe-area-inset-top);
+}
+body.ios .main_top>*{
+    top:20px;
+    top:constant(safe-area-inset-top);
+    top:env(safe-area-inset-top);
+}
+body.ios .main_sort{
+    top: calc(7vh + 20px);
+    top: calc(7vh + constant(safe-area-inset-top));
+    top: calc(6vh + env(safe-area-inset-top));
+}
+body.ios .top_innercontent:before,
+body.ios .frame_log:before,
+body.ios .bottom_cart_list:before,
+body.ios .frame_sale_order:before,
+body.ios .frame_sale_reports:before,
+body.ios .topcontent:before,
+body.ios .frame_storehouse_order:before,
+body.ios .top_nav + .content:before{
+    content: " ";
+    display: block;
+    width: 100%;
+    height: 20px;
+    height: constant(safe-area-inset-top);
+    height: env(safe-area-inset-top);
+}
+body.ios .innercontent + .innercontent:before,
+body.ios .topcontent + .innercontent:before,
+body.ios .summary + .innercontent:before,
+body.ios .bottom_cart_list .innercontent:before,
+body.ios .top_nav + .content .innercontent:before,
+body.ios .hiSlider-wrap + .innercontent:before{
+    display:none;
+}
+
+body.ios .summary{
+    padding-top: 20px;
+    height: calc(39vw + 20px);
+    padding-top: constant(safe-area-inset-top);
+    height: calc(39vw + constant(safe-area-inset-top));
+    padding-top: env(safe-area-inset-top);
+    height: calc(39vw + env(safe-area-inset-top));
+}
+body.ios .Status-bar{
+   padding-top: 24px;
+}
+
+body.ios .frame_supplier{
+    padding-top: calc(7.5vh + 20px);
+    padding-top: calc(7.5vh + constant(safe-area-inset-top));
+    padding-top: calc(7.5vh + env(safe-area-inset-top));
+}
+
+body.ios .content-banner{
+    margin-top: 25px;
+    margin-top: constant(safe-area-inset-top);
+    margin-top: env(safe-area-inset-top);
+}
+body.ios .content_top_nav{
+    margin-top: calc(14vw + 20px);
+    margin-top: calc(14vw + constant(safe-area-inset-top));
+    margin-top: calc(14vw + env(safe-area-inset-top));
+}
+
+body.ios .nav-bar,
+body.ios .top_nav,
+body.ios .nav-top,
+body.ios .submenu,
+body.ios .filter-bar{
+    top: calc(20px);
+    top: calc(constant(safe-area-inset-top));
+    top: calc(env(safe-area-inset-top));
+}

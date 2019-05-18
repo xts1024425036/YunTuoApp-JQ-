@@ -1,0 +1,209 @@
+<!doctype html>
+<html>
+    <head>
+        <title>云驼联盟</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <link href="../../css/newcommon.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script type="text/javascript" src="../../js/jquery.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style type="text/css">
+            body{background: #FFFFFF;}
+            .head-bg{
+                background:linear-gradient(0deg,#20C4ED,#2B38E5);
+                width: 100%; 
+                height: 2rem;
+            }
+            .head-bg-content{
+                height: 3.7rem;
+                padding: 0.4rem 0rem;
+            }
+            .money-text{
+                font-size: 0.28rem;
+                opacity: 0.6;
+                margin-bottom: 0.4rem;
+            }
+            .money-number{
+                font-size: 0.72rem;
+                font-weight: bold;
+
+            }
+            .money-number span{
+                font-size: 0.48rem;
+                font-weight: bold;
+            }
+
+            .list-item{
+                box-shadow:0 .02rem .38rem 0 #DDE8FB;
+
+            }
+            .send{padding: 0.4rem 0.3rem;}
+            .send-team{
+                margin: auto;
+                line-height: 0.5rem;
+            }
+            .icon-daiwancheng,.icon-jin_fill,.icon-benzhou{
+                color: #5478C4;
+            }
+            .icon-daiwancheng{font-size: .34rem;}
+            .icon-jin_fill{font-size: .4rem;}
+            .icon-benzhou{font-size: .38rem;}
+            .send-text{font-size: .24rem;}
+            .money-r{font-size: .32rem;}
+            .icon-dingdangenzong,.icon-dingdanguanli{
+                font-size: 0.36rem;
+                color:#5478C4;
+                width:1.8em;
+            }	
+            .head-bg-content .money-text{
+                font-size: 0.36rem;
+                color: rgba(255,255,255,1);
+                font-weight: 500;
+            }
+            .customer-service {
+                width: 92%;
+                height: 1.2rem;
+                background: #fff;
+                line-height: 1.2rem;
+                margin: .3rem auto;
+                border-radius: .6rem;
+                padding: 0 0.4rem;
+                color: #000;
+                position: fixed;
+                bottom: 55px;
+                left: 3vw;
+                box-shadow: 0px 9px 38px 0px rgba(221,232,251,0.6);
+            }
+            .customer-service .txtr {
+                width: .8rem;
+                height: .8rem;
+                background: #FFE3D5;
+                border-radius: 50%;
+                line-height: 3.2em;
+                text-align: center;
+                margin: auto;
+            }
+            .txtl {
+                text-align: left;
+                color:#999;
+            }
+            .customer-service .txtc {
+                font-size: .32rem;
+                font-weight: bold;
+                color: #333;
+            }
+            .icon-dianhua {
+                font-size: .5rem;
+                color: #EA6524;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="head-bg">
+            <div class="head-bg-content new">
+                <div class="txtc" style="color:#FFFFFF;">
+                    <div class="money-text">售后服务</div>
+                </div>
+                <div class="list-item" style="padding:0 0.3rem;">
+                    <div class="info-main">
+                        <div class="cell-list">
+                            <a class="cell need_update" data-uid="../sale/84canceldel.html?findtype=return" data-pid="D01" data-count="0">
+                                <i class="left iconfont icon-test"></i><span>取消订单</span><i class="iconfont icon-jinru"></i>
+                            </a>
+<!--                            <a class="cell"  data-uid="../sale/84canceldel.html?findtype=exchange" data-pid="B06">
+                                <i class="left iconfont icon-huanhuo1"></i><span>我要换货</span><i class="iconfont icon-jinru"></i>
+                            </a>-->
+<!--                            <a class="cell"  data-uid="../sale/96changefiting.html?findtype=fiting" data-pid="B06">
+                                <i class="left iconfont icon-huanhuo"></i><span>更换配件</span><i class="iconfont icon-jinru"></i>
+                            </a>-->
+                            <a class="cell"  data-uid="../service/72repair.html" data-pid="B06">
+                                <i class="left iconfont icon-repair-line"></i><span>我要维修</span><i class="iconfont icon-jinru"></i>
+                            </a>
+                            <!--                            <a class="cell"  data-uid="../sale/84canceldel.html" data-pid="B06">
+                                                            <i class="iconfont icon-dingdanguanli"></i><span>订单取消</span><i class="iconfont icon-jinru"></i>
+                                                        </a>-->
+                            <!--                            <a class="cell need_update"  data-uid="../sale/75editorderlist.html" data-pid="B06" data-count="0">
+                                                            <i class="iconfont icon-dingdanguanli"></i><span>订单修改</span><i class="iconfont icon-jinru"></i>
+                                                        </a>-->
+                        </div>
+                    </div>
+                </div>
+                <a href="tel:4008-135-000" class="customer-service flex">
+                    <div class="txtl">客服电话</div>
+                    <div class="txtc flex-item">4008-135-000</div>
+                    <div class="txtr"><i class="iconfont icon-dianhua"></i></div>	
+                </a>	
+                <div id="menu_buttom_id">
+
+                </div>
+                <script type="text/javascript">
+                    table.htmlTabel("two");
+                </script>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var staticmessage = {};
+        $(function () {
+            FastClick.attach(document.body);
+            $(".menuline").hide();
+            staticMessage(staticmessage);
+            $(".del_class div").addClass("icon-shouhoufill").removeClass("icon-shouhou");
+            localStorage.setItem("returnUrl", "../menu/61send.html");
+            var a = storegeeditutil('power');
+            var power = new Array();
+            var sid = storegeeditutil("needstorage");
+            if (isnotnull(a)) {
+                power = a.split(',');
+            }
+            $(".cell").each(function () {
+                var value = $.inArray($(this).attr("data-pid"), power);
+                if (value != -1) {
+                    $(this).show();
+                }
+            });
+            if (sid == "A") {
+                $(".menuline[pid='A08']").show();
+                $(".menuline[pid='B03']").hide();
+            } else {
+                $(".menuline[pid='A08']").hide();
+                $(".menuline[pid='B03']").show();
+            }
+
+            $(".cell").on("click", function () {
+                var pid = $(this).attr("data-pid");
+                console.log("pid" + pid);
+                var uid = $(this).attr("data-uid");
+                console.log("uid" + uid);
+                console.log("window.location.href=" + uid);
+                window.location.href = uid;
+            })
+
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: staticmessage.url + "statistics/send",
+                data: {"gsid": staticmessage.gsid},
+                success: function (data) {
+                    console.log(data);
+                    if (data != null) {
+                        $("#all_money_id").html(data.wDeliveryMoney);
+                        $("#need_pay").html(data.noDeliveryNum);
+                        $("#today_del").html(data.tDeliveryNum);
+                        $("#week_del").html(data.wDeliveryNum);
+                    }
+                }
+            })
+        });
+    </script>
+</html>

@@ -1,0 +1,316 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>云驼联盟</title>
+        <link href="../../css/style.css" rel="stylesheet" type="text/css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/inventory.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            #createdate_id {
+                background-color:#e3e3e3;
+            }
+            .frame_storehouse_order{
+                margin-top: 10vw;
+            }
+            .form_item_twice.notitle.data_title_class li {
+                margin-bottom: 3vw;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!--logo区-->
+        <div class="main_top">
+            <ul class="main_top_left">
+                <a class="main_top_back" href="../menu/62sold.html"></a>
+                <script type="text/javascript">
+                    page3();
+                </script>
+
+            </ul>
+            <ul class="main_top_title">
+                <li>调拨出库</li>
+            </ul>
+            <ul class="main_top_right">
+                <a class="main_top_history" href="23storehouse_log.html">历史订单</a>
+            </ul>
+        </div>
+
+        <div class="frame_storehouse_order">
+            <!--输入客户信息-->
+            <div class="sale_order_form">
+                <ul class="form_item_twice form_item_twice_left notitle data_title_class">
+                    <li class="form_item_title" >操作时间</li>
+                    <li class="form_item_title">调出仓库</li>
+                </ul>
+                <ul  class="form_item_twice form_item_twice_right notitle data_time_class">
+                    <li class="form_item_text">
+                        <input id="createdate_id" pid="createdate" type="date" readonly="true">
+                    </li>
+                    <li class="form_item_text">
+                        <select id="warhouse_in_id" class="need" placeholder="请选择调出仓库">
+                            <option value="">选择调出仓库</option>
+                        </select>
+                        <div class="form_item_dot"><img src="../../images/ico_section.png" alt=""/></div>
+                    </li>
+                </ul>
+                <div class="clear"></div>
+                <ul class="form_item_twice form_item_twice_left notitle data_title_class" style="margin-top: 0vw;">
+                    <li class="form_item_title" >调入门店</li>
+                    <li class="form_item_title" >调入仓库</li>
+                </ul>
+                <ul  class="form_item_twice form_item_twice_right notitle data_time_class" style="margin-top: 0vw;">
+                    <li class="form_item_text" >
+                        <select id="shop_in_id" pid="togsid" class="need" placeholder="请选择调入的门店">
+                            <option value="">请选择调入的门店</option>
+                        </select>
+                        <div class="form_item_dot"><img src="../../images/ico_section.png" alt=""/></div>
+                    </li>
+                    <li class="form_item_text" >
+                        <select id="warhouse_out_id" class="need" placeholder="请选择调入的仓库">
+                            <option value="">选择调入的仓库</option>
+                        </select>
+                        <div class="form_item_dot"><img src="../../images/ico_section.png" alt=""/></div>
+                    </li>
+                </ul>
+            </div>
+            <!--输入订单货品列表-->
+            <div class="sale_order_list">
+                <div class="sale_order_list">
+                    <div class="sale_order_list_title">调入清单</div>
+                    <a href="javascript:void(0);"  id="sale_delete_id" class="sale_order_list_button">全部删除</a>
+                    <a href="javascript:void(0);" id="sale_add_id" class="sale_order_list_button">加入货品</a>
+                    <div id="sale_order_id" class="frame_list_item">
+                        <!--货品-->
+                    </div>
+
+                    <div class="sale_order_total">
+                        <div class="sale_total_money">合计：<span id="sale_number_id">0</span>件</div>
+                    </div>
+                </div>
+            </div>
+
+            <!--底部功能-->
+            <div class="frame_bottom_cart">
+                <a href="javascipt:void(0)" id="send_id" class="bottom_button_max">确认入库</a>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var staticmessage = {};         //用户gsid，groupid，distributid
+        var saleall = new Array();
+        var saleallitem;
+        var findService = new Array();
+        var warhousearray = new Array();
+        var warhouseout = {};
+        var warhousein = {};
+        var number = 0;
+        function init() {
+            //加载资源
+            message();
+            //动态生成html页面
+            htmlhelp();
+        }
+        function act() {
+            $('.nav-toggle').click(function () {
+                var a = $(".nav").css("display");
+                $(".nav").css("display") == "none" ? $(".nav").css("display", "block") : $(".nav").css("display", "none");
+                $('body').toggleClass('nav-open');
+            });
+            //全部删除
+            $("#sale_delete_id").on("click", function () {
+                saleall.splice(0, saleall.length);
+                saleallitem.splice(0, saleallitem.length);
+                storegeeditutil("invensaleall", undefined);
+                storegeeditutil("invsalecodein", undefined);
+                $("#sale_number_id").html(0);
+                htmlhelp();
+            });
+            //添加新的
+            $("#sale_add_id").on("click", function () {
+                var warhouse_in = $("#warhouse_in_id option:selected").val();
+                var warhouse_out = $("#warhouse_out_id option:selected").val();
+                var shop_in = $("#shop_in_id").val();
+                storegeeditutil("warhouse_in", warhouse_in);
+                storegeeditutil("warhouse_out", warhouse_out);
+                storegeeditutil("shop_in", shop_in);
+                storegeeditutil("saleallitem", JSON.stringify(saleallitem));
+                window.location.href = "../inventory/20inventory_add.html?type=in";
+            });
+            $('#send_id').on('mousedown', function (event) {
+                findselect();
+                if (isnotnull(saleall) && saleall.length > 0) {
+                    $.post(staticmessage.url + "inventory/findsomenumber", {"json": JSON.stringify(saleall), "fmstorage": warhouseout.warehouseid}
+                    , function (data) {
+                        console.log(data);
+                        if (data.status) {
+                            confirmOk();
+                        } else {
+                            app.confirm(confirmOk, data.message + " 是否仍然调拨?", null, null)
+                        }
+
+                    });
+                } else {
+                    app.alert("未选择调拨货品");
+                    return;
+                }
+            });
+        }
+        function confirmOk(param1, param2) {
+            var transoder = {};
+            var prodqtys = 0;
+            var qtys = 0;
+            var transoderitems = new Array();
+            for (var y in saleall) {
+                var transoderitem = {};
+                console.log("keyname:" + y + "\tvale:" + saleall[y]);
+                transoderitem.prodcodes = saleall[y].prodcodes;
+                transoderitem.prodqtys = saleall[y].number;
+                transoderitem.qtys = saleall[y].prodqtys * saleall[y].number;
+                transoderitem.pbigcate = saleall[y].prodbigcate;
+                transoderitem.pcate = saleall[y].prodcate;
+                transoderitem.psize = saleall[y].price;
+                transoderitem.psize = saleall[y].psize;
+                transoderitem.imgpath = saleall[y].prodimgpath;
+                transoderitem.remarks = saleall[y].remarks;
+                transoderitem.prodid = saleall[y].prodid;
+                transoderitem.cdate = new Date();
+                var arrayhave = ["gsid", "groupid", "distributid"];
+                copyob(staticmessage, transoderitem, arrayhave);
+                transoderitems.push(transoderitem);
+                prodqtys += saleall[y].number;
+                qtys += saleall[y].number * saleall[y].prodqtys;
+            }
+            var a = validate();
+            if (a == "true") {
+                transoder.frmwarehouseid = warhouseout.warehouseid;
+                transoder.frmwarehouseadress = warhouseout.warehouseadress;
+                transoder.frmwarehouselongitude = warhouseout.warehouselongitude;
+                transoder.frmwarehouselatitude = warhouseout.warehouselatitude;
+                transoder.towarehouseid = warhousein.warehouseid;
+                transoder.towarehouseadress = warhousein.warehouseadress;
+                transoder.towarehouselongitude = warhousein.warehouselongitude;
+                transoder.towarehouselatitude = warhousein.warehouselatitude;
+                transoder.transoderitems = transoderitems;
+                transoder.creator = staticmessage.userid;
+                transoder.frmgsid = staticmessage.gsid;
+                transoder.togsid = $("#shop_in_id").val();
+                transoder.prodqtys = prodqtys;
+                transoder.qtys = qtys;
+                var arrayhava1 = ["groupid", "distributid"];
+                copyob(staticmessage, transoder, arrayhava1);
+                console.log(transoder);
+                $("#send_id").attr("disabled", "true").css("pointer-events", "none");
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: staticmessage.url + "transorder/createin",
+                    contentType: "application/json",
+                    data: JSON.stringify(transoder),
+                    success: function (data) {
+                        console.log(data);
+                        if (data.status) {
+                            storegeeditutil("pursaleall", undefined);
+                            storegeeditutil("itemorder", undefined);
+                            localStorage.removeItem("warhouse_in");
+                            localStorage.removeItem("warhouse_out");
+                            localStorage.removeItem("shop_in");
+                            $("#sale_delete_id").trigger('click'); 
+                            app.alert("调拨出库成功!", "../menu/62sold.html");
+                        } else {
+                            $("#send_id").attr("disabled", "false").css("pointer-events", "auto");
+                            app.alert("调拨出库失败!");
+                        }
+
+                    }
+                });
+            } else {
+                alert(a);
+            }
+
+        }
+        //加载信息
+        function message() {
+            //提取cookie
+            staticMessage(staticmessage);
+            var json = storegeeditutil("invsalecodein");
+            saleallitem = (json == null || json == "undefined" || json == "" || typeof (json) == "undefined") ? new Array() : JSON.parse(json);
+            console.log(saleallitem);
+            if (saleallitem.length > 0) {
+                serviceMessage();
+            }
+            if (warhousearray.length == 0) {
+                editselect();
+            }
+        }
+        //服务端请求信息
+        function serviceMessage() {
+            //no
+            $.post(staticmessage.url + "inventory/findsome", {"json": JSON.stringify(saleallitem)}
+            , function (data) {
+                console.log(data);
+                for (var x in data.conlist) {
+                    saleall.push(data.conlist[x]);
+                    number += data.conlist[x].number;
+                }
+                htmlhelp();
+                $("#sale_number_id").html(number);
+            });
+        }
+        //查询select的选择项
+        function editselect() {
+            //no
+            $.post(staticmessage.url + "inventory/find", {"gsid": staticmessage.gsid, "groupid": staticmessage.groupid}
+            , function (data) {
+                console.log(data);
+                warhousearray = data.find;
+                for (var x in data.find) {
+                    if (data.find.length == 1) {
+                        $("#warhouse_in_id").append("<option value =\"" + data.find[x].warehouseid + "\" selected = 'selected' pid=\"" + data.find[x].whtype + "\">" + data.find[x].warehouseadress + "</option>");
+                        $("#warhouse_out_id").append("<option value =\"" + data.find[x].warehouseid + "\" selected = 'selected' pid=\"" + data.find[x].whtype + "\">" + data.find[x].warehouseadress + "</option>");
+                    } else {
+                        $("#warhouse_in_id").append("<option value =\"" + data.find[x].warehouseid + "\" pid=\"" + data.find[x].whtype + "\">" + data.find[x].warehouseadress + "</option>");
+                        $("#warhouse_out_id").append("<option value =\"" + data.find[x].warehouseid + "\" pid=\"" + data.find[x].whtype + "\">" + data.find[x].warehouseadress + "</option>");
+                    }
+                }
+                for (var x in data.shop) {
+                    $("#shop_in_id").append("<option value =\"" + data.shop[x].gsid + "\">" + data.shop[x].shopname + "</option>");
+                }
+                $("#warhouse_in_id option[value='" + storegeeditutil("warhouse_in") + "']").attr("selected", "selected");
+                $("#warhouse_out_id option[value='" + storegeeditutil("warhouse_out") + "']").attr("selected", "selected");
+                $("#shop_in_id option[value='" + storegeeditutil("shop_in") + "']").attr("selected", "selected");
+            });
+        }
+        function findselect() {
+            var item2 = $("#warhouse_out_id option:selected").attr("pid");
+            var item = $("#warhouse_out_id option:selected").val();
+            warhousein = warhousearray[listonefiledtwo("warehouseid", item, "whtype", item2, warhousearray)];
+            var item3 = $("#warhouse_in_id option:selected").attr("pid");
+            var item4 = $("#warhouse_in_id option:selected").val();
+            warhouseout = warhousearray[listonefiledtwo("warehouseid", item4, "whtype", item3, warhousearray)];
+        }
+        //动态生成
+        function htmlhelp() {
+            document.getElementById('createdate_id').valueAsDate = new Date();
+            var saleHtml = htmladd("订单清单", saleall);
+            change("sale_order_id", saleHtml);
+        }
+        $(function () {
+            FastClick.attach(document.body);
+            //初始化整个页面
+            init();
+            //动态加载
+            act();
+        });
+    </script>
+</html>

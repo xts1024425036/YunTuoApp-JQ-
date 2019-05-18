@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+    <head>
+        <title>云驼联盟</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <link rel="stylesheet" type="text/css" href="../../css/iconfont.css">
+        <link rel="stylesheet" type="text/css" href="../../css/newcommon.css">
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <script src="../../cordova.js"></script>
+        <script type="text/javascript" src="../../js/jquery.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>	
+        <style type="text/css">
+            body{background: #ffffff;}
+            .content-banner{
+                background:#f0f0f0;
+                width: 100%;	
+                padding-top: 12vw;
+                position: relative;
+            }
+            .bg-shadow{
+                position: absolute;
+                left: 0.3rem;
+                top:4.8rem;
+            }
+            .nav-bar{
+                margin-bottom: 0.3vw;
+            }
+
+            .decorate {
+                width: 0.08rem;
+                height: 0.30rem;
+                margin-right: 0.2rem;
+            }
+            .goods-info-title-text{
+                font-size: 0.32rem;
+            }
+            .bg-shadow-introduce{
+                font-size: 0.28rem;
+                color:#666666;
+                padding: 0.7em 0;
+                line-height: 1.5em;
+            }
+            .goods-info {
+                padding: 0.36rem 0;
+            }
+            .banner .banner_img{
+                width:100%;
+            }
+            .nav-bar {
+                box-shadow: none;
+                position: fixed;
+                top: 0;
+                z-index: 9;
+            }
+            body.ios .main_top {
+                padding-top: 0px; 
+            }
+        </style>
+    </head>
+
+    <body>
+        <ul class="nav-bar flex main_top">
+            <li class="left txtl back">
+                <i class="top_left back iconfont icon-back"></i>
+            </li>
+            <li class="flex-item txtc">仓储服务</li>
+            <li class="right txtr"></li>   
+        </ul>
+        <div class="content-banner">
+            <div class="banner">
+                <img class="banner_img" src="../../images/ccfw-banner.png">
+            </div>
+        </div>
+        <div class="bg-shadow">
+            <div class="goods-info">
+                <div class="goods-info-title">
+                    <span class="decorate"></span>
+                    <span class="goods-info-title-text">面积灵活</span>
+                </div>
+                <div class="bg-shadow-introduce">10平方米/格子库，按需租用,无公摊面积，按实际面积租用，公开透明</div>
+            </div>
+            <div class="goods-info">
+                <div class="goods-info-title">
+                    <span class="decorate"></span>
+                    <span class="goods-info-title-text">租期灵活</span>
+                </div>
+                <div class="bg-shadow-introduce">月 / 半年 / 年</div>
+            </div>
+            <div class="goods-info">
+                <div class="goods-info-title">
+                    <span class="decorate"></span>
+                    <span class="goods-info-title-text">专业服务</span>
+                </div>
+                <div class="bg-shadow-introduce">专业物流仓库，专业仓储设备，专业管理流程，专业库管人员，专业保险起航</div>
+            </div>
+            <div class="goods-info">
+                <div class="goods-info-title">
+                    <span class="decorate"></span>
+                    <span class="goods-info-title-text">优惠价格</span>
+                </div>
+                <div class="bg-shadow-introduce">每个格子库折算价为25元/平米，包含库管服务，且无公摊面积</div>
+            </div>
+        </div>
+
+        <!--        <div id="buy_share" class="footer-bar" style="background: #5478C4">
+                    <div class="footer-btn txtc">租用格子库</div>
+                </div>-->
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var staticmessage = {};
+        var power = new Array();
+        var json = {};
+
+        function send() {
+
+        }
+        function act() {
+            $("#buy_share").click(function () {
+                window.location.href = "80buyshare.html";
+            });
+            $(".back").click(function () {
+                window.location.href = "../menu/86boxmenu.html";
+            });
+        }
+
+        $(function () {
+            FastClick.attach(document.body);
+            act();
+            $('.wtype_c').on('click', function (event) {
+                $(this).siblings(".wtype_c").removeClass("select").end().addClass("select");
+                json.code = $(".select").attr("data-pid");
+                json.number = $("#buy_number_id").val();
+                $("#count_id").html($(".select").attr("data-ratio") * json.number);
+                $("#ratio_desc_id").html($(".select").attr("data-desc"));
+            });
+            $("#next_id").click(send());
+        });
+    </script>
+</html>

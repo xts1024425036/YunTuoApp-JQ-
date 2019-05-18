@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+    <head>
+        <title>云驼联盟</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <link href="../../css/newcommon.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <script src="../../cordova.js"></script>
+        <script type="text/javascript" src="../../js/jquery.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <style>
+            .iconfont {
+                color: #808396;
+            }
+            .hiSlider img{
+                width: 100%;
+                height:42vw;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="top_nav">
+            <i class="top_left back iconfont icon-back"></i>
+            <div class="top_menu type_edit">
+                <span class="title add_new">购买格子库</span>
+            </div>
+        </div>
+        <div class="innercontent top_innercontent" id="mainmenu">
+            <div class="shop" style="text-align:center;font-size:6vw;">
+                格子库规则
+            </div>
+            <div class="menuline" style="padding:0;">
+                <table cellpadding="0" cellspacing="0" width="100%">
+                    <tbody><tr>
+                            <td>面积灵活</td>
+                            <td>10平方米／格子库，按需租用，无公摊面积，按实际面积租用，公开透明</td>
+                        </tr>
+                    </tbody></table>
+            </div>
+            <div class="menuline" style="padding:0;">
+                <table cellpadding="0" cellspacing="0" width="100%">
+                    <tbody><tr>
+                            <td>租期灵活</td>
+                            <td>｜天｜月｜半年｜年｜</td>
+                        </tr>
+                    </tbody></table>
+            </div>
+            <div class="menuline" style="padding:0;">
+                <table cellpadding="0" cellspacing="0" width="100%">
+                    <tbody><tr>
+                            <td>专业服务</td>
+                            <td>专业物流仓库，专业仓储设备，专业管理流程，专业库管人员，专业保险护航</td>
+                        </tr>
+                    </tbody></table>
+            </div>
+            <div class="menuline" style="padding:0;">
+                <table cellpadding="0" cellspacing="0" width="100%">
+                    <tbody><tr>
+                            <td>优惠价格</td>
+                            <td>每个格子库折算价为25元／平米，包含库管服务，且无公摊面积。</td>
+                        </tr>
+                    </tbody></table>
+            </div>
+        </div>
+        <div class="share_message" >
+            <div class="menuline">
+                <div class="menutext title">数量：</div>
+                <div class="menutext gray input_class"><input id="buy_number_id" class="need" type="text" placeholder="请填写购买数量"></div>
+                <div class="clear"></div>
+            </div>
+            <div class="menuline share_ratio">
+                <div class="menutext title">单位:</div>
+                <div class="gray wtype_c show" data-pid="D" data-ratio="1" data-desc="日">日</div>
+                <div class="gray wtype_c" data-pid="M" data-ratio="1" data-desc="月">月</div>
+                <div class="gray wtype_c" data-pid="6M" data-ratio="6" data-desc="月">6月</div>
+                <div class="gray wtype_c" data-pid="12M" data-ratio="12"  data-desc="月">12月</div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="share_bottom">
+            <div class="share_bottom_left">合计 : <span id="count_id">0</span><span id="ratio_desc_id"></span></div>
+            <div class="share_bottom_button" id="next_id">去结算</div>
+            <div class="clear"></div>
+        </div>
+        <script type="text/javascript">
+            table.htmlTabel("two");
+        </script>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var staticmessage = {};
+        var power = new Array();
+        var json = {};
+
+        function send() {
+            $.post(staticmessage.url + "onlydelivery/distanceone",
+                    {
+                        "data": JSON.stringify(deliveryoder)
+                    }
+            , function (data) {
+                console.log(data);
+                devallfee.devfee = data.transfee;
+                devallfee.insfee = data.installfee;
+                devallfee.upfee = data.upstairsfee;
+                devallfee.sortfee = data.sortfee;
+                if (data.reduce < 0) {
+                    $("#reduce_all_id").html("总优惠：￥" + parseInt(data.reduce) + ".00");
+                    $(".money_all .reduce").addClass("have_reduce");
+                }
+                editfee();
+            });
+        }
+
+
+        $(function () {
+            FastClick.attach(document.body);
+            $('.wtype_c').on('click', function (event) {
+                $(this).siblings(".wtype_c").removeClass("select").end().addClass("select");
+                json.code = $(".select").attr("data-pid");
+                json.number = $("#buy_number_id").val();
+                $("#count_id").html($(".select").attr("data-ratio") * json.number);
+                $("#ratio_desc_id").html($(".select").attr("data-desc"));
+            });
+            $(".back").click(function () {
+                window.location.href = "../01home.html";
+            });
+            $("#next_id").click(send());
+        });
+    </script>
+</html>

@@ -1,0 +1,8 @@
+{
+  "name": "Distributor",
+  "ios_identifier": "id1434375355",
+  "android_identifier": "com.yuntuo.dtbapp",
+  "update": "now",
+  "content_url": "https://update.51yuntuo.com/update/distributor/",
+  "min_native_interface":1
+}

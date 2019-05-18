@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>云驼联盟</title>
+        <link href="../../css/style.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/time.js"></script>
+        <script src="../../js/shopedit.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            #begintime{    
+                float: right;
+                border: 1px solid #666666;
+                padding: 0 4vw;
+                margin-right: 0.5%;
+                border-radius: 10px;
+                width: 10vh;
+                height: 4.7vh;}
+            </style>
+        </head>
+
+        <body>
+            <!--logo区-->
+            <div class="main_top">
+            <ul class="main_top_left">
+                <a class="main_top_back" href="../01home.html"></a>
+            </ul>
+            <ul class="main_top_title">
+                <li>与平台财务对账</li>
+            </ul>
+            <ul class="main_top_right">
+            </ul>
+        </div>
+        <div class="frame_main">
+            <div class="container2">
+                <div class="topselect">
+                    <div class="cur2 time_class" pid="mouth">本月</div>
+                    <div class="time_class" pid="last">上月</div>
+                    <div class="time_class" pid="year">本年</div>
+                    <img src="../../images/calander.png" />
+                    <input id="begintime" type="text" onclick="setmonth(this, null, null, null, 1)" readonly="readonly" value="2018 - 07"/>
+                    <div class="clear"></div>
+                </div>
+                <table class="static_table" border="0" cellspacing="0" cellpadding="0">
+                    <tr class="bluebg">
+                        <td width="25%" class="topleft borderleft">类别</td>
+                        <td width="25%">订单数</td>
+                        <td width="25%">货品数量</td>
+                        <td width="25%" class="topright">金额</td>
+                    </tr>
+                    <tr>
+                        <td class="borderleft">货品销售</td>
+                        <td id="saleorder_number_id" class="data_calss">0</td>
+                        <td id="saleqtys_number_id" class="data_calss">0</td>
+                        <td id="sale_price_id" class="data_calss">0</td>
+                    </tr>
+                    <tr>
+                        <td class="borderleft">配送费</td>
+                        <td id="deliorder_number_id" class="data_calss">0</td>
+                        <td id="deliqtys_number_id" class="data_calss">0</td>
+                        <td id="deli_price_id" class="data_del_calss">-0</td>
+                    </tr>
+                    <tr>
+                        <td class="borderleft">安装费</td>
+                        <td id="instorder_number_id" class="data_calss">0</td>
+                        <td id="instqtys_number_id" class="data_calss">0</td>
+                        <td id="inst_price_id" class="data_del_calss"> -0</td>
+                    </tr>
+                    <tr>
+                        <td class="borderleft">提货费</td>
+                        <td id="pickorder_number_id" class="data_calss"> 0</td>
+                        <td id="pickqtys_number_id" class="data_calss">0</td>
+                        <td id="pick_price_id" class="data_del_calss">-0</td>
+                    </tr>
+                    <tr>
+                        <td class="borderleft">保险费</td>
+                        <td id="ensuorder_number_id" class="data_calss">0</td>
+                        <td id="ensuqtys_number_id" class="data_calss">0</td>
+                        <td id="ensu_price_id" class="data_del_calss">-0</td>
+                    </tr>
+                    <!--                    <tr>
+                                            <td class="borderleft">仓储费</td>
+                                            <td id="stosorder_number_id"></td>
+                                            <td id="store_number_id"></td>
+                                            <td id="store_price_id">-8800</td>
+                                        </tr>-->
+                    <tr class="red">
+                        <td class="bottomleft borderleft">小计</td>
+                        <td id="allorder_number_id"  class="data_calss">0</td>
+                        <td id="all_number_id"  class="data_calss">0</td>
+                        <td id="all_price_id" class="bottomright data_calss">0</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <script type="text/javascript">
+            table.htmlTabel("two");
+        </script>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var staticmessage = {};
+        var filterString = "mouth";
+
+        //初始化整个页面
+        function init() {
+            staticMessage(staticmessage);
+            filter();
+        }
+        function message() {
+        }
+        function filter() {
+            $(".data_calss").html("0");
+            $(".data_del_calss").html("-0");
+            $.post(staticmessage.url + "shopedit/findfinance",
+                    {
+                        "gsid": staticmessage.gsid,
+                        "filter": filterString
+                    }
+            , function (data) {
+                console.log(data);
+                console.log(data.shopuser);
+                var allorder = 0;
+                var allnumber = 0;
+                var allprices = 0;
+                for (var x in data.json) {
+                    $("#" + x).html(data.json[x]);
+                    console.log(x.substr(x.length - 15, 15));
+                    if (x.substr(x.length - 15, 15) == "order_number_id") {
+                        allorder += parseInt(data.json[x]);
+                    }
+                    console.log(x.substr(x.length - 14, 15));
+                    if (x.substr(x.length - 14, 15) == "qtys_number_id") {
+                        allnumber += parseInt(data.json[x]);
+                    }
+                    console.log(x.substr(x.length - 8, 15));
+                    if (x.substr(x.length - 8, 15) == "price_id") {
+                        allprices += parseInt(data.json[x]);
+                    }
+                }
+                $("#allorder_number_id").html(allorder);
+                $("#all_number_id").html(allnumber);
+                $("#all_price_id").html(allprices);
+            });
+        }
+        //动态加载
+        function filterbymouth() {
+            filterString = $("#begintime").val();
+            $(".time_class").removeClass("cur2");
+            console.log(filterString);
+            filter();
+        }
+        function act() {
+            $('.time_class').on('click', function (event) {
+                $(".time_class").removeClass("cur2");
+                $(this).addClass("cur2");
+                filterString = $(this).attr("pid");
+                console.log(filterString);
+                filter();
+            });
+        }
+        $(function () {
+            FastClick.attach(document.body);
+            init();
+            act();
+        });
+    </script>
+</html>

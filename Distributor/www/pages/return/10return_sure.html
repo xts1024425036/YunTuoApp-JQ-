@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>退货确认 - 云驼联盟</title>
+        <link href="../../css/style.css" rel="stylesheet" type="text/css">
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+    </head>
+
+    <body>
+        <div class="body_mask"></div>
+        <!--logo区-->
+        <div class="main_top">
+            <ul class="main_top_left">
+                <a class="main_top_back" href="09return_goods.html"></a>
+                <script type="text/javascript">
+                    page3();
+                </script>
+
+            </ul>
+            <ul class="main_top_title">
+                <li>送装单退货</li>
+            </ul>
+            <ul class="main_top_right">
+                <!--<a class="main_top_search" href="#"></a>-->
+            </ul>
+        </div>
+        <div class="frame_return_goods">
+            <div class="log_item log_item_pay">
+                <div class="log_list_title">
+                    <div id="sorder_id" class="log_list_time">订单号:20180315001</div>
+                    <div id="name_phone_id" class="log_list_person">张先生，15983746374</div>
+                </div>
+                <div class="log_item_delivery_detail">
+                    <ul>
+                        <li class="delivery_detail_title">退货单号：</li>
+                        <li id="return_number_id" class="delivery_detail_text">4532890760932</li>
+                    </ul>
+                    <ul>
+                        <li class="delivery_detail_title">客户信息：</li>
+                        <li id="name_phone_id2" class="delivery_detail_text">张先生，15938473748</li>
+                    </ul>
+                    <ul>
+                        <li  class="delivery_detail_title">取货地址：</li>
+                        <li id="adress_id" class="delivery_detail_text">武汉市江岸区XX路XX巷X号602 </li>
+                    </ul>
+                </div>
+            </div>
+            <!--输入订单货品列表-->
+            <div class="sale_order_list" id="sale_return_all_id">
+                <div class="sale_order_list_title">货品清单</div>
+                <div class="log_item log_item_list">
+                    <div class="log_item_delivery_detail">
+                        <div id="name_id" class="delivery_detail_title">H12345 儿童床</div>
+                        <div id="number_id" class="delivery_detail_text">3个</div>
+                    </div>
+                    <div class="log_item_delivery_detail">
+                        <div class="delivery_detail_title">配件数</div>
+                        <div id="qtysnumber_id" class="delivery_detail_text">3个</div>
+                    </div>
+                </div>
+            </div>
+            <!--结算汇总-->
+            <div class="sale_order_total">
+                <div id="return_all_number_id" class="sale_total_money">退货总数：3件</div>
+            </div>
+        </div>
+        <!--底部功能-->
+        <div class="frame_bottom_cart">
+            <a href="javascript:void(0);" onclick="send();" class="bottom_button_max">确认退货</a>
+        </div>
+    </body>
+    <script type="text/javascript" src="../../js/jquery.js"></script>
+    <script src="../../js/common.js"></script>
+    <script src="../../js/fastclick.js"></script>
+    <script src="../../js/deliverymain.js"></script>
+    <script src="../../cordova.js"></script>
+    <script type="text/javascript">
+                "use strict";
+                var itemsale;
+                var pagesale;
+                var returnid;
+                var staticmessage = {};
+                function init() {
+                    staticMessage(staticmessage);
+                    var a = storegeeditutil("salereturn");
+                    var sale = JSON.parse(storegeeditutil("salereturn"));
+                    console.log(sale);
+                    pagesale = sale;
+                    itemsale = sale.returnitems;
+                    htmlhelp();
+                }
+                function htmlhelp() {
+                    $("#sorder_id").html("订单号:" + pagesale.sorderid);
+                    $("#name_phone_id").html(pagesale.customer + "\t" + pagesale.customerphone);
+                    $("#name_phone_id2").html(pagesale.customer + "\t" + pagesale.customerphone);
+                    $("#return_number_id").html("d" + (pagesale.sorderid).substring(1));
+                    $("#adress_id").html(pagesale.addressdetailed);
+                    var smallHtml = htmladd("确认退货", pagesale.returnitems);
+                    $("#sale_return_all_id").html(smallHtml);
+                    var mainnumber = 0;
+                    var othernumber = 0;
+                    for (var x in pagesale.returnitems) {
+                        mainnumber += parseInt(pagesale.returnitems[x].main);
+                        othernumber += parseInt(pagesale.returnitems[x].other);
+                    }
+//                    $("#name_id").html(pagesale.prodname);
+//                    $("#number_id").html(pagesale.numberitem + "个");
+//                    $("#qtysnumber_id").html(pagesale.numberother + "个");
+                    $("#return_all_number_id").html("退货总数：" + othernumber + "件");
+                }
+                function act() {
+                }
+                function send() {
+                    var returnitem = JSON.stringify(pagesale.returnitems);
+                    console.log(pagesale.returnitems);
+                    $.post(staticmessage.url + "return/returnone",
+                            {
+                                "returnitems": returnitem,
+                                "sorderid": pagesale.sorderid,
+                                "qtys": pagesale.qtys,
+                                "prodqtys": pagesale.prodqtys
+                            }
+                    , function (data) {
+                        console.log(data);
+                        if (data.status) {
+                            app.alert("退货成功,若为换货则货品个数将不发生变化!", "../delivery/05delivery_log_daily.html");
+                        } else {
+                            app.alert("退货失败，请重新选货");
+                        }
+
+
+                    });
+                }
+                $(function () {
+                    FastClick.attach(document.body);
+                    $(document).ready(function () {
+                        //初始化整个页面
+                        init();
+                        //动态加载
+                        act();
+                    });
+                });
+    </script>
+</html>

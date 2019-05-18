@@ -1,0 +1,302 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>云驼联盟</title>
+        <link rel="stylesheet" type="text/css" href="../../css/iconfont.css">
+        <link rel="stylesheet" type="text/css" href="../../css/newcommon.css">
+        <!--        <link href="../../css/viewer.css" rel="stylesheet" type="text/css">-->
+        <link href="../../css/zeroModal.css" rel="stylesheet" type="text/css">
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="../../js/jquery.js"></script>
+        <script type="text/javascript" src="../../js/common.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../js/zeroModal.js"></script>
+        <script src="../../js/storehouse.js"></script>
+        <!--        <script src="../../js/viewer.js"></script>-->
+        <script src="../../js/upload.js"></script>
+        <script src="../../cordova.js"></script>	
+        <style type="text/css">
+            .goods-info .table-info{
+                padding:.12rem;
+            }
+            .goods-info .table-info > span{
+                width:33.3%;
+                text-align:center;
+                font-size:.24rem;
+                line-height:.6rem;
+            }
+            .goods-info .table-info > span.line{
+                border-left:1px solid #f0f0f0;
+            }
+            #order_log_id .remarks{
+                display: none;
+            }
+            .img .icon-cancel{
+                margin-top: -0.2rem;
+                position: absolute;
+                margin-left: -0.25rem;
+                font-size: 1.5em;
+            }
+            .img .after_img{
+                width: 1.8rem;
+                height: 1.8rem;
+                margin-bottom: 0.5rem;
+            }
+            .icon-zhaopian{
+                font-size: 3em;
+            }
+            .driver-info{
+                display: none!important;
+            }
+            .two{
+                display: none !important;
+            }
+            .goods-info-title .goods-info-name{
+                right: 8%;
+                position: absolute;
+            }
+            .nav-bar {
+                position: fixed;
+                z-index: 100;
+                top: 0;
+            }
+            .table-info textarea{
+                color: #333;
+            }
+        </style>
+    </head>
+
+    <body>
+        <ul class="nav-bar flex">
+            <li class="left txtl back">
+                <i class="iconfont icon-fanhui"></i>
+            </li>
+            <li class="flex-item txtc title">货物确认</li>
+            <li class="right txtr"></li>
+        </ul>
+        <div id="order_log_id">
+
+        </div>
+        <div class="footer-bar flex">
+            <div class="center txtc sure" style="width: 11em;display: none;" sts="PD">分拣完毕</div>
+            <div class="center txtr arrive" style="width: 11em;display: none;">司机到达,准备发货</div>
+        </div>
+        <div class ="docs-galley" style="display:none;">
+            <ul id="viewerpic">
+
+            </ul>
+        </div>
+        <div id="add_msg"></div>
+    </body>
+
+    <script type="text/javascript">
+        "use strict";
+        var staticmessage = {};
+        var picList = new Array();
+        var path = {};
+        var pid = 0;
+        var delpid = "";
+        var driverid;
+        var deliveryspoderid = GetQueryString("deliveryspoderid");
+        MyPush.register(build_duri(storegeeditutil("userid"), "PDIS"));
+        $(function () {
+            FastClick.attach(document.body);
+            init();
+        });
+
+        function init() {
+            staticMessage(staticmessage);
+            find();
+        }
+        //查询订单情况
+        function find() {
+            $.ajax({
+                type: "POST",
+                url: staticmessage.url + "storehouse/unpick?deliveryspoderid=" + deliveryspoderid,
+                success: function (data) {
+                    console.log(data);
+                    driverid = data.delivery.driver;
+                    var itemhtml = htmladd("unpickitem", data.delivery.deliveryspoderitem);
+                    data.delivery.itemhtml = itemhtml;
+                    var smallHtml = temp2.format(data.delivery);
+                    change("order_log_id", smallHtml);
+                    if ($("#order_log_id").find(".info").attr("pid") == "2") {
+                        $("#order_log_id").find(".two").removeClass("two");
+                    }
+                    $("#order_log_id").find(".rema").each(function () {
+                        if ($(this).html() == "无") {
+                            $("#order_log_id .pic_path_class[uid='" + $(this).parents(".pic_path_class").attr("uid") + "']").find(".remap").hide();
+                            $("#order_log_id .pic_path_class[uid='" + $(this).parents(".pic_path_class").attr("uid") + "']").find(".two").each(function () {
+                                $(this).css("border", "");
+                            });
+                        }
+                    });
+                    $("#order_log_id").find(".issample-des").each(function () {
+                        if ($(this).attr("pid") == "1") {
+                            $(this).html("(拆装单)");
+                        }
+                    });
+                    if (data.delivery.isconfirm) {
+                        $(".arrive").show();
+                        if ("P,O,Q,F,I,C,A".indexOf(data.delivery.status) == -1) {
+                            $(".arrive").attr("disabled", "true").css("pointer-events", "none").css("background", "#BBBBBB");
+                        } else if ("O,Q,F,I,C,A".indexOf(data.delivery.status) != -1) {
+                            $(".footer-bar").hide();
+                            $("#order_log_id").find(".after_img").css("margin-bottom", "0");
+                            $(".title").html("已完成订单");
+                        }
+                        $(".driver-info").removeClass("driver-info");
+                        $("#problemdesc").val(data.delivery.inspectionRemarks);
+                        imgpath(deliveryspoderid + "inspectionok");
+                    } else {
+                        $(".sure").show();
+                    }
+                }
+            });
+        }
+
+        //回退
+        $('.back').on('click', function (event) {
+            window.location.href = "99inspection_list.html";
+        });
+
+        //调用电话
+        $('#order_log_id').on('click', '.control-text-right-phone', function (event) {
+            var tid = $(this).attr("tid");
+            window.location.href = tid;
+        });
+
+        //添加图片
+        $("#order_log_id").on("click", ".upload", function () {
+            if (!isnotnull(delpid) || pid == 0) {
+                cameraTakePicture(1, pid);
+            } else {
+                cameraTakePicture(1, parseInt(delpid.split(",")[0]));
+            }
+        });
+
+        //拍完就上传
+        function htmledit(result, pid) {
+            var imglist = result.images;
+            picList.splice(pid, 0, result.images[0].path);
+            uploadFile(imglist[0].path, deliveryspoderid, "12", parseInt(pid) + 1, "driver", "ok", "", "", "");
+            console.log(result);
+        }
+
+        //上传成功后的回调
+        function uploadhelp(responseitem) {
+            console.log(responseitem);
+            var response = JSON.parse(responseitem);
+            path[response.number] = response.realUrl;
+            if (picList.length < 4) {
+                if (!isnotnull(delpid) || pid == 0) {
+                    $("#order_log_id").find(".upload").before("<div class='table-info-photo' pid='" + pid + "'><div class='img'><img class=\"after_img\" src=\"" + picList[pid] + "\"><i class='iconfont icon-cancel'></i></div></div>");
+                } else {
+                    $("#order_log_id").find(".upload").before("<div class='table-info-photo' pid='" + delpid.split(",")[0] + "'><div class='img'><img class=\"after_img\" src=\"" + picList[delpid.split(",")[0]] + "\"><i class='iconfont icon-cancel'></i></div></div>");
+                    delpid = delpid.split(",")[1];
+                }
+                if (picList.length == 3) {
+                    $("#order_log_id").find(".upload").hide();
+                }
+                pid++;
+            }
+        }
+
+        //删除图片
+        $("#order_log_id").on("click", ".icon-cancel", function () {
+            var main = $(this).parents(".table-info-photo");
+            pid--;
+            delpid += $(main).attr("pid") + ",";
+            if ($(main).attr("pid") > picList.length) {
+                picList.splice(picList.length - 1, 1);
+            } else {
+                picList.splice($(main).attr("pid"), 1);
+            }
+            $(main).remove();
+            if (picList.length < 3) {
+                $(".upload").show();
+            }
+        });
+
+
+        //确认拣货
+        $(".sure").click(function () {
+            if (picList.length < 1) {
+                app.alert("请填写拍摄照片");
+                return false;
+            }
+            if ($("#problemdesc").val() == "") {
+                app.alert("请填写拣货备注");
+                return false;
+            }
+            var imgpth = new Array();
+            for (var key of Object.keys(path)) {
+                imgpth.push(path[key]);
+            }
+            if (imgpth.length < picList.length) {
+                app.alert("图片上传中，如一直上传中，请删除后重新上传");
+                return false;
+            }
+            var status = $(this).attr("sts");
+            $(this).attr("disabled", "true").css("pointer-events", "none");
+            loading_param = zeroModal.loading(5);
+            $.post(staticmessage.url + "inspection/editok", {"deliveryspoderid": deliveryspoderid, "imgpth": imgpth.join(","), "userid": staticmessage.userid, "remark": $("#problemdesc").val(), "status": status}
+            , function (data) {
+                loading_close();
+                console.log(data);
+                if (data.result == 1) {
+                    MyPush.send("DIS0000", "货品拣货完成");
+                    app.alert("拣货完成", "99inspection_list.html");
+                }
+            });
+        });
+
+//        //司机到达
+//        $(".arrive").click(function () {
+//            var sdate = new Date(($(".sdate").html().substring(0, 10) + " 00:00:00")).getTime();
+//            if (sdate > new Date().getTime()) {
+//                refushmessage("请勿提前提货!");
+//                return;
+//            }
+//            var status = "O";
+//            $.ajax({
+//                type: "POST",
+//                url: staticmessage.url + "dtable/editstatus",
+//                dataType: 'json',
+//                data: {"pid": deliveryspoderid, "type": status, "userid": driverid},
+//                success: function (data) {
+//                    console.log(data);
+//                    if (data.status) {
+//                        window.location.href = "01picking_list.html";
+//                    } else {
+//                        app.alert("系统错误，请稍后再试");
+//                    }
+//                }
+//            });
+//        });
+
+        function imgpath(imageid) {
+            $.ajax({
+                type: "POST",
+                url: staticmessage.url + "image/find?imageid=" + imageid,
+                success: function (data) {
+                    console.log(data);
+                    if (data.result == "1") {
+                        var imgpaths = data.data.split(",");
+                        $.each(imgpaths, function (n, value) {
+                            var mainimg = $("#order_log_id").find(".upload");
+                            $(mainimg).hide();
+                            $(mainimg).before("<div class='table-info-photo' style='margin-bottom: 1rem;'><div class='img'><img class=\"after_img\" src=\"" + staticmessage.url + "file/returnimg?url=" + value + "\"></div></div>");
+                        })
+                    }
+                }
+            });
+        }
+    </script>
+</html>

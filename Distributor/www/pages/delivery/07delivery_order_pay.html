@@ -1,0 +1,702 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>送装支付 - 云驼联盟</title>
+        <link href="../../css/style.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script type="text/javascript" src="../../js/jquery.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>								
+        <script src="../../js/deliverymain.js"></script>
+        <script src="../../js/pageorder.js"></script>
+        <script src="../../js/templatorder.js"></script>	
+        <script src="../../js/templateutils.js"></script>	
+        <script src="../../js/mathedit.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style type="text/css">
+            .log_item_pay_detail .delivery_detail_title{
+                width: 22%;
+            }
+            .log_item_pay_detail .delivery_detail_text{
+                width:75%;
+            }
+            .delivery_detail_text div{
+                width: 30vw;
+                display: inline-block;
+            }
+            .log_item_pay_detail .delivery_detail_text div span {
+                float: none;
+                display: inline-block;
+            }
+            .frame_bottom_delivery .bottom_button_next {
+                width: 31vw;
+            }
+            #order_list_id{
+                padding-bottom: 19vw;
+            }
+            #order_list_id .delete_order{
+                float: right;
+                line-height: 7vw;
+                font-size: 5vw;
+
+                text-align: center;
+            }
+            #order_list_id .delete_order .iconfont {
+                font-size: .35rem;
+                line-height: 1em;
+                color: #666;
+                margin-left: 4vw;
+            }
+            #order_list_id .cancel_order {
+                float: right;
+                line-height: 7vw;
+                font-size: 4vw;
+                margin-left: 7vw;
+                background: #FFF;
+                border: 0.2vw #a00505 solid;
+                border-radius: 5vh;
+                width: 19vw;
+                text-align: center;
+                height: 4vh;
+                color: #a00505;
+            }
+            .select_checkbox{
+                display: none;
+            }
+            .select_checkbox+label {
+                width: .44rem;
+                height: .44rem;
+                border: #5478C4 1px solid;
+                border-radius: 50%;
+                float: left;
+                margin-right: .3rem;
+                box-sizing: border-box;
+                margin-top: calc(.26rem - 1px);
+            } 
+            .select_checkbox:checked+label{
+                position: relative;
+                box-sizing: border-box;
+                border: none;
+            }
+            .select_checkbox:checked+label:after{
+                content: "\e73b";
+                width: .48rem;
+                height: .48rem;
+                position: absolute;
+                top: 0;
+                left:0;
+                line-height: .48rem;
+                float: none;
+                border-radius: 50%;
+                background: none;
+                font-family: "iconfont" !important;
+                font-size: .48rem;
+                font-style: normal;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                color: #5478C4;
+                box-sizing: border-box;
+            }
+            .log_item_delivery_detail {
+                float: left;
+                width: 85vw;
+                margin-left: 2vw;
+                box-shadow: 0px 1px 7px 1px rgba(35,24,21,0.2);
+                padding: 1vh 0% 1vh 6%;
+                border: none;
+                border-radius: 0.16rem;
+            }
+            .log_list_title {
+                border-bottom: none;
+                padding: 0 .1rem .2rem;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            #number_id{
+                color: #5478C4;
+                font-size: .36rem;
+                margin: 0 .2rem;
+            }
+            #price_id{
+                color: #DF2F2F;
+                font-size: 4.3vw;
+                font-weight: bold;
+            }
+            .frame_bottom_cart .bottom_button_next{
+                line-height: 8.5vw;
+                height: 8.5vw;
+                border-radius: 18px;
+                width:24vw;
+                font-size: 0.28rem;
+            }
+            .frame_bottom_cart .spell_settlement{
+                margin-left: 3rem;
+                color: #5478c4;
+                background: #FFF;
+                border: 0.01rem solid #5478c4;
+            }
+            .frame_bottom_cart .settlement{
+                margin-left: .4rem;
+            }
+            .frame_log {
+                padding: 13vw 0 0vh 0;
+            }
+            body {
+                background: #F0F0F0;
+            }
+            .nomore_html{
+                position: relative;
+                margin-bottom: 2vh;
+                float: left;
+                width: 94%;
+                background: #FFF;
+            }
+            #order_list_id .no_payorder{
+                width: 40vw;
+                margin-left: 33vw;
+                margin-top: 29%;
+            }
+            #order_list_id .no_payorder span{
+                width: 60vw;
+                margin-left: 5vw;
+                line-height: 12vw;
+                font-size: 4vw;
+            }
+            .ordertype_R{
+                background: #f5f6ff;
+            }
+            .other_show{
+                display: none;
+            }
+            .default_show.show_type_R{
+                display: none;
+            }
+            .show_type_R{
+                display: block;
+            }
+            .total{
+                width: 100%;
+                height: 1rem;
+                background: #FFEFE8;
+                position: fixed;
+                bottom: 13vw;
+                left: 0;
+                z-index: 300;
+            }
+            .all_pay_class{
+                height: 1rem;
+                line-height: 1rem;
+                margin: auto;
+
+            }
+            .total ul{background: transparent;}
+            .bottom_button_cart{
+                background: none;
+                width: 100%;
+                margin: 0;
+
+            }
+            .button_delivery_text{
+                width: 100%;
+                margin-left: 0;
+                text-align: right;
+                padding: 0 .3rem;
+                box-sizing: border-box;
+                line-height: 1rem;
+            }
+            .button_delivery_text li{
+                float: none;
+                display: inline-block;
+                font-size: .28rem;
+            }
+            .button_delivery_text li.price{
+
+                margin-left: .3rem;
+            }
+
+            .frame_bottom_cart .bottom_button_next{
+                margin: 0;
+                float: none;
+                height: .64rem;
+                width: 7em;
+                letter-spacing: 0;
+                line-height: .64rem;
+                display: inline-block;
+                margin: 0 .3rem;
+            }
+            .frame_bottom_cart{
+                text-align: right;
+                align-items: center;
+                display: flex;
+                justify-content: flex-end;
+            }
+            .log_list_title .select_checkbox+label{
+                margin-top: -.3em;
+            }
+            #price_id{
+                font-size: .36rem;
+            }
+            .supernatant{
+                width:72%;
+                height:3.8rem;
+                background:#fff;
+                border-radius:.16rem;
+                margin: 56% auto;
+            }
+            .title{
+                font-size: .32rem;
+                line-height: 1.4rem;
+            }
+            .icon-tixing{
+                font-size: .3rem;
+                color: #EE1F1F;
+                margin-right: .2rem;
+            }
+            .info-text{
+                background: #FFEFE8;
+                border-radius:0 0 .16rem .16rem;
+
+                padding: .25rem .25rem .25rem 0;
+                align-items: center;
+            }
+            .info-title{
+                width:1.6em;
+                background:#F8C6B0;
+                border-radius:.08rem;
+                font-size: .22rem;
+                font-style:italic;
+                padding: 1em .8em;
+                line-height: 1.4em;
+                font-weight: bold;
+                color: #CD531E;
+                text-align: center;
+                margin: auto 8vw;
+            }
+            p{
+                text-align: left;
+                line-height: 1.6em;
+                font-size: .24rem;
+                color: #CD531E;
+                flex:1;
+            }
+            .line{
+                width:1px;
+                height:1.2rem;
+                background:#fff;
+                margin: auto;
+            }
+            .icon-cancel{
+                font-size: .6rem;
+                color: #FFFFFF;
+            }
+
+            .log_item_pay .log_list_title input[type="checkbox"]{
+                display: inline-block;
+                visibility: hidden;
+                height: 0;
+                width: 0;
+                margin: 0;
+            }
+            .log_item:after{
+                content:"";
+                clear: both;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="body_mask"></div>
+        <!--logo区-->
+        <div class="main_top">
+            <ul class="main_top_left">
+                <a class="main_top_back" href="../menu/97service.html"></a>
+            </ul>
+            <ul class="main_top_title">
+                <li>待支付单</li>
+            </ul>
+            <!--            <ul class="main_top_right">
+                            <a class="main_top_history" href="#">历史订单</a>
+                        </ul>-->
+        </div>
+        <div id="order_list_id" class="frame_log log_delivery">
+            <div class="no_payorder">
+                <img src="../../images/no_one.png" style="width:45vw;">
+                <span>无可支付订单</span>
+            </div>
+        </div>
+        <div id="add_msg"></div>
+        <!--底部功能-->
+        <div class="total">
+            <div class="bottom_button_cart">
+                <ul class="button_delivery_text">
+                    <input id="all_pay_id" class="all_pay_class select_checkbox" type="checkbox" style="float: left;">
+                    <label for="all_pay_id" style="line-height: 1rem;"></label>
+                    <span class='left' style='float: left;margin-right: 4vw;color: #333333;font-size: .28rem;'>全选</span>
+                    <li style="margin-right: 2vw;">合计:<span id="number_id"> 0 </span>单</li>
+                    <li class="price"><span class='price_class'>￥</span><span id="price_id">0.00</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="frame_bottom_cart frame_bottom_delivery flex">
+            <!--            <div href="02slae_cart.html" class="bottom_button_cart">
+                            <ul class="button_delivery_text">
+                                <input id="all_pay_id" class="all_pay_class select_checkbox" type="checkbox"  style='float: left; margin-top: 4vw;'/>
+                                <label for="all_pay_id" style='margin-top: 3vw;'></label>
+                                <span class='left' style='float: left;margin-right: 4vw;color: #333333;'>全选</span>
+                                <li style="margin-right: 2vw;">合计<span id="number_id"> 0 </span>单</li>
+                                <li><span class='price_class' style="font-size:4.5vw;">￥</span><span id="price_id">0.00</span></li>
+                            </ul>
+                        </div>-->
+            <a href="javascript:void(0);" class="bottom_button_next spell_settlement">拼单结算</a>
+            <a href="javascript:void(0);" class="bottom_button_next settlement">直接结算</a>
+        </div>
+        <div class="select_popup_c">
+            <div class="supernatant txtc">
+                <div class="title"><i class="iconfont icon-tixing"></i><span></span></div>
+                <div class="info-text flex">
+                    <div class="info-title">拼单条件</div>
+                    <p> 1.处于同一个仓库;<br>
+                        2.同一天送货;<br>
+                        3.无带货;<br>
+                        4.总体积不大于10立方米;<br>
+                        5.总单数不超过4单;<br>
+                        6.无返货;<br>
+                        7.只有送装单才能拼单
+                    </p>
+                </div>
+                <div class="line"></div>
+                <div>
+                    <i class="iconfont icon-cancel"></i>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var itemsale;
+        var staticmessage = {};
+        var list = {};
+        var number = 0;
+        var price = 0;
+        var spread = new Array();
+        var prodvolume = 0;
+        $(function () {
+            //初始化整个页面
+            FastClick.attach(document.body);
+            function init() {
+                message();
+                //                htmlhelp();
+            }
+            function message() {
+                staticMessage(staticmessage);
+                console.log(staticmessage.gsid);
+                $.post(staticmessage.url + "delivery/findsome",
+                        {
+                            "gsid": staticmessage.gsid
+                        }
+                , function (data) {
+                    console.log(data);
+                    list = data.list;
+                    htmlhelp();
+                    if (list.length > 0) {
+                        $(".no_payorder").remove();
+                    }
+                });
+                $.post(staticmessage.url + "store/needbuystore",
+                        {
+                            "gsid": staticmessage.gsid
+                        }
+                , function (data) {
+                    console.log(data);
+                    if (0 < data.length) {
+                        $(".no_payorder").remove();
+                        shorehelp(data);
+                    }
+                });
+                //                $.post(staticmessage.url + "pay/returnsome",
+                //                        {
+                //                            "gsid": staticmessage.gsid
+                //                        }
+                //                , function (data) {
+                //                    console.log(data);
+                //                    if (parseInt(data.money) > 0) {
+                //                        app.alert("您之前存在异常订单,已为您退款" + parseInt(data.money) + "元");
+                //                    }
+                //                });
+            }
+            function confirmOk(param1, param2) {
+                console.log(param1, param2);
+                if ("delete" == param1) {
+                    deleteone(param2, param2.substring(0, 1));
+                } else if ("cancel" == param1) {
+                    cancelone(param2);
+                }
+            }
+            //删除一个订单
+            function deleteone(param2, type) {
+                var itemurl = "D" == type ? "delivery/deleteone" : "store/deletelessorder";
+                $.post(staticmessage.url + itemurl,
+                        {
+                            "orderid": param2,
+                            "type": "before",
+                            "userid": staticmessage.userid
+                        }
+                , function (data) {
+                    console.log(data);
+                    $(".log_item_pay[pid='" + param2 + "']").animate({height: "0px"}, "300", function () {
+                        this.remove()
+                        refushmessage("订单" + param2 + "删除成功");
+                    });
+                });
+            }
+            function cancelone(param2) {
+                $.post(staticmessage.url + "onlydelivery/cancelone",
+                        {
+                            "orderid": param2
+                        }
+                , function (data) {
+                    console.log(data);
+                    $(".log_item_pay[pid='" + param2 + "']").remove();
+                    app.alert("整改订单取消成功");
+                });
+            }
+
+            function htmlhelp() {
+                console.log(list);
+                var itemhtml1 = "";
+                var mainhtml = "";
+                //分开存放
+
+                var ok = new Array();
+                for (var x in list) {
+                    var temptype = "proitem";
+                    if ("R" == list[x].ordertype) {
+                        temptype = "wxproitem";
+                    }
+                    itemhtml1 = orderfun.htmledit(temptype, list[x].itemList);
+                    list[x].itemlist = itemhtml1;
+                    if ("2" == list[x].paystatus) {
+                        spread.push(list[x]);
+                    } else {
+                        ok.push(list[x]);
+                    }
+                }
+
+                if (spread.length > 0) {
+                    mainhtml += orderfun.htmledit("pay_need", spread);
+                }
+                mainhtml += orderfun.htmledit("pay_delorder", ok);
+                temputils.htmlappend("order_list_id", mainhtml);
+                $(".delivery_detail_text span").each(function () {
+                    if ($(this).html() == "0") {
+                        var a = $(this).parent("div");
+                        $(this).parent("div").css("display", "none");
+                    }
+                });
+                if (list.length == 1) {
+                    $(".all_pay_class").trigger("click");
+                }
+            }
+            function shorehelp(list) {
+                for (var i in list) {
+                    list[i].startdate = list[i].startdate.substring(0, 10);
+                    list[i].enddate = list[i].enddate.substring(0, 10);
+                }
+                var addhtml = orderfun.htmledit("pay_storeorder", list);
+                temputils.htmlappend("order_list_id", addhtml);
+            }
+            function math() {
+                number = 0;
+                price = 0;
+                $(".pay_class").each(function () {
+                    var a = $(this)[0];
+                    if (a.checked == true) {
+                        price = floatObj.add(price, $(a).closest(".log_item_pay").find(".price_class").attr("data-pid"));
+                        number++;
+                    }
+                });
+                edit();
+            }
+            function edit() {
+                $("#number_id").html(number);
+                $("#price_id").html(price);
+            }
+            function act() {
+                window.addEventListener("popstate", function (e) {
+                    //                    window.location.href = "../01home.html";
+                }, false);
+                $("#all_pay_id").on("click", function () {
+                    var a = $(this)[0];
+                    //                    a.checked ? $(".all_pay_class").prop("checked", false) : $(".all_pay_class").prop("checked", true);
+                    console.log(a.checked);
+                    a.checked ? $(".pay_class").prop("checked", true) : $(".pay_class").prop("checked", false);
+                    math();
+                });
+                $("#order_list_id").on("click", ".pay_class", function () {
+                    var a = $(this).closest(".log_item").find(".pay_class")[0];
+                    //                    $(a).trigger("click");
+                    a.checked ? $(this).prop("checked", true) : $(this).prop("checked", false);
+                    math();
+                });
+                $("body").on("click", ".settlement", function () {
+                    send();
+                });
+                $("body").on("click", ".icon-cancel", function () {
+                    $(".select_popup_c").css("left", "-12rem");
+                });
+                $("body").on("click", ".spell_settlement", function () {
+                    send("spell");
+                });
+                $("body").on("click", ".delete_order", function () {
+                    var pid = $(this).closest(".log_item_pay").attr("pid");
+                    app.confirm(confirmOk, "确定删除此订单?删除后无法恢复", "delete", pid);
+                });
+                $("body").on("click", ".cancel_order", function () {
+                    var pid = $(this).closest(".log_item_pay").attr("pid");
+                    app.confirm(confirmOk, "确定取消此订单?删除后无法恢复", "cancel", pid);
+                });
+                //放回到指定页面
+                //                window.addEventListener("popstate", function (e) {
+                //                    window.location.href = "../01home.html";
+                //                }, false);
+            }
+            function send(spell) {
+                var list = new Array();
+                var url;
+                var _isp = false;
+                var onewarehouseid = "";
+                var onedevdate = "";
+                $(".pay_class").each(function () {
+                    var a = $(this)[0];
+                    if (a.checked == true) {
+                        if (spell == "spell") {
+                            if (spread.length > 0) {
+                                _isp = true;
+                                refushmessage("请先直接支付补差价单且不能使用拼单结算");
+                                return false;
+                            }
+                            if ($(this).closest(".log_item_pay").attr("pid").substring(0, 1) != "D") {
+                                _isp = true;
+                                $(".select_popup_c").find(".title span").html("只有送装单才能拼单");
+                                $(".select_popup_c").css("left", "0");
+                                return false;
+                            }
+                            if ($(this).closest(".log_item_pay").attr("wid") == "2") {
+                                _isp = true;
+                                $(".select_popup_c").find(".title span").html("存在带货地址,不能拼单");
+                                $(".select_popup_c").css("left", "0");
+                                return false;
+                            }
+                            if ($(this).closest(".log_item_pay").attr("rid") == "true") {
+                                _isp = true;
+                                $(".select_popup_c").find(".title span").html("存在返货,不能拼单");
+                                $(".select_popup_c").css("left", "0");
+                                return false;
+                            }
+                            if ($(this).closest(".log_item_pay").attr("sid") == "3") {
+                                _isp = true;
+                                app.alert("订单" + $(this).closest(".log_item_pay").attr("pid") + "为安装单或上下样单,不能拼单");
+                                return false;
+                            }
+                            if (onewarehouseid != "") {
+                                if (onewarehouseid != $(this).closest(".log_item_pay").attr("whid")) {
+                                    _isp = true;
+                                    $(".select_popup_c").find(".title span").html("同一提货地址才能拼单");
+                                    $(".select_popup_c").css("left", "0");
+                                    return false;
+                                }
+                            }
+                            onewarehouseid = $(this).closest(".log_item_pay").attr("whid");
+                            if (onedevdate != "") {
+                                if (onedevdate != $(this).closest(".log_item_pay").attr("did")) {
+                                    _isp = true;
+                                    $(".select_popup_c").find(".title span").html("同一天送装才能拼单");
+                                    $(".select_popup_c").css("left", "0");
+                                    return false;
+                                }
+                            }
+                            onedevdate = $(this).closest(".log_item_pay").attr("did");
+                            list.push($(this).closest(".log_item_pay").attr("pid"));
+                        } else {
+                            list.push($(this).closest(".log_item_pay").attr("pid"));
+                        }
+                        prodvolume = prodvolume + parseFloat($(this).closest(".log_item_pay").attr("vid"));
+                    }
+                });
+                if (_isp) {
+                    return;
+                }
+                if (prodvolume > 10) {
+                    $(".select_popup_c").find(".title span").html("总体积不大于10立方米");
+                    $(".select_popup_c").css("left", "0");
+                    return;
+                }
+                if (list.length == 0) {
+                    app.alert("未选择订单");
+                    return;
+                }
+                if (spell == "spell") {
+                    if (list.length == 1) {
+                        app.alert("您选择的订单数量为1,无需拼单,请重新选择");
+                        return;
+                    }
+                    if (list.length > 4) {
+                        $(".select_popup_c").find(".title span").html("总单数不能超过4单");
+                        $(".select_popup_c").css("left", "0");
+                        return;
+                    }
+                    url = "../common/08spell_order.html?list=" + JSON.stringify(list);
+                } else {
+                    for (var x in spread) {
+                        if (list.indexOf(spread[x].deliveryoderid) >= 0) {
+                            continue;
+                        } else {
+                            refushmessage("请先支付或合并支付补差价单,谢谢合作");
+                            return;
+                        }
+                    }
+                    console.log(list);
+                    var stringlist = JSON.stringify(list);
+                    url = "../common/08pay_select.html?type=delivery&&list=" + stringlist;
+                }
+                transitionLocation("08pay_select", "../delivery/07delivery_order_pay.html", url);
+            }
+            function pushHistory() {
+                window.history.pushState({}, "index", "#");
+            }
+
+            init();
+            //动态加载
+            act();
+            pushHistory();
+        });
+
+        if (window.history && window.history.pushState) {
+            $(window).on('popstate', function (e) {
+                if (e.state === undefined) {
+                    return;
+                } else {
+                    console.log(e.state);
+                }
+                var hashLocation = location.hash;
+                var hashSplit = hashLocation.split("#!/");
+                var hashName = hashSplit[1];
+
+                if (hashName !== '') {
+                    var hash = window.location.hash;
+                    if (hash === '') {
+                        window.location.href = "../menu/61send.html";
+                    }
+                }
+            });
+            window.history.pushState('forward', null, '');
+        }
+    </script>
+</html>

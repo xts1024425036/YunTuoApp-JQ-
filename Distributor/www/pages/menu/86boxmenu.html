@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+    <head>
+        <title>云驼联盟</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <link href="../../css/common.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script type="text/javascript" src="../../js/jquery.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../cordova.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            .innercontent .iconfont {
+                font-size: 8vw;
+                margin-right: 4vw;
+                vertical-align: middle;
+                color: #808396;
+            }
+            body {
+                background-color: #f3f5f7;
+            }
+            .iconfont {
+                color: #808396;
+            }
+            .menuimg .iconfont{
+                font-size: 4.5vw;
+            }
+            .innercontent {
+                margin: 0 ; 
+                width: 100%;
+                background-color: #fff;
+            }
+            .menutext{
+                color: #5a5959;
+            }
+            .top_innercontent .menuline{
+                padding: 3vw 0 3vw 3vw;
+            }
+            .out_menuline{
+                width: 100%;
+                height:  12vw;
+                margin-top: 4vw;
+                background-color: #fff;
+                text-align: center;
+                line-height: 12vw;
+            }
+            .top_innercontent .menutext .iconfont{
+                color:#5478C4;
+                font-size: 4vw;
+                font-size: 6.5vw;
+            }
+            .out_menuline .gray{
+                color:#5478C4;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="top_nav">
+            <i class="top_left back iconfont icon-back"></i>
+            <div class="top_menu">仓储服务</div>
+            <div class="top_right"></div>
+        </div>
+        <div class="innercontent top_innercontent" id="baobiao" style="margin-top:14vw;">
+            <div class="menuline" uid="../box/80buyshare.html" pid="D02">
+                <div class="menutext gray"><i class="iconfont icon-home"></i>平台仓租赁</div>
+                <div class="menuimg"><i class="iconfont icon-right"></i></div>
+                <div class="clear"></div>
+            </div>
+            <!--            <div class="menuline" uid="../box/60share.html" pid="D02">
+                            <div class="menutext gray"><i class="iconfont icon-team"></i>服务简介</div>
+                            <div class="menuimg"><i class="iconfont icon-right"></i></div>
+                            <div class="clear"></div>
+                        </div>-->
+            <div class="menuline" uid="../box/87sharereport.html" pid="D02">
+                <div class="menutext gray"><i class="iconfont icon-form"></i>分拨仓订单</div>
+                <div class="menuimg"><i class="iconfont icon-right"></i></div>
+                <div class="clear"></div>
+            </div>
+            <!--            <div class="menuline" uid="../inventory/88inventorylist.html" pid="D02">
+                            <div class="menutext gray"><i class="iconfont icon-cangchu"></i>库存清单</div>
+                            <div class="menuimg"><i class="iconfont icon-right"></i></div>
+                            <div class="clear"></div>
+                        </div>-->
+            <!--            <div class="menuline" uid="../supplier/17supplier.html" pid="A02">
+                            <div class="menutext gray"><i class="iconfont icon-bank"></i>库存</div>
+                            <div class="menuimg"><i class="iconfont icon-right"></i></div>
+                            <div class="clear"></div>
+                        </div>-->
+        </div>
+        <div id="menu_buttom_id">
+
+        </div>
+        <script type="text/javascript">
+            table.htmlTabel("two");
+        </script>
+    </body>
+    <script type="text/javascript">
+        $(function () {
+            FastClick.attach(document.body);
+            $(".menuline,.out_menuline").on("click", function () {
+                var uid = $(this).attr("uid");
+                transitionLocation("", "", uid);
+            })
+            $(".back").on("click", function () {
+                window.location.href = "../01home.html";
+            });
+
+        });
+
+    </script>
+</html>

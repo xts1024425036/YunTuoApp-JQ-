@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>登陆</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Page-Enter" content="RevealTrans(duration=5,Transitionv=11)">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <link rel="stylesheet" type="text/css" href="css/iconfont.css">
+        <link rel="stylesheet" type="text/css" href="css/newcommon.css">
+        <script src="cordova.js"></script>
+        <script src="js/jquery.js"></script>
+        <script src="js/common.js"></script>
+        <script src="js/loginutil.js"></script>
+        <script src="js/fastclick.js"></script>
+        <style type="text/css">
+            .main-logo{margin:1.8rem 0 .8rem 0}
+            .footer-bar{background:transparent;border-top:0}
+            .version{font-size:.22rem;color:#fff;text-align:center;opacity:.6}
+            .cell-list{padding:0 .8rem;position:relative;color:#fff}
+            .cell-list .cell{color:#fff;font-size:.28rem;padding:0;border:0;margin-bottom:.6rem}
+            .cell-list .cell+.cell{border-top:0}
+            .cell-list .cell i.left{color:#fff;text-align:left}
+            .cell-list .cell input{color:#fff;font-size:.32rem;flex:1;background:transparent;border-bottom:.01rem solid #f0f0f0;padding:.1rem;border-radius:0;margin-left:.14rem}
+            .cell-list .cell input::-webkit-input-placeholder{color:#fff;font-size:.28rem;opacity:.6}
+            .security-code{color:inherit;width:7em;height:.6rem;background:#4373bb;border-radius:.1rem;line-height:.6rem;font-size:.22rem;position:absolute;bottom:.14rem;right:.8rem}
+            .explain{font-size:.22rem;color:#fff;margin-top:-0.3rem;padding:0 .8rem}
+            .explain span{color:#65a3ff;font-weight:bold}
+            .log-btn{width:5.4rem;height:.8rem;background:#2c4975;border-radius:.4rem;line-height:.8rem;color:#fff;font-size:.32rem;letter-spacing:.2rem;margin:1rem auto .3rem auto}
+            .log-btn2{width:5.4rem;height:.8rem;border:.02rem solid #fff;border-radius:.4rem;line-height:.8rem;color:#fff;font-size:.32rem;letter-spacing:.2rem;margin:.6rem auto}
+            .frame_img{position:fixed;top:0;background-image:url(images/bg.png);background-repeat:no-repeat;background-size:100% 100%;width:100%;height:100%}
+            .main-logo{margin:2.2rem 0 1.6rem 0}
+            .footer-bar{background:transparent;border-top:0}
+            .refushback{height:100%;background-size:100% 100%}
+        </style>
+    </head>
+
+    <body class="refushback">
+        <div class="frame_img txtc">
+            <div class="main-logo">
+                <img src="images/logo_1.png">
+            </div>
+            <div class="main-slogan">
+                <img src="images/slogan.png">
+            </div>
+            <div class="footer-bar">
+                <div class="version txtc">Copyright © 2019 YUNTUO</div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var staticmessage = {};
+        var isCordovaOK = false;
+        function tokenOK() {
+            var name = storegeeditutil('username');
+            var token = storegeeditutil('token');
+            if (name == null || token == null) {
+                console.log("token is null");
+                window.location.href = "login.html";
+            } else {
+                $.post(staticmessage.url + 'login/tokenok',
+                        {Bphone: name, token: token, device: "distributor"},
+                        function (data) {
+                            if (data.status) {
+                                console.log("自动登录完成");
+                                window.location.href = "pages/01home.html";
+                            } else {
+                                window.localStorage.clear();
+                                window.location.href = "login.html";
+                            }
+                        }, "json")
+                        .fail(function (e) {
+                            console.log(e);
+                            alert("登录请求失败, 点击确认重试");
+                            window.location.href = window.location.href;
+                        });
+            }
+        }
+
+        function onDeviceReady() {
+            console.log('Device is Ready!');
+            if (typeof (chcp) !== "undefined") {
+                checkUpdate(tokenOK);
+            } else {
+                tokenOK();
+            }
+        }
+        isCordovaOK = typeof (cordova) !== "undefined";
+        if (isCordovaOK) {
+            document.addEventListener("deviceready", onDeviceReady, false);
+        }
+
+        $(function () {
+            console.log("onload");
+            staticMessage(staticmessage);
+            if (!isCordovaOK) {
+                onDeviceReady();
+            }
+        });
+    </script>
+</html>

@@ -1,0 +1,536 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>送装下单 - 云驼联盟</title>
+        <link href="../../css/style.css" rel="stylesheet" type="text/css">
+        <link href="../../css/zeroModal.css" rel="stylesheet" type="text/css">
+        <script src="../../cordova.js"></script>
+        <script type="text/javascript" src="../../js/jquery.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../js/map.rest.js"></script>
+        <script src="../../js/zeroModal.js"></script>
+        <script src="../../js/deliverymain.js"></script>
+        <script src="../../js/mathedit.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            .form_item_unable .radio_class{display: inline-block;width: 30%;margin-top: 1.8vh;}
+            .form_item_unable .radio_class input{width: 40%;}
+            .radio_li_class {height: 6vh}
+            .radio_li_class span{    font-size: 2vh;}
+            .form_item_tip input{width: 2.5vw;height: 2.5vw;margin-right: 1vw}
+            .inline_with_class{
+                width: 60%;
+                display: inline-block;
+                float: right;
+            }
+            .inline_with_class input{
+                width:80%;
+            }
+            .inline_out_class{
+                font-size: 4vw;
+                line-height: 11vw;
+                color: #5b5d5b;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="body_mask"></div>
+        <div id="back-to-top" class="body_to_top"></div>
+        <!--logo区-->
+        <div class="main_top">
+            <ul class="main_top_left">
+                <a class="main_top_back" href="05delivery_log_daily.html"></a>
+
+            </ul>
+            <ul class="main_top_title">
+                <li>送装下单</li>
+            </ul>
+            <ul class="main_top_right">
+                <a class="main_top_history" href="#">历史订单</a>
+            </ul>
+        </div>
+
+        <div class="frame_sale_order">
+            <!--输入客户信息-->
+            <div class="sale_order_form">
+                <!--                <ul class="form_item_twice form_item_twice_left">
+                                    <li class="form_item_title">门店</li>
+                                    <li class="form_item_text">
+                                        <input id="shopname_id" pid="gsid" class="input_id" type="text" placeholder="门店名称" disabled="true">
+                                        <div class="form_item_dot"><img src="../../images/ico_store.png" alt=""/></div>
+                                    </li>
+                                </ul>-->
+                <ul class="form_item_twice form_item_twice_left notitle data_title_class">
+                    <li class="form_item_title" style=" margin-bottom: 2vw;">订单编号</li>
+                    <li class="form_item_title" style=" margin-bottom: 3vw;">客户电话</li>
+                    <li class="form_item_title" style=" margin-bottom: 0vw;">客户姓名</li>
+                </ul>
+                <ul class="form_item_twice form_item_twice_right notitle data_time_class">
+                    <li class="form_item_text form_item_unable"><input id="deliveryoderid_id" pid="deliveryoderid" class="input_id" readonly="readonly" type="text" placeholder="单号"></li>
+                    <li class="form_item_text form_item_unable"><input id="customer_id" pid="customer" class="input_id" readonly="readonly" type="text" placeholder="请填写客户名"></li>
+                    <li class="form_item_text form_item_unable"><input id="customerphone_id" pid="cusphone" class="input_id" readonly="readonly" type="text" placeholder="请填写详细电话" ></li>
+                </ul>
+
+                <ul class="form_item  notitle">
+                    <li class="form_item_text form_item_unable">
+                        <input id="adress_id" class="input_id" pid="customeradress" type="text" readonly="readonly" placeholder="请填写城区/街道">
+                    </li>
+                </ul>
+                <ul class="form_item notitle">
+                    <li class="form_item_text form_item_unable"><input id="addressdetailed_id" pid="addressdetailed" class="input_id need" type="text" readonly="true" placeholder="请填写送货地址的小区栋、单元、楼层、门牌信息"></li>
+                </ul>
+                <ul class="form_item notitle">
+                    <li class="form_item_text"><textarea id="remarks_id" pid="remarks" class="input_id hight_textarea"  placeholder="请填写客户送装特殊要求"></textarea></li>
+                </ul>
+                <ul class="form_item_twice form_item_twice_left notitle data_title_class">
+                    <li class="form_item_title">送货日期</li>
+                    <li class="form_item_title" style=" margin-bottom: 0vw;">安装日期</li>
+                </ul>
+                <ul class="form_item_twice form_item_twice_right notitle data_time_class">
+                    <li class="form_item_text">
+                        <div class="form_item_dot"><img src="../../images/ico_date.png" alt=""/></div>
+                        <div class="form_item_letter"><input type="date" id="devdate_id" pid="devdate" class="input_id need" placeholder="请选择送货时间"/></div>
+                    </li>
+                    <li class="form_item_text" style=" margin-bottom: 0vw;">
+                        <div class="form_item_dot"><img src="../../images/ico_date.png" alt=""/></div>
+                        <div class="form_item_letter"><input type="date" id="insdate_id" pid="insdate" class="input_id need" placeholder="请选择安装时间"/></div>
+                    </li>
+                </ul>
+                <div class="clear"></div>
+                <ul class="form_item_twice form_item_twice_left notitle data_title_class ">
+                    <li class="form_item_title">仓库设置</li>
+                </ul>
+                <ul class="form_item_twice form_item_twice_right notitle data_time_class">
+                    <li class="form_item_text select_storage_class">
+                        <select id="warhouse_select_id" class = "form_select">
+                            <option value="null">请选择仓库</option>
+                        </select>
+                        <div class="form_item_dot"><img src="../../images/ico_section.png" alt=""/></div>
+                    </li>
+                </ul>
+            </div>
+            <!--输入订单货品列表-->
+            <div class="sale_order_list">
+                <div class="sale_order_list_title">货品清单</div>
+                <div id="order_list_id" class="frame_list_item">
+                </div>
+            </div>
+            <!--结算汇总-->
+            <div class="sale_order_form">
+                <ul class="form_item_twice form_item_twice_left inline_out_class">
+                    配送费<li class="form_item_text form_item_unable inline_with_class"><input id="devfee_id" pid="transprotfee" class="input_id"  type="text" readonly="true"></li>
+                </ul>
+                <ul class="form_item_twice form_item_twice_right inline_out_class">
+                    安装费<li class="form_item_text form_item_unable inline_with_class"><input id="insfee_id" pid="installationfee" class="input_id"  type="text"  readonly="true"></li>
+                </ul>
+                <ul class="form_item_twice form_item_twice_left big_form">
+                    <li class="form_item_title">
+                        无电梯楼层数（3楼以下免费)
+                    </li>
+                    <li class="form_item_text">
+                        <select id="upstairs_id" class ="form_select">
+                            <option value ="0" selected>无需</option>
+                            <option value ="4">四楼</option>
+                            <option value ="5">五楼</option>
+                            <option value ="6">六楼</option>
+                            <option value ="7">七楼</option>
+                            <option value ="8">八楼</option>
+                        </select>
+                        <div class="form_item_dot"><img src="../../images/ico_section.png" alt=""/></div>
+                    </li>
+                </ul>
+                <ul class="form_item_twice form_item_twice_right small_form">
+                    <li class="form_item_title">上楼搬运费</li>
+                    <li class="form_item_text form_item_unable"><input type="text" id="upstairsfee_id"  readonly="true" placeholder="￥0" ></li>
+                </ul>
+                <div style="clear: both;"></div>
+                <ul class="form_item_twice form_item_twice_left">
+                    <li class="form_item_title">
+                        保额
+                        <div class="form_item_tip">
+                            <label>
+                                <input type="checkbox"  id="toinsure_id" pid="toinsure" class="input_id" value="true"  readonly="true">
+                            </label>
+                        </div>
+                    </li>
+                    <li class="form_item_text form_item_unable"><input id="insurancefee_id" type="text" readonly="readonly" value="￥10000"></li>
+                </ul>
+                <ul class="form_item_twice form_item_twice_right">
+                    <li class="form_item_title">保险费用</li>
+                    <li class="form_item_text form_item_unable"> <input id="insurance_id" readonly="true" class="input_id" pid="insurance" type="text" value="5"></li>
+                </ul>
+                <ul class="form_item_once">
+                    <li class="form_item_title">
+                        加急费用
+                        <div class="form_item_tip">
+                            <label>
+                                <input type="checkbox"  id="isurgent_id" pid="isurgent" class="input_id" value="false">加急
+                            </label>
+                        </div>
+                    </li>
+                    <li class="form_item_text form_item_unable"><input id="urgentfee_id"  type="text" value="￥0"  readonly="true"></li>
+                </ul>
+                <!--                <ul class="form_item_once">
+                                    <li class="form_item_title">
+                                        送装类型
+                                    </li>
+                                    <li class="form_item_text form_item_unable radio_li_class"> 
+                                        <label class="radio_class"><input  type="radio"  id="" pid="" name="type" class="" value="0"/><span>加急</span></label>
+                                        <label class="radio_class"><input  type="radio" checked="checked" name="type" value="1" /><span>自提</span></label>
+                                        <label class="radio_class"><input  type="radio" checked="checked" name="type" value="2" /><span>仅送装</span></label>
+                                    </li>
+                                </ul>-->
+            </div>
+            <!--结算汇总-->
+            <div id="mmoney_all_id" class="sale_order_total">
+                <ul class="sale_total_detail">
+                </ul>
+                <div class="sale_total_money"></div>
+            </div>
+        </div>
+
+        <!--底部功能-->
+        <div class="frame_bottom_cart">
+            <a href="javascript:void(0);" id="send_id" class="bottom_button_max">确认订单</a>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var itemsale;
+        var staticmessage = {};
+        var deliveryid;
+        var warhousearray;
+        var warhouseout;
+        var dataall;
+        var devallfee = {"upfee": 0, "insurancefee": 0, "urgentfee": 0, "devfee": 0, "insfee": 0, "needurgentfee": 0};
+        var nowDate = new Date();
+        var year = nowDate.getFullYear();
+        var month = nowDate.getMonth() + 1 < 10 ? "0" + (nowDate.getMonth() + 1) : nowDate.getMonth() + 1;
+        var day = nowDate.getDate() < 10 ? "0" + nowDate.getDate() : nowDate.getDate();
+        var sysdate = year + "-" + month + "-" + day;
+        var sorderid = "";
+        var deliveryoder = {};
+        //直接查询配送费
+        var foundok = false;
+        var saledok = false;
+        var distance_number = 0;
+        $(function () {
+            FastClick.attach(document.body);
+            function init() {
+                message();
+            }
+            function message() {
+                staticMessage(staticmessage);
+                sorderid = GetQueryString("sorderid");
+                $.post(staticmessage.url + "delivery/findone",
+                        {
+                            "sorderid": sorderid,
+                            "needtype": storegeeditutil("needtype")
+                        }
+                , function (data) {
+                    console.log(data);
+                    dataall = data;
+                    itemsale = data.sorder;
+                    saledok = true;
+                    needfound();
+                    devallfee.needurgentfee = data.urgentfee;
+                    if (itemsale.salesorderitems.length > 0 && typeof (itemsale) != "undefined") {
+                        htmlhelp(data);
+                    }
+                    if (sysdate == itemsale["devdate"]) {
+                        $("#isurgent_id").prop("checked", "checked");
+                        $("#isurgent_id").trigger("mousedown");
+                    }
+                });
+                $.post(staticmessage.url + "inventory/find", {"gsid": staticmessage.gsid, "groupid": staticmessage.groupid}
+                , function (data) {
+                    console.log(data);
+                    warhousearray = data.find;
+                    for (var x in data.find) {
+                        $("#warhouse_select_id").append("<option value =\"" + data.find[x].warehouseid + "\" pid=\"" + data.find[x].whtype + "\">" + data.find[x].warehouseadress + "</option>");
+                    }
+                    if (data.find.length == 1) {
+                        var a = $("#warhouse_select_id option[value='" + data.find[0].warehouseid + "']")[0];
+                        $(a).attr("selected", "selected");
+                        warhouseout = data.find[0];
+                        foundok = true;
+                        needfound();
+                    }
+                });
+                console.log(itemsale);
+            }
+            function needfound() {
+                var time = 1;
+                var intervalok = setInterval(function () {
+                    time++;
+                    if (foundok && saledok) {
+                        findtrans(warhouseout);
+                        clearInterval(intervalok);
+                    }
+                    if (time > 2) {
+                        clearInterval(intervalok);
+                    }
+                }, 2400);
+
+            }
+            function htmlhelp(data) {
+                var itemhtml = htmladd("日报细", itemsale.salesorderitems);
+                change("order_list_id", itemhtml);
+                for (var x in itemsale) {
+                    console.log("keyname:" + x + "\tvale:" + itemsale[x]);
+                    var id = x + "_id";
+                    if ($('#' + id).length) {
+                        console.log("keyhave++++" + x + "\tvale:" + itemsale[x]);
+                        $('#' + id).val(itemsale[x]);
+                    }
+                }
+                //保险
+                devallfee.insurancefee = data.insurancefee;
+                devallfee.insfee = data.insfee;
+                $("#deliveryoderid_id").val("D" + (itemsale.sorderid).substring(1));
+                $("#shopname_id").val(data.shopname);
+                $("#insfee_id").val(devallfee.insfee);
+
+                $("#insurance_id").val(devallfee.insurancefee.toFixed(2));
+                $("#insurancefee_id").val("￥" + floatObj.multiply(devallfee.insurancefee, parseFloat(2000)));
+                $("#createname_id").val(data.createname);
+                $("#mmoney_all_id ul").append("<li>货品总数：" + data.sorder.prodqtys + "件</li>");
+                $("#mmoney_all_id ul").append("<li id=\"devfee_log_id\">配送费用：￥" + devallfee.devfee + "</li>");
+                $("#mmoney_all_id ul").append("<li id=\"distance_id\">里程(公里)：￥ 0 </li>");
+                $("#mmoney_all_id ul").append("<li>安装费用：￥" + devallfee.insfee + "</li>");
+                $("#mmoney_all_id ul").append("<li id=\"otherfee_id\">附加费用：￥" + sumotherfee() + "</li>");
+                $("#mmoney_all_id .sale_total_money").html("总费用：￥" + sumallfee() + "");
+                editfee();
+            }
+            //编辑所有费用
+            function editfee() {
+                //判断是否加急
+                devallfee.urgentfee = $("#isurgent_id").val() == "true" ? devallfee.needurgentfee : 0;
+                $("#urgentfee_id").val(devallfee.urgentfee);
+                $("#otherfee_id").html("附加费用：￥" + sumotherfee())
+                $("#devfee_id").val(devallfee.devfee);
+                $("#devfee_log_id").html("配送费用：￥" + devallfee.devfee);
+                $("#distance_id").html("里程(公里)：￥" + floatObj.divide(parseFloat(distance_number), 1000));
+                $("#mmoney_all_id .sale_total_money").html("总费用：￥" + sumallfee());
+            }
+            //计算总价
+            function sumallfee() {
+                var item = floatObj.add(devallfee.upfee, devallfee.insurancefee)
+                var item2 = floatObj.add(devallfee.devfee, devallfee.insfee);
+                return floatObj.add(floatObj.add(item, devallfee.urgentfee), item2);
+            }
+            //计算附加费用:上楼+保险+加急
+            function sumotherfee() {
+                var item = floatObj.add(devallfee.upfee, devallfee.insurancefee)
+                return  floatObj.add(item, devallfee.urgentfee);
+            }
+            //提交表单
+            function send() {
+                var selectmy = $("#warhouse_select_id").val();
+                var customerphone = $("#customerphone_id").val();
+                var res = /^0\d{3,4}-?\d{7,8}$/;
+                if (customerphone.length != 11 && !res.test(customerphone)) {
+                    app.alert("联系电话格式不对，请核对");
+                    $("#customerphone_id").focus();
+                    return;
+                }
+                if ("null" == selectmy) {
+                    alert("请选择取货仓库");
+                    return;
+                }
+                //未计算完价格直接提交,异常
+                if ("0" == $("#devfee_id").val()) {
+                    alert("配送费异常,请稍后尝试");
+                    return;
+                }
+                var deliveryoderitems = new Array();
+//            var idarray = [];
+                for (var i = 0, length = $(".input_id").length; i < length; i++) {
+                    console.log($(".input_id").eq(i).val());
+                    var a = $(".input_id").eq(i).attr("pid");
+                    var val = $(".input_id").eq(i).val();
+                    console.log(a + "___" + val);
+                    deliveryoder[a] = val;
+                }
+                deliveryoder.salesoderid = itemsale.sorderid;
+                deliveryoder.distributid = staticmessage.distributid;
+                deliveryoder.gsid = staticmessage.gsid;
+                deliveryoder.groupid = staticmessage.groupid;
+                deliveryoder.prodqtys = itemsale.prodqtys;
+                deliveryoder.qtys = itemsale.qtys;
+                deliveryoder.creator = staticmessage.userid;
+                deliveryoder.adresslatitude = itemsale.adresslatitude;
+                deliveryoder.adresslongitude = itemsale.adresslongitude;
+                deliveryoder.proddesc = itemsale.proddesc;
+                for (var x in itemsale.salesorderitems) {
+                    var deliveryoderitem = {};
+                    deliveryoderitem.gsid = "000001";
+                    var item = itemsale.salesorderitems[x];
+                    for (var y in item) {
+                        console.log("keyname:" + y + "\tvale:" + item[y]);
+                        if (y != "prodcolor" && y != "sorderid" &&
+                                y != "cdate" &&
+                                y != "salesorderitemPK" &&
+                                y != "totprice" && y != "unprice") {
+                            deliveryoderitem[y] = item[y];
+                        }
+                        var deliveryoderitemPK = {};
+                        deliveryoderitemPK.deliveryoderid = deliveryoder.deliveryoderid;
+                        deliveryoderitemPK.sn = item.salesorderitemPK.sn;
+                        deliveryoderitem.deliveryoderitemPK = deliveryoderitemPK;
+                    }
+                    deliveryoderitems.push(deliveryoderitem);
+                }
+                deliveryoder.deliveryoderitems = deliveryoderitems;
+                deliveryoder.upstairsSelect = $("#upstairs_id").val();
+//                var item2 = $("#warhouse_select_id option:selected").attr("pid");
+//                var item = $("#warhouse_select_id option:selected").val();
+//                var warhouseout = warhousearray[listonefiledtwo("warehouseid", item, "whtype", item2, warhousearray)];
+                var arrayhava1 = new Array();
+                copyob(warhouseout, deliveryoder, arrayhava1);
+                var cusPoint = new BMap.Point(itemsale.adresslongitude, itemsale.adresslatitude);
+                var stoPoint = new BMap.Point(warhouseout.warehouselongitude, warhouseout.warehouselatitude);
+                var distanceitem = my_map.getDirectDistance(cusPoint, stoPoint);
+                var distance = isNaN(distanceitem) || 0 == distanceitem ? 1 : distanceitem;
+                console.log(deliveryoder);
+                loading_param = zeroModal.loading(2);
+                setTimeout(function () {
+                    loading_close();
+                }, 3000);
+                $("#send_id").attr("disabled", "true").css("pointer-events", "none");
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: staticmessage.url + "delivery/deliveryone?creator=" + staticmessage.userid + "&distance=" + distance + "&sale=" + dataall.sorder.price + "&needtype=" + storegeeditutil("needtype"),
+                    contentType: "application/json",
+                    data: JSON.stringify(deliveryoder),
+                    success: function (data) {
+                        console.log(data);
+                        loading_close();
+                        if (data.status) {
+                            app.alert("送装下单成功" + data.message, "07delivery_order_pay.html");
+                        } else {
+                            $("#send_id").attr("disabled", "false").css("pointer-events", "auto");
+                            app.alert(data.message);
+                        }
+                        console.log(data);
+                    }
+                });
+            }
+            function findtrans(warhouseout) {
+                var cusPoint = new BMap.Point(itemsale.adresslongitude, itemsale.adresslatitude);
+                var stoPoint = new BMap.Point(warhouseout.warehouselongitude, warhouseout.warehouselatitude);
+                var distanceitem = my_map.getDirectDistance(cusPoint, stoPoint);
+                var distance = isNaN(distanceitem) || 0 == distanceitem ? 1 : distanceitem;
+                $.post(staticmessage.url + "delivery/distanceone",
+                        {
+                            "distance": distance,
+                            "sorderid": sorderid
+                        }
+                , function (data) {
+                    console.log(data);
+                    devallfee.devfee = data.transfee;
+                    distance_number = distance;
+                    editfee();
+                }
+                );
+            }
+            function act() {
+                $('.nav-toggle').click(function () {
+                    var a = $(".nav").css("display");
+                    $(".nav").css("display") == "none" ? $(".nav").css("display", "block") : $(".nav").css("display", "none");
+                    $('body').toggleClass('nav-open');
+                });
+                //选择仓库
+                $('#warhouse_select_id').change(function () {
+                    var item2 = $("#warhouse_select_id option:selected").attr("pid");
+                    var item = $("#warhouse_select_id option:selected").val();
+                    if ("null" == item) {
+                        devallfee.devfee = 0;
+                        editfee();
+                    } else {
+                        warhouseout = warhousearray[listonefiledtwo("warehouseid", item, "whtype", item2, warhousearray)];
+                        findtrans(warhouseout);
+                    }
+                });
+                //楼层
+                $('#upstairs_id').on('change', function (event) {
+                    var upstairs = $('#upstairs_id').val();
+                    if (upstairs != "0") {
+                        devallfee.upfee = (parseFloat(upstairs) - 3) * 8 * dataall.sorder.prodqtys;
+                    } else {
+                        devallfee.upfee = 0;
+                    }
+                    $("#upstairsfee_id").val("￥" + (devallfee.upfee));
+                    editfee();
+                });
+                //加急
+                $("#isurgent_id").on('mousedown', function (event) {
+                    $(this).val() == "true" ? $(this).attr("value", false) : $(this).attr("value", true);
+                    editfee();
+                })
+                $('#send_id').on('click', function (event) {
+                    send();
+                });
+                $(window).on("scroll", function () {
+                    if ($(window).scrollTop() > 100) {
+                        $("#back-to-top").fadeIn(500);
+                    } else {
+                        $("#back-to-top").fadeOut(500);
+                    }
+                });
+                $("#back-to-top").on("click", function () {
+                    //$('body,html').animate({scrollTop:0},1000);
+                    if ($('html').scrollTop()) {
+                        $('html').animate({scrollTop: 0}, 500);
+                        return false;
+                    }
+                    $('body').animate({scrollTop: 0}, 500);
+                    return false;
+                });
+            }
+//            function pushHistory() {
+//                window.history.pushState({}, "index", "05delivery_log_daily.html");
+//            }
+
+            //初始化整个页面
+            init();
+            //动态加载
+            act();
+
+//            pushHistory();
+        });
+        $("#devdate_id").on("change", function () {
+            var devdatestamp = $("#devdate_id").val();
+            if (devdatestamp == sysdate) {
+                if (nowDate.getHours() >= 12) {
+                    $("#insdate_id").val(devdatestamp);
+                    $("#isurgent_id").prop("checked", "checked");
+                    $("#isurgent_id").trigger("mousedown");
+                } else {
+                    app.alert("当天无法送到");
+                    $("#devdate_id").val(itemsale["devdate"]);
+                    $("#insdate_id").val(itemsale["insdate"]);
+                }
+            } else {
+                $("#insdate_id").val(devdatestamp);
+            }
+        })
+    </script>
+</html>
+<script type="text/javascript">
+    addLoadEvent(function () {
+        var truckPoint = {};
+        my_map.getLocation(function (point) {
+            console.log(point);
+        });
+    });
+</script>

@@ -1,0 +1,161 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>云驼联盟</title>
+        <link href="../../css/style.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/pageorder.js"></script>
+        <script src="../../js/templatorder.js"></script>	
+        <script src="../../js/templateutils.js"></script>   
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            .list_item{
+                height: 18vw;
+            }
+            .list_item_detail {
+                width: 100%;
+            }
+            .log_sort a {
+                width: 48.8vw;
+            }
+            .frame_log {
+                margin-top: 0vh;
+                position: absolute;
+                overflow: scroll;
+                height: 87%;
+                float: left;
+                padding: 13vw 0 0 0;
+                width: 100%;
+                background: #f3f3f3;
+            }
+            .show_false,.show_\{isupdate\}{display: none;}
+            .log_total ul .stauts_c{color: #0529b0;float: left;}
+            .log_total li {
+                float: right;
+            }
+            .log_total {
+                width: 100%;
+            }
+            .red_bc{
+                background: #fff6f6;
+            }
+            .show_true{
+                display: none;
+            }
+            #log_order_id .log_list_tool {
+                display: block;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="body_mask"></div>
+        <!--logo区-->
+        <div class="main_top">
+            <ul class="main_top_left">
+                <li><a class="main_top_back" href="../01home.html"></a></li>
+            </ul>
+            <ul class="main_top_title">
+                <li>拣货订单</li>
+            </ul>
+            <ul class="main_top_right">
+                <!--<a class="main_top_search" href="#"></a>-->
+            </ul>
+        </div>
+        <!--货品总体分类-->
+        <div id="type_id" class="main_sort log_sort">
+            <a href="#" class="act" pid="notok">未完成</a>
+            <span></span>
+            <a href="#" pid="isok">已完成</a>
+        </div>    
+        <div id="log_order_id" class="frame_log log_sale new_order_list" style="padding-top: 13vh;">
+            <!--报表-->
+            <div class="no_order_message">您还没有订单信息哦!</div>
+        </div>
+        <!--        <div id="menu_buttom_id">
+        
+                </div>
+                <script type="text/javascript">
+                    table.htmlTabel("two");
+                </script>-->
+        <script type="text/javascript">
+            "use strict";
+            var type;
+            var staticmessage = {};
+
+            //初始化整个页面
+            function init() {
+                staticMessage(staticmessage);
+                type = "notok";
+                filter();
+            }
+            function filter() {
+                var status = "";
+                if (type == "notok") {
+                    status = "1,B";
+                } else {
+                    status = "PD,P,O,Q,F,I,C";
+                }
+                $.ajax({
+                    type: "POST",
+                    url: staticmessage.url + "inspection/findOKStore" + setQueryString({"status": status, "gsid": staticmessage.gsid}),
+                    success: function (data) {
+                        console.log(data);
+                        if (data.deliveryoder.length > 0) {
+                            if (0 == $("#log_order_id .log_item").length) {
+                                $("#log_order_id").html("");
+                            }
+                            for (var x in data.deliveryoder) {
+                                var itemhtml = orderfun.htmledit("order_list_item", data.deliveryoder[x].deliveryoderitems);
+                                data.deliveryoder[x].itemhtml = itemhtml;
+                                data.deliveryoder[x].display = (data.deliveryoder[x].status == 1) ? "block" : "none";
+                                data.deliveryoder[x].otype = isnotnull(data.deliveryoder[x].suporderid) ? "havasup" : "nosup";
+                                data.deliveryoder[x].operationhtml = orderfun.oneobjhtmledit("order_operation_inspaction", data.deliveryoder[x]);
+                            }
+                        } else {
+                            $("#log_order_id").html('<div class="no_order_message">您还没有订单信息哦!</div>');
+                        }
+                        var smallHtml = orderfun.htmledit("order_list_inspaction", data.deliveryoder, "mdh");
+                        temputils.htmlappend("log_order_id", smallHtml);
+                        if (type == "notok") {
+                            $("#log_order_id").find(".operation_list").show();
+                        } else {
+                            $("#log_order_id").find(".operation_list").hide();
+                        }
+                    }
+                });
+            }
+            //顶部
+            $('#type_id').on('click', 'a', function (event) {
+                $("#log_order_id").html("");
+                var element = event.target;
+                var a = $(element).attr("pid");
+                type = a;
+                console.log(type);
+                $(element).siblings().removeClass("act");
+                $(element).addClass("act");
+                filter();
+            });
+            //跳转订单
+            $('#log_order_id').on('click', '#log_inspection_id', function (event) {
+                var orderid = $(this).closest(".log_item").attr("pid") + "-001";
+                var url = "../storehouse/100picking_sure.html?deliveryspoderid=" + orderid;
+                window.location.href = url;
+            });
+
+            $(function () {
+                FastClick.attach(document.body);
+                init();
+            });
+        </script>
+    </body>
+</html>

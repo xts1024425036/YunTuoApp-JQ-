@@ -1,0 +1,189 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>客户清单</title>
+        <link href="../../css/style.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script src="../../js/jquery.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/salereport.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            #search_img_id{margin-left: 0px;}
+            #money_down_id,#money_up_id{width: 81%;}
+            #money_down_id:focus,#money_up_id:focus{border: 0px ;outline: none;}
+            #cate_select, #search_img_id{
+                font-size: 7vw;
+                line-height: 10vw;
+                vertical-align: middle;
+                position: absolute;
+                right: 2vw;
+            }
+            #cate_select{
+                pointer-events: none;   
+            }
+            #log_order_id td{text-align: left;}
+            .name_phone_class{
+                float: left;
+                width: 100%;
+                font-size: 4vw;
+                margin-bottom: 2vw;
+                font-weight: bold;
+            }
+            .frame_sale_order {
+                margin-bottom: 0vw; 
+            }
+            .price_class{float: right;font-size: 4vw;}
+            .address_customer_class{border-bottom:  0.1vw solid #c5c4c4;margin-bottom: 2vw;font-size: 4vw;padding-bottom: 2vw;}
+        </style>
+    </head>
+
+    <body>
+        <!--logo区-->
+        <div class="main_top">
+            <ul class="main_top_left">
+                <a class="main_top_back" href="../menu/61send.html"></a>
+            </ul>
+            <ul class="main_top_title">
+                <li>客户资料</li>
+            </ul>
+        </div>
+        <div class="frame_sale_order">
+            <!--输入客户信息-->
+            <div class="sale_order_form " >
+                <!--                <ul class="form_item">
+                                    <li class="form_item_title">所在区域</li>
+                                    <li class="form_item_text">
+                                        <select id="address_id">
+                                            <option value="null">请选择区域</option>
+                                            <option value="洪山">洪山</option>
+                                        </select>
+                                    </li>
+                                </ul>-->
+                <ul class="form_item">
+                    <li class="form_item_title" style="width: 15%;display: inline-block;"></li>
+                    <li class="form_item_text" style="width:97%;display: inline-block;margin-bottom: 4vw;">
+                        <!--<span>分类</span>-->
+                        <select id="cate_id" style="color: #666;">
+                            <option value="null">请选择类别</option>
+                        </select>
+                        <i id="cate_select" class="iconfont icon-unfold" style="font-size: 7vw;line-height: 10vw;vertical-align: middle;"></i>
+                    </li>
+                </ul>
+                <ul class="form_item_twice form_item_twice_left" style="width: 40%">
+                    <!--<li class="form_item_title">消费金额</li>-->
+                    <li class="form_item_text"><input id="money_down_id" type="text" placeholder="销售金额下限"></li>
+                </ul>
+                <ul class="form_item_twice form_item_twice_right"  style="width: 40%;float: left;margin-left: 4vw;">
+                    <!--<li class="form_item_title"><span style="float: right">　</span></li>-->
+                    <li class="form_item_text">
+                        <input id="money_up_id" type="text" placeholder="销售金额上限">
+                    </li>
+                </ul>
+                <i id="search_img_id" class="iconfont icon-search" style="width: 10%;float: left;margin-top: 16vw;"></i>
+
+            </div>
+            <div  id="log_order_id"  class="sale_reports_table">
+
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var filterjson = {};
+        var staticmessage = {};
+        var delall = new Array();
+        var flag = false;
+        $(function () {
+            FastClick.attach(document.body);
+            //初始化整个页面
+            function init() {
+                filterjson.pagestart = 0;
+                staticMessage(staticmessage);
+                $.post(staticmessage.url + "salelog/customercate", {"gsid": staticmessage.gsid}
+                , function (data) {
+                    console.log(data);
+                    var number = 0;
+                    for (var x in data.cus) {
+                        if (number++ == 0) {
+                            $("#cate_id").append("<option  value =\"" + x + "\">" + data.cus[x] + "</option>");
+                        } else {
+                            $("#cate_id").append("<option  value =\"" + x + "\">" + data.cus[x] + "</option>");
+                        }
+                    }
+                    if (number > 0) {
+                        $("#search_img_id").trigger("click");
+                    }
+                });
+            }
+            function filter() {
+                $.post(staticmessage.url + "salelog/customer", {"gsid": staticmessage.gsid, "find": JSON.stringify(filterjson)}
+                , function (data) {
+                    console.log(data);
+                    for (var x in data.cus) {
+                        data.cus[x].price = parseInt(data.cus[x].price);
+                    }
+                    var itemhtml = htmladd("cuslog", data.cus);
+//                    var item = {};
+//                    item.itemhtml = itemhtml;
+//                    var smallHtml = temp3.format(item)
+                    if (data.cus.length > 0) {
+                        $("#log_order_id").append(itemhtml);
+                        flag = true;
+                    } else {
+                        $("#log_order_id").append(itemhtml);
+                    }
+//                    change("log_order_id", smallHtml);
+                });
+            }
+            //动态加载
+            function act() {
+                //顶部
+                $('#search_img_id').on('click', function (event) {
+                    $("#log_order_id").html("");
+                    filterjson.pagestart = 0;
+                    filterjson.moneyup = $("#money_up_id").val();
+                    filterjson.moneydown = $("#money_down_id").val();
+                    filter();
+                });
+                $('.sale_order_form').on('change', '#address_id', function (event) {
+                    $("#log_order_id").html("");
+                    filterjson.pagestart = 0;
+                    filterjson.address = $("#address_id").val();
+                    filter();
+                });
+                $("#log_order_id").scroll(function () {
+                    var scrollTop = $(this).scrollTop(); //滚动条距离顶部的高度
+                    var eleheight = $(this).height(); //滚动条距离顶部的高度
+                    var scrollAll = document.getElementById("log_order_id").scrollHeight; //滚动条距离顶部的高度
+                    console.log("scrollTop>>>>>" + scrollTop);
+                    console.log("scrollAll>>>>>" + scrollAll);
+                    var isok = ((scrollAll - eleheight * 2) < scrollTop);
+                    if (flag && isok) {
+                        // console.log("top:"+scrollTop+",doc:"+scrollHeight+",client:"+clientHeight);
+                        //滚动条到达底部
+                        filterjson.pagestart += 10;
+                        flag = false;
+                        filter();
+                    }
+                });
+                $('.sale_order_form').on('change', '#cate_id', function (event) {
+                    $("#log_order_id").html("");
+                    filterjson.pagestart = 0;
+                    filterjson.cate = $("#cate_id").val();
+                    filter();
+                });
+            }
+            act();
+            init();
+        });
+    </script>
+</html>
+

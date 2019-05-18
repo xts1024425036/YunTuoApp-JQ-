@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+    <head>
+        <title>云驼联盟</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <link href="../../css/common.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script type="text/javascript" src="../../js/jquery.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../cordova.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            .menuline {
+                padding: 3vw 0;
+            }
+            .iconfont {
+                color: #808396;
+            }
+            .hiSlider img{
+                width: 100%;
+                height:42vw;
+            }
+            .menuline {
+                border-bottom: 0px solid #aaa9a9;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="banner hiSlider">
+            <img pid="pic_own_001" class="slide_class" src="../../images/pic_own_001.jpg">
+        </div>
+        <div class="innercontent top_innercontent" id="mainmenu">
+            <div class="shop" style="text-align:center;font-size:6vw;">
+                维修服务
+            </div>
+            <div class="menuline" style="border:none;">
+                <div class="menutext">维修热线 : 4008-135-000</div>
+                <!--<div class="menuimg"><img src="../../images/36.png"></div>-->
+                <div class="clear"></div>
+            </div>
+            <div class="menuline">
+                <div class="menutext">1、提交维修需求</div>
+                <!--<div class="menuimg"><img src="../../images/39.png"></div>-->
+                <div class="clear"></div>
+            </div>
+            <div class="menuline">
+                <div class="menutext">2、平台报价／确认</div>
+                <!--<div class="menuimg"><img src="../../images/38.png"></div>-->
+                <div class="clear"></div>
+            </div>
+            <div class="menuline">
+                <div class="menutext">3、维修师傅上门</div>
+                <!--<div class="menuimg"><img src="../../images/37.png"></div>-->
+                <div class="clear"></div>
+            </div>
+            <div class="menuline">
+                <div class="menutext">4、验收及评价</div>
+                <!--<div class="menuimg"><img src="../../images/36.png"></div>-->
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div id="menu_buttom_id">
+
+        </div>
+        <script type="text/javascript">
+            table.htmlTabel("two");
+        </script>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var staticmessage = {};
+        var power = new Array();
+        $(function () {
+            FastClick.attach(document.body);
+            var urlpic = url + "file/getimg?gid=9&ftype=other";
+            $(".weixiu_class div").addClass("icon-wrench-fill").removeClass("icon-wrench");
+            $(".slide_class").each(function () {
+//                $(this).attr("src", urlpic + "&name=" + $(this).attr("pid"));
+            })
+            $(".menuline").on("click", function () {
+//                app.alert("模块正在建设,敬请期待!");
+            })
+        });
+    </script>
+</html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+    <head>
+        <title>云驼联盟</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <link href="../../css/common.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="../../css/iconfont.css">
+        <script type="text/javascript" src="../../js/jquery.js"></script>
+        <script type="text/javascript" src="https://app.51yuntuo.com/push/push.js"></script>
+        <script src="../../js/common.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <script src="../../js/pageorder.js"></script>
+        <script src="../../js/templateother.js"></script>	
+        <script src="../../js/templateutils.js"></script>
+        <script src="../../cordova.js"></script>
+        <script src="../../js/fastclick.js"></script>
+        <link href="../../css/iosOnly.css" rel="stylesheet" type="text/css">
+        <style>
+            .menutext span{display: none;}
+            .menutext span.needshow{display: inline-block;font-size: 0.24rem;}
+            .top_innercontent .menubefore{
+                position: relative;
+                width: 7vw;
+                display: block;
+                float: left;
+                color: #507AC5;
+            }
+            .top_innercontent .menubefore.sex_true .iconfont{
+                color: #F63D87;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="top_nav">
+            <i class="top_left back iconfont icon-back"></i>
+            <div class="top_menu">员工管理</div>
+            <div class="top_right"></div>
+        </div>
+        <div class="innercontent top_innercontent" id="baobiao" style="margin-top:15vw;letter-spacing: 0.02rem;">
+            <div style="margin-left: 42%;font-size: 8vw;">无</div>
+        </div>
+        <div id="add_msg"></div>
+        <div class="bottom_button">
+            <div id="add_new_user">新增员工</div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        "use strict";
+        var type;
+        var staticmessage = {};
+        var postname = ['1', '2', '3', '4'];
+        $(function () {
+            FastClick.attach(document.body);
+            //初始化整个页面
+            function init() {
+                staticMessage(staticmessage);
+                filter();
+            }
+            function filter() {
+                $.post(staticmessage.url + "shopedit/finduser",
+                        {
+                            "gsid": staticmessage.gsid
+                        }
+                , function (data) {
+                    console.log(data);
+                    var post = new Array();
+                    for (var x in data.shopuser) {
+                        post = data.shopuser[x].post.split(',');
+                        for (var y in post) {
+                            data.shopuser[x]["post" + post[y]] = "needshow";
+                        }
+                    }
+                    var smallHtml = orderfun.htmledit("user_list", data.shopuser);
+                    temputils.htmlchange("baobiao", smallHtml);
+                    if (storegeeditutil("post").indexOf("1") == -1 && storegeeditutil("post").indexOf("0") == -1) {
+                        $(".bottom_button").hide();
+                    }
+                }
+
+                );
+            }
+            //动态加载
+            function act() {
+                $('.innercontent').on("click", ".menuline", function (event) {
+                    var uid = $(this).attr("uid");
+                    if (storegeeditutil("post").indexOf("1") != -1 || storegeeditutil("post").indexOf("0") != -1) {
+                        window.location.href = "66editemployee.html?userid=" + uid;
+                    } else {
+                        refushmessage("无员工管理权限,请联系店铺管理员");
+                    }
+                });
+                $('#add_new_user').on("click", function (event) {
+                    window.location.href = "65newemployee.html";
+                });
+                $(".back").on("click", function () {
+                    window.location.href = "../menu/77editmenu.html";
+                })
+//                $('.static_table').on('mousedown', '.bluebg', function (event) {
+//                    var type = $(this).attr("id").substring(5, 6);
+//                    window.location.href = "35employee.html?type=" + type;
+//                });
+            }
+            init();
+            act();
+        });
+    </script>
+</html>
